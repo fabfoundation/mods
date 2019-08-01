@@ -1,10 +1,8 @@
-# CBA `mods` fork (by TBL)
+# `mods` Community Edition
 
-Everything is better at the beach :sunglasses:
+Just like `mods`, but cooler :sunglasses:
 
 ![](mods.png)
-
-My fork is focused in UI. See also [Sibu's](https://github.com/sibusaman/mods) fork, focused in machine functionality. We keep cherry-picking each other.
 
 - [To run `mods` online](#To-run-mods-online)
 - [To install and run `mods` locally in Linux](#To-install-and-run-mods-locally-in-Linux)
@@ -20,7 +18,7 @@ My fork is focused in UI. See also [Sibu's](https://github.com/sibusaman/mods) f
 
 ## To run `mods` online
 
-Just go to https://thebeachlab.github.io/mods
+Just go to https://fabfoundation.github.io/mods/
 
 ## To install and run `mods` locally in Linux
 
