@@ -5,10 +5,10 @@ Just like `mods`, but cooler :sunglasses:
 ![](mods.png)
 
 - [To run `mods` online](#To-run-mods-online)
+- [To install and run `mods` locally in Windows](#To-install-and-run-mods-locally-in-Windows)
 - [To install and run `mods` locally in Linux](#To-install-and-run-mods-locally-in-Linux)
   - [Installing `mods`](#Installing-mods)
   - [Running `mods` locally in your computer](#Running-mods-locally-in-your-computer)
-- [To install and run `mods` locally in Windows](#To-install-and-run-mods-locally-in-Windows)
 - [Talking to the machines](#Talking-to-the-machines)
   - [Setting permissions](#Setting-permissions)
   - [Starting the local servers](#Starting-the-local-servers)
@@ -19,6 +19,10 @@ Just like `mods`, but cooler :sunglasses:
 ## To run `mods` online
 
 Just go to https://fabfoundation.github.io/mods/
+
+## To install and run `mods` locally in Windows
+
+Kindly contact support@microsoft.com
 
 ## To install and run `mods` locally in Linux
 
@@ -52,10 +56,6 @@ hs
 ```
 
 Open a browser tab and go to `127.0.0.1:8080` which is the same as `http://localhost:8080` to view the server that you just started. You should see the `mods` home screen.
-
-## To install and run `mods` locally in Windows
-
-Kindly contact support@microsoft.com
 
 ## Talking to the machines
 
