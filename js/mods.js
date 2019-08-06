@@ -102,17 +102,10 @@
    document.body.vLink = mods.theme.vlink
    function mods_transform() {
       var transform = document.body.style.transform
-      var index = transform.indexOf('scale')
-      var left = transform.indexOf('(', index)
-      var right = transform.indexOf(')', index)
-      var s = parseFloat(transform.slice(left + 1, right))
-      var index = transform.indexOf('translate')
-      var left = transform.indexOf('(', index)
-      var right = transform.indexOf('px', left)
-      var tx = parseFloat(transform.slice(left + 1, right))
-      var left = transform.indexOf(',', right)
-      var right = transform.indexOf('px', left)
-      var ty = parseFloat(transform.slice(left + 1, right))
+      var m = new DOMMatrix(getComputedStyle(document.body).transform)
+      var s = m.m11
+      var tx = m.m41/s
+      var ty = m.m42/s
       var origin = document.body.style.transformOrigin
       var pxx = origin.indexOf('px')
       var ox = parseFloat(origin.slice(0, pxx))
