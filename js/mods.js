@@ -619,7 +619,7 @@
          add_menu(div, 'view forked project', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
-            var win = window.open('https://github.com/TheBeachLab/mods')
+            var win = window.open('https://github.com/fabfoundation/mods')
          })
          document.body.appendChild(div)
       }

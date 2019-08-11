@@ -36,7 +36,7 @@ Install the [http-server](https://www.npmjs.com/package/http-server) npm package
 
 Clone the `mods` repository:
 
-`git clone https://github.com/TheBeachLab/mods.git`
+`git clone https://github.com/fabfoundation/mods.git`
 
 To talk to the machines you will also need to install `ws` and `serialport` npm packages inside `mods/js` folder:
 
