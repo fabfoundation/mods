@@ -21,7 +21,6 @@ program_menu('      mill 2D svg','programs/machines/G-code/mill%202D%20svg
 program_label('   Roland')
 program_label('      mill')
 program_label('         MDX-20')
-program_menu('            PCB','programs/machines/Roland/mill/MDX-20/PCB')
 program_menu('            PCB png','programs/machines/Roland/mill/MDX-20/PCB%20png')
 program_menu('            PCB svg','programs/machines/Roland/mill/MDX-20/PCB%20svg')
 program_label('         SRM-20')
