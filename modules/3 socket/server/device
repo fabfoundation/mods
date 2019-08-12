@@ -1,5 +1,5 @@
 //
-// devie server module
+// device server module
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
@@ -27,7 +27,7 @@ var name = 'WebSocket device'
 var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = 1234
-   mod.device.value = 'usb/lp0'
+   mod.device.value = '/dev/usb/lp0'
    mod.socket = null
    socket_open()
    }
@@ -112,7 +112,6 @@ var interface = function(div){
    //
    div.appendChild(document.createTextNode('device:'))
    div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('/dev/'))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 10
