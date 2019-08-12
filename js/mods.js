@@ -70,10 +70,10 @@
    }
    mods.theme = mods.lighttheme
    //
-   // Toggle Dark Mode 'd'
+   // Toggle Dark Mode 'Ctrl+Alt+d'
    //
    window.addEventListener('keydown', function (evt) {
-      if (evt.code == 'KeyD') 
+      if (evt.code == 'KeyD' && evt.ctrlKey && evt.altKey) 
       {
          var div = document.getElementById('prompt')
          if (mods.theme == mods.lighttheme) 
@@ -166,7 +166,7 @@
          //
          mods.ui.mousedown = evt.button
          if (mods.ui.mousedown == 0) {
-            set_prompt('left-drag to pan, right-drag to select, d to toggle dark mode')
+            set_prompt('left-drag to pan, right-drag to select, Ctrl+Alt+d to toggle dark mode')
             if (mods.ui.menu != null) {
                document.body.removeChild(mods.ui.menu)
                mods.ui.menu = null
