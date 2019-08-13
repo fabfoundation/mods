@@ -4,17 +4,25 @@ Just like `mods`, but cooler :sunglasses:
 
 ![](mods.png)
 
-- [To run `mods` online](#To-run-mods-online)
-- [To install and run `mods` locally in Windows](#To-install-and-run-mods-locally-in-Windows)
-- [To install and run `mods` locally in Linux](#To-install-and-run-mods-locally-in-Linux)
-  - [Installing `mods`](#Installing-mods)
-  - [Running `mods` locally in your computer](#Running-mods-locally-in-your-computer)
-- [Talking to the machines](#Talking-to-the-machines)
-  - [Setting permissions](#Setting-permissions)
-  - [Starting the local servers](#Starting-the-local-servers)
-    - [Serial Server](#Serial-Server)
-    - [Device Server](#Device-Server)
-- [FAQ](#FAQ)
+- [`mods` Community Edition](#mods-community-edition)
+  - [What is `mods`?](#what-is-mods)
+  - [To run `mods` online](#to-run-mods-online)
+  - [To install and run `mods` locally in Windows](#to-install-and-run-mods-locally-in-windows)
+  - [To install and run `mods` locally in Linux](#to-install-and-run-mods-locally-in-linux)
+    - [Installing `mods`](#installing-mods)
+    - [Running `mods` locally in your computer](#running-mods-locally-in-your-computer)
+  - [Talking to the machines](#talking-to-the-machines)
+    - [Setting permissions](#setting-permissions)
+    - [Starting the local servers](#starting-the-local-servers)
+      - [Serial Server](#serial-server)
+      - [Device Server](#device-server)
+  - [FAQ](#faq)
+
+## What is `mods`?
+
+`mods` community edition is a fork of [CBA mods research project](http://mods.mit.cba.edu). `mods` is a modular cross platform tool for fablabs. It is based on independent but interrelated modules that can be used for machine control, design, pre and post data processing, CAM, etc. The possibilies are endless. `mods` could potentially be used for CAD, CAM, machine control, automation, building UIs, read input devices, react to to physical models, and much more.
+
+The goal of the community edition is to provide documentation, support and help the community engage in the project and foster the development/exchange of new modules.
 
 ## To run `mods` online
 
