@@ -1,9 +1,11 @@
 //
 // files.js
-//    node js/files.js
+// This program generates a html list of files
+// usage: node js/files.js > destination.html
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
+// Modified by Francisco Sanchez 2019
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods 
