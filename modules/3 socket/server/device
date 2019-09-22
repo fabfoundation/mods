@@ -76,14 +76,14 @@ var interface = function(div){
       div.appendChild(input)
       mod.address = input
    div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0port: '))
+   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0port: '))
    input = document.createElement('input')
       input.type = 'text'
       input.size = 10
       div.appendChild(input)
       mod.port = input
    div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('\u00a0\u00a0status: '))
+   div.appendChild(document.createTextNode('\u00a0status: '))
    input = document.createElement('input')
       input.type = 'text'
       input.size = 10
