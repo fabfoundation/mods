@@ -4,6 +4,7 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
+// Modified by Francisco Sanchez 2019
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -20,10 +21,10 @@ if (process.argv.length < 4) {
 //
 // start server
 //
-var client_address = process.argv[2]
-var server_port = process.argv[3]
+var client_address = process.argv[2] // get the server IP address from the command line argument 2
+var server_port = process.argv[3]   // get the server port from the command line argument 3
 console.log("listening for connection from client address "+client_address+" on server port "+server_port)
-var SerialPort = require('serialport')
+var SerialPort = require('serialport') // require the library
 var port = null
 var WebSocketServer = require('ws').Server
 wss = new WebSocketServer({port:server_port})
@@ -55,11 +56,13 @@ wss.on('connection',function(ws) {
          var device = msg.device
          var baud = parseInt(msg.baud)
          var flow = msg.flow
-         console.log('open '+device+' at '+baud+' flow '+flow)
-         if (flow == 'none')
-            port = new SerialPort(device,{baudRate:baud})
-         else if (flow == 'rtscts')
-            port = new SerialPort(device,{baudRate:baud,rtscts:true})
+         if (port == null) {
+            console.log('open '+device+' at '+baud+' flow '+flow)
+            if (flow == 'none')
+               port = new SerialPort(device,{baudRate:baud})
+            else if (flow == 'rtscts')
+               port = new SerialPort(device,{baudRate:baud,rtscts:true})
+            }
          port.on('open',function() {
             ws.send('serial port opened')
             if (flow == 'dsrdtr') {
@@ -69,6 +72,7 @@ wss.on('connection',function(ws) {
             })
          port.on('error',function(err) {
             ws.send(err.message)
+            port = null
             })
          port.on('data',function(data) {
             ws.send(data.toString('binary'))
@@ -79,10 +83,13 @@ wss.on('connection',function(ws) {
       //
       else if (msg.type == 'close') {
          var device = msg.device
-         console.log('close '+device)
-         ws.send('serial port closed')
-         port.close((err) => { if (err) throw err; })
-         port = null
+         if (port == null) {}
+         else {
+            console.log('close '+device)
+            ws.send('serial port closed')
+            port.close((err) => { if (err) throw err; })
+            port = null
+            }  
          }
       //
       // send string

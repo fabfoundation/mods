@@ -3,6 +3,7 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
+// Modified by Francisco Sanchez 2019
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -109,7 +110,7 @@ var interface = function(div){
    //
    // port
    //
-   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0port: '))
+   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0port: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 10
@@ -119,7 +120,7 @@ var interface = function(div){
    //
    // status
    //
-   div.appendChild(document.createTextNode('\u00a0\u00a0status: '))
+   div.appendChild(document.createTextNode('\u00a0status: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 10
@@ -152,6 +153,8 @@ var interface = function(div){
    //
    // device
    //
+   div.appendChild(document.createTextNode('device:'))
+   div.appendChild(document.createElement('br'))   
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 10
@@ -180,7 +183,7 @@ var interface = function(div){
       input.id = mod.div.id+'flow_none'
       div.appendChild(input)
       mod.flow_none = input
-   div.appendChild(document.createTextNode('none\u00A0\u00A0\u00A0\u00A0'))
+   div.appendChild(document.createTextNode('none\u00A0\u00A0'))
    div.appendChild(document.createElement('br'))   
    var input = document.createElement('input')
       input.type = 'radio'
@@ -235,7 +238,6 @@ function socket_open() {
    mod.socket = new WebSocket(url)
    mod.socket.onopen = function(event) {
       mod.status.value = "socket opened"
-      serial_open()
       }
    mod.socket.onerror = function(event) {
       mod.status.value = "can not open"
