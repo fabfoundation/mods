@@ -607,7 +607,7 @@
          //
          // view original project
          //
-         add_menu(div, 'view cba project', function (evt) {
+         add_menu(div, 'view mods CBA project', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('https://gitlab.cba.mit.edu/pub/mods')
@@ -616,7 +616,7 @@
          //
          // view forked project
          //
-         add_menu(div, 'view forked project', function (evt) {
+         add_menu(div, 'view mods Community Edition project', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('https://github.com/fabfoundation/mods')
