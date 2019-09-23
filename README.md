@@ -4,19 +4,19 @@ Just like `mods`, but cooler :sunglasses:
 
 ![](mods.png)
 
-- [`mods` Community Edition](#mods-community-edition)
-  - [What is `mods`?](#what-is-mods)
-  - [To run `mods` online](#to-run-mods-online)
-  - [To install and run `mods` locally in Windows](#to-install-and-run-mods-locally-in-windows)
-  - [To install and run `mods` locally in Linux](#to-install-and-run-mods-locally-in-linux)
-    - [Installing `mods`](#installing-mods)
-    - [Running `mods` locally in your computer](#running-mods-locally-in-your-computer)
-  - [Talking to the machines](#talking-to-the-machines)
-    - [Setting permissions](#setting-permissions)
-    - [Starting the local servers](#starting-the-local-servers)
-      - [Serial Server](#serial-server)
-      - [Device Server](#device-server)
-  - [FAQ](#faq)
+1. [What is `mods`?](#what-is-mods)
+2. [To run `mods` online](#to-run-mods-online)
+3. [To install and run `mods` locally in Windows](#to-install-and-run-mods-locally-in-windows)
+4. [To install and run `mods` locally in Linux](#to-install-and-run-mods-locally-in-linux)
+   1. [Installing `mods`](#installing-mods)
+   2. [Running `mods` locally in your computer](#running-mods-locally-in-your-computer)
+5. [Talking to the machines](#talking-to-the-machines)
+   1. [Setting permissions](#setting-permissions)
+   2. [Starting the local servers](#starting-the-local-servers)
+      1. [Serial Server](#serial-server)
+      2. [Device Server](#device-server)
+      3. [Print Server](#print-server)
+6. [FAQ](#faq)
 
 ## What is `mods`?
 
@@ -46,12 +46,21 @@ Clone the `mods` repository:
 
 `git clone https://github.com/fabfoundation/mods.git`
 
-To talk to the machines you will also need to install `ws` and `serialport` npm packages inside `mods/js` folder:
+To talk to the serial machines you will also need to install `ws` and `serialport` npm packages inside `mods/js` folder:
 
 ```bash
 cd mods/js
 npm install ws
 npm install serialport
+```
+
+To talk with the installed printers you will need to install `cups` and `libcups` in your distribution. Also install `node-gyp`, `rebuild` and `printer` npm packages inside `mods/js` folder:
+
+```bash
+cd mods/js
+npm install node-gyp
+npm install rebuild
+npm install printer
 ```
 
 ### Running `mods` locally in your computer
@@ -102,7 +111,6 @@ node serialserver.js ::ffff:127.0.0.1 1234
 
 Check that `serialserver.js` is running with: `ps aux | grep node`
 
-
 > Do **not** start the server using the localhost address:  
 `node serialserver.js ::ffff:localhost 1234` :point_left: do not
 
@@ -118,6 +126,17 @@ node deviceserver.js ::ffff:127.0.0.1 1234
 > Do **not** start the server using the localhost address:  
 `node deviceserver.js ::ffff:localhost 1234` :point_left: do not
 
+#### Print Server
+
+An alternative way to talk to the Roland vinyl cutters and the Epilog laser is to set up them as RAW printers in CUPS. If you did set them up that way, start `printserver.js ` inside the `mods/js` directory.
+
+```bash
+cd mods/js
+node printserver.js ::ffff:127.0.0.1 1234
+```
+
+> Do **not** start the server using the localhost address:  
+`node printserver.js ::ffff:localhost 1234` :point_left: do not
 
 ## FAQ
 
