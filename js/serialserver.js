@@ -60,8 +60,12 @@ wss.on('connection',function(ws) {
             console.log('open '+device+' at '+baud+' flow '+flow)
             if (flow == 'none')
                port = new SerialPort(device,{baudRate:baud})
+            else if (flow == 'xonxoff')
+               port = new SerialPort(device,{baudRate:baud,xonxoff:true})
             else if (flow == 'rtscts')
                port = new SerialPort(device,{baudRate:baud,rtscts:true})
+            else if (flow == 'dsrdtr')
+               port = new SerialPort(device,{baudRate:baud,dsrdtr:true})
             }
          port.on('open',function() {
             ws.send('serial port opened')

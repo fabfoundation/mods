@@ -183,7 +183,16 @@ var interface = function(div){
       input.id = mod.div.id+'flow_none'
       div.appendChild(input)
       mod.flow_none = input
-   div.appendChild(document.createTextNode('none\u00A0\u00A0'))
+   div.appendChild(document.createTextNode('none\u00A0\u00A0\u00A0'))
+   div.appendChild(document.createElement('br'))   
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'flow'
+      input.id = mod.div.id+'flow_xonxoff'
+      div.appendChild(input)
+      input.disabled = true
+      mod.flow_xonxoff = input
+   div.appendChild(document.createTextNode('XONXOFF'))
    div.appendChild(document.createElement('br'))   
    var input = document.createElement('input')
       input.type = 'radio'
@@ -191,7 +200,7 @@ var interface = function(div){
       input.id = mod.div.id+'flow_rtscts'
       div.appendChild(input)
       mod.flow_rtscts = input
-   div.appendChild(document.createTextNode('RTSCTS'))
+   div.appendChild(document.createTextNode('RTSCTS\u00A0'))
    div.appendChild(document.createElement('br'))   
    var input = document.createElement('input')
       input.type = 'radio'
@@ -200,7 +209,7 @@ var interface = function(div){
       div.appendChild(input)
       input.disabled = true
       mod.flow_dsrdtr = input
-   div.appendChild(document.createTextNode('DSRDTR'))
+   div.appendChild(document.createTextNode('DSRDTR\u00A0'))
    div.appendChild(document.createElement('br'))   
    //
    // file button
@@ -277,6 +286,8 @@ function serial_open() {
       msg.baud = mod.baud.value
       if (mod.flow_none.checked)
          msg.flow = 'none'
+      else if (mod.flow_xonxoff.checked)
+         msg.flow = 'xonxoff'
       else if (mod.flow_rtscts.checked)
          msg.flow = 'rtscts'
       else if (mod.flow_dsrdtr.checked)

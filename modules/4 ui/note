@@ -26,9 +26,7 @@ var name = 'note'
 // initialization
 //
 var init = function() {
-   mod.text.value = `place your 
-notes here
-`
+   mod.text.value = 'place your notes here'
    }
 //
 // inputs
@@ -47,7 +45,7 @@ var interface = function(div){
    // text
    //
    var text = document.createElement('textarea')
-      text.style.backgroundColor='lightyellow';
+      text.style.backgroundColor='#D4E157';
       text.setAttribute('rows',mods.ui.rows)
       text.setAttribute('cols',mods.ui.cols)
       div.appendChild(text)
