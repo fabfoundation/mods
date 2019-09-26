@@ -127,11 +127,11 @@
       tx0+(ox1-ox0)+(ox0-ox1)/s  = tx1
       tx0+(ox1-ox0)*(1-1/s)  = tx1
       */
-      var el = document.elementFromPoint(evt.pageX, evt.pageY)
-      if ((el.tagName == "HTML") || (el.tagName == "BODY")) {
+      //var el = document.elementFromPoint(evt.pageX, evt.pageY) 
+      //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { 
          set_prompt('scroll to zoom')
-         //evt.preventDefault()
-         evt.stopPropagation()
+         //evt.preventDefault() // 
+         evt.stopPropagation() // prevents default scroll action 
          var t = mods_transform()
          if (evt.deltaY > 0)
          {
@@ -147,7 +147,7 @@
          var ty = t.ty + (evt.pageY - t.oy) * (1 - 1 / t.s)
          document.body.style.transform = `scale(${scale}) translate(${tx}px,${ty}px)`
          document.body.style.transformOrigin = `${evt.pageX}px ${evt.pageY}px`
-      }
+     // }
    })
    //
    // body mouse events
