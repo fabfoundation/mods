@@ -860,8 +860,10 @@
       }
    }
    function save_program() {
-      set_prompt('program name? ')
-      get_prompt(mods.ui.progname, function (filename) {
+      var filename = prompt('program name?', mods.ui.progname)
+      if (filename == null | filename == "") {
+      }
+      else {
          mods.ui.progname = filename
          var prog = { modules: {}, links: [] }
          var modules = document.getElementById('modules')
@@ -902,11 +904,13 @@
          document.body.appendChild(a)
          a.click()
          document.body.removeChild(a)
-      })
+      }
    }
    function save_page() {
-      set_prompt('page name? ')
-      get_prompt(mods.ui.progname + ".html", function (filename) {
+      var filename = prompt('page name?', mods.ui.progname + ".html")
+      if (filename == null | filename == "") {
+      }
+      else {
          mods.ui.progname = filename
          var prog = { modules: {}, links: [] }
          var modules = document.getElementById('modules')
@@ -976,7 +980,7 @@
          //
          req.open('GET', 'js/mods.js' + '?rnd=' + Math.random())
          req.send()
-      })
+      }
    }
    //
    // add program load to window
@@ -1554,30 +1558,6 @@
    function set_prompt(txt) {
       var span = document.getElementById('prompt')
       span.childNodes[0].innerHTML = ' ' + txt
-   }
-   function get_prompt(txt, fn) {
-      var div = document.getElementById('prompt')
-      if (div.childNodes.length > 2)
-         //
-         // already getting a prompt
-         //
-         return
-      var text = document.createElement('input')
-      text.type = 'text'
-      text.size = 20
-      text.value = txt
-      text.addEventListener('keydown', function (evt) {
-         if (evt.key == 'Enter') {
-            var div = document.getElementById('prompt')
-            div.removeChild(div.childNodes[1])
-            div.removeChild(div.childNodes[1])
-            set_prompt('')
-            fn(text.value)
-         }
-      })
-      div.appendChild(text)
-      div.appendChild(document.createTextNode(' (enter)'))
-      text.focus()
    }
    function nothing(evt) {
       evt.preventDefault()
