@@ -7,7 +7,7 @@ Just like `mods`, but cooler :sunglasses:
 1. [What is `mods`?](#what-is-mods)
 2. [To run `mods` online](#to-run-mods-online)
 3. [To install and run `mods` locally in Windows](#to-install-and-run-mods-locally-in-windows)
-4. [To install and run `mods` locally in Linux](#to-install-and-run-mods-locally-in-linux)
+4. [To install and run `mods` locally in Linux or Mac OS X](#to-install-and-run-mods-locally-in-linux-or-mac-os-x)
    1. [Installing `mods`](#installing-mods)
    2. [Running `mods` locally in your computer](#running-mods-locally-in-your-computer)
 5. [Talking to the machines](#talking-to-the-machines)
@@ -32,7 +32,7 @@ Just go to https://fabfoundation.github.io/mods/
 
 Kindly contact support@microsoft.com
 
-## To install and run `mods` locally in Linux
+## To install and run `mods` locally in Linux or Mac OS X
 
 ### Installing `mods`
 
@@ -78,7 +78,7 @@ Open a browser tab and go to `127.0.0.1:8080` which is the same as `http://local
 
 ### Setting permissions
 
-To talk to the machines you need permissions. Machines usually identify themselves as printers (`/dev/usb/lp0`) or serial devices (`/dev/ttyUSB0`). Those files (in Linux everything is a file) belong to the `root` user. But they also grant permissions if you belong to specific groups. In Ubuntu Linux, add yourself to the groups `lp`, and `dialout`. This will give you access to printers, and serial devices. To be able to add printers in CUPS, you also need to be in the `lpadmin` group.
+To talk to the machines you need permissions. Machines usually identify themselves as printers (`/dev/usb/lp0`) or serial devices (`/dev/ttyUSB0` in Linux or `/dev/tty.usbserial` in Mac OS X). Those files (in Linux/Unix based OS everything is a file) belong to the `root` user. But they also grant permissions if you belong to specific groups. In Ubuntu Linux, add yourself to the groups `lp`, and `dialout`. This will give you access to printers, and serial devices. To be able to add printers in CUPS, you also need to be in the `lpadmin` group.
 
 ```bash
 sudo adduser $USER lp
