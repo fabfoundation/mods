@@ -100,7 +100,12 @@ wss.on('connection', function (ws) {
                      else {
                         console.log('done')
                         ws.send('done')
-                        fs.close(file, (err) => { if (err) throw err; })
+                        fs.close(file, funtion(err) 
+				{ if (err) {
+					console.log('error: '+err)
+					ws.send('error: '+err)
+				}
+			})
                      }
                   }
                })
