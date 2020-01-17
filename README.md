@@ -20,7 +20,7 @@ Just like `mods`, but cooler :sunglasses:
 
 ## What is `mods`?
 
-`mods` community edition is a fork of [CBA mods research project](http://mods.mit.cba.edu). `mods` is a modular cross platform tool for fablabs. It is based on independent but interrelated modules. `mods` could potentially be used for CAD, CAM, machine control, automation, building UI, read input devices, react to to physical models, and much more. The possibilies are endless.
+`mods` community edition is a fork of [CBA mods research project](https://gitlab.cba.mit.edu/pub/mods). `mods` is a modular cross platform tool for fablabs. It is based on independent but interrelated modules. `mods` could potentially be used for CAD, CAM, machine control, automation, building UI, read input devices, react to to physical models, and much more. The possibilies are endless.
 
 The goal of the community edition is to provide documentation, support and help the community engage in the project and foster the development/exchange of new modules.
 
