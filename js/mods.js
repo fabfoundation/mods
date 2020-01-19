@@ -1330,6 +1330,8 @@
             var end = lines[line].indexOf(".value")
             var key = lines[line].slice(start, end)
             var value = mods.mod[id][key]['value']
+            if (value.indexOf('\n') != -1)
+            value = value.replace(/\n/g,"\\n")           
             lines[line] = "   mod." + key + ".value = '" + value + "'"
          }
          else if (lines[line].indexOf(".checked =") != -1) {
