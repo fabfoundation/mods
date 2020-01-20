@@ -15,7 +15,7 @@
 #
 # imports
 #
-import sys,serial,asyncio,websockets,json
+import sys,serial,asyncio,websockets,json,time
 #
 # command line
 #
@@ -85,7 +85,7 @@ async def receive(websocket,path):
             elif (flow == "rtscts"):
                while (s.getCTS() != True):
                   time.sleep(0.001)
-            s.write(c)
+            s.write(c.encode())
             s.flush()
             n += 1
             percent = (100.0*n)/len(data)
@@ -105,7 +105,7 @@ async def receive(websocket,path):
             elif (flow == "rtscts"):
                while (s.getCTS() != True):
                   time.sleep(0.001)
-            s.write(c)
+            s.write(c.encode())
             s.flush()
             n += 1
             percent = (100.0*n)/len(data)
