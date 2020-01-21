@@ -69,7 +69,7 @@ Use the command line to navigate to the root of the `mods` folder (because the p
 
 ```bash
 cd mods
-hs
+http-server
 ```
 
 Open a browser tab and go to `127.0.0.1:8080` which is the same as `http://localhost:8080` to view the server that you just started. You should see the `mods` home screen.
