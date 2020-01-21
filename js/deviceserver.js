@@ -60,7 +60,7 @@ wss.on('connection',function(ws) {
          var count = 0
          var file
          var job = JSON.parse(msg)
-         console.log('writing '+job.name+' (length '+job.contents.length+') to job.device)
+	 console.log('writing '+job.name+' (length '+job.contents.length+') to '+job.device)
          cancel = false
          fs.open(job.device,'w',function(err,fd) {
             if (err) {
