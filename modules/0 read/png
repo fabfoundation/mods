@@ -98,21 +98,6 @@ var interface = function(div){
          file.click()
          })
       div.appendChild(btn)
-   //
-   // URL select button
-   //
-   var btn = document.createElement('button')
-      btn.style.padding = mods.ui.padding
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('load png URL'))
-      btn.disabled=true // temporary disable till function is added
-      btn.addEventListener('click',function(){
-         var pngurl = prompt("png file URL?","http://")
-         var file = document.getElementById(div.id+'file_input')
-         file.value = null
-         file.click()
-         })
-      div.appendChild(btn)
    div.appendChild(document.createElement('br'))
    //
    // view button
@@ -160,6 +145,18 @@ var interface = function(div){
       flip_btn.style.padding = mods.ui.padding
       flip_btn.style.margin = 1
       flip_btn.appendChild(document.createTextNode('flip'))
+      flip_btn.addEventListener('click',function(){
+         flip_image()
+         })
+      div.appendChild(flip_btn)
+   div.appendChild(document.createTextNode(' '))
+   //
+   // rotate button
+   //
+   var flip_btn = document.createElement('button')
+      flip_btn.style.padding = mods.ui.padding
+      flip_btn.style.margin = 1
+      flip_btn.appendChild(document.createTextNode('rotate 90CW'))
       flip_btn.addEventListener('click',function(){
          flip_image()
          })
