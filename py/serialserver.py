@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 #
 # serialserver.py
@@ -51,7 +50,6 @@ async def receive(websocket,path):
          device = vars['device']
          speed = int(vars['baud'])
          flow = vars['flow']
-         print(f"open {device} at {speed} with {flow}")
          try:
             if (flow == "xonxoff"):
                s = serial.Serial(
@@ -67,25 +65,26 @@ async def receive(websocket,path):
                   device,baudrate=speed,timeout=0)
             s.flushInput()
             s.flushOutput()
+            await websocket.send(f"open {device} at {speed} with {flow}")
          except serial.SerialException as err:
-            print(err)
             await websocket.send(str(err))
+      elif (vars['type'] == 'close'):
+         await websocket.send(f"close {device}")
+         s.close()
       elif (vars['type'] == 'command'):
          #
          # send command
          #
-         print('send command')
          data = vars['contents']
          n = 0
          for c in data:
-            print(c)
             if (flow == "dsrdtr"):
                while (s.getDSR() != True):
                   time.sleep(0.001)
             elif (flow == "rtscts"):
                while (s.getCTS() != True):
                   time.sleep(0.001)
-            s.write(c.encode())
+            s.write(c.encode('ascii'))
             s.flush()
             n += 1
             percent = (100.0*n)/len(data)
@@ -94,22 +93,21 @@ async def receive(websocket,path):
          #
          # send file
          #
-         print('send file')
          data = vars['contents']
          n = 0
          for c in data:
-            print(c)
             if (flow == "dsrdtr"):
                while (s.getDSR() != True):
                   time.sleep(0.001)
             elif (flow == "rtscts"):
                while (s.getCTS() != True):
                   time.sleep(0.001)
-            s.write(c.encode())
+            s.write(c.encode('ascii'))
             s.flush()
             n += 1
             percent = (100.0*n)/len(data)
-            await websocket.send(str(percent))
+            await websocket.send(str(round(percent))+'%')
+         await websocket.send("done")
 #
 # start server
 #
