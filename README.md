@@ -26,7 +26,7 @@ The goal of the community edition is to provide documentation, support and help 
 
 ## To run `mods` online
 
-Just go to https://fabfoundation.github.io/mods/
+Just go to https://fabfoundation.github.io/mods/ and you will be able to create toolpaths and save files. To actually make a machine move you still will need to install mods locally and run the local servers. See [Talking to the machines](#talking-to-the-machines) section.
 
 ## To install and run `mods` locally in Windows
 
@@ -36,7 +36,7 @@ Kindly contact support@microsoft.com
 
 ### Installing `mods`
 
-You need to first install [node.js](https://docs.npmjs.com/getting-started/installing-node).
+You need to first install [node.js](https://docs.npmjs.com/getting-started/installing-node), which should include `npm` package manager.
 
 Install the [http-server](https://www.npmjs.com/package/http-server) npm package. Including `-g` installs the package globally, allowing you to use it as a command line tool:
 
@@ -46,7 +46,7 @@ Clone the `mods` repository:
 
 `git clone https://github.com/fabfoundation/mods.git`
 
-To talk to the serial machines you will also need to install `ws` and `serialport` npm packages inside `mods/js` folder:
+To talk to serial machines you will also need to install `ws` and `serialport` npm packages inside `mods/js` folder:
 
 ```bash
 cd mods/js
@@ -61,6 +61,13 @@ cd mods/js
 npm install node-gyp
 npm install rebuild
 npm install printer
+```
+
+Only in the case that you have to controll a Roland MDX-20 with the original USB to serial cable you will need to install `python3` and `pip` packages from your distribution and also the following python libraries using pip:
+
+```bash
+sudo pip3 install serial
+sudo pip3 install websockets
 ```
 
 ### Running `mods` locally in your computer
@@ -102,7 +109,7 @@ Depending on which machine you need to use inside `mods`, you can start local se
 
 #### Serial Server
 
-Roland Modela MDX-20 (and some other machines like the Trotec laser cutter) is a serial device. When you plug it in the computer, a file is created `/dev/ttyUSBx` where `x` is a number e.g. `/dev/ttyUSB0`.In some other cases it will appear as `/dev/ttyACMx`. If you use the original DB25 to USB cable, for controlling the Roland MDX-20 you need to start `serialserver.py` inside the `mods/py` directory:
+Roland Modela MDX-20 (and some other machines like the Trotec laser cutter) is a serial device. When you plug it in the computer, a file is created `/dev/ttyUSBx` where `x` is a number e.g. `/dev/ttyUSB0`. In some other cases it will appear as `/dev/ttyACMx`. If you use the original DB25 to USB cable, for controlling the Roland MDX-20 you need to start `serialserver.py` inside the `mods/py` directory:
 
 ```bash
 cd mods/py
