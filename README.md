@@ -102,16 +102,21 @@ Depending on which machine you need to use inside `mods`, you can start local se
 
 #### Serial Server
 
-Roland Modela MDX-20 is identified as a serial device. When you plug it, a file is created `/dev/ttyUSBx` where `x` is a number `/dev/ttyUSB0`. So for using the Roland MDX-20 you need to start `serialserver.js` inside the `mods/js` directory.
+Roland Modela MDX-20 (and some other machines like the Trotec laser cutter) is a serial device. When you plug it in the computer, a file is created `/dev/ttyUSBx` where `x` is a number e.g. `/dev/ttyUSB0`.In some other cases it will appear as `/dev/ttyACMx`. If you use the original DB25 to USB cable, for controlling the Roland MDX-20 you need to start `serialserver.py` inside the `mods/py` directory:
+
+```bash
+cd mods/py
+python3 serialserver.py 127.0.0.1 1234
+```
+
+On the other hand, if you are talking to a Trotec laser, or the Roland MDX-20 with a Startech or similar USB to serial cable, fo you need to start `serialserver.js` inside the `mods/js` directory.
 
 ```bash
 cd mods/js
 node serialserver.js ::ffff:127.0.0.1 1234
 ```
 
-Check that `serialserver.js` is running with: `ps aux | grep node`
-
-> Do **not** start the server using the localhost address:  
+> Do **not** start the server using `localhost` instead of `127.0.0.1` address:  
 `node serialserver.js ::ffff:localhost 1234` :point_left: do not
 
 #### Device Server
@@ -140,4 +145,4 @@ node printserver.js ::ffff:127.0.0.1 1234
 
 ## FAQ
 
-1. **Why do we use ::ffff: before 127.0.0.1?** Due to a difference between IPV4 and IPV6 addresses, web socket might give a connection refused error if you use 127.0.0.1 instead of ::ffff:127.0.0.1
+1. **Why do we add the ::ffff:prefix before 127.0.0.1?** Due to a difference between IPV4 and IPV6 addresses, web socket might give a connection refused error if you use 127.0.0.1 instead of ::ffff:127.0.0.1
