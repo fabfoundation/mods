@@ -72,7 +72,7 @@ sudo pip3 install websockets
 
 ### Running `mods` locally in your computer
 
-Use the command line to navigate to the root of the `mods` folder (because the page we want to serve `index.html` is there), and start a web server:
+You might want to run `mods` locally if you are offline. If you are opening mods from the [github](https://fabfoundation.github.io/mods/) page you can skip this step. Use the command line to navigate to the root of the `mods` folder (because the page we want to serve `index.html` is there), and start a web server:
 
 ```bash
 cd mods
