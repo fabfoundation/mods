@@ -17,7 +17,7 @@ var fs = require('fs')
 //
 // directories to not index
 //
-var ignore = ['./js/node_modules','./js/Windows/node_modules','./.git']
+var ignore = ['./js/node_modules','./js/Windows/node_modules','./.git','.js/build','.js/package-lock.json']
 //
 // set up page
 //
