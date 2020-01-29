@@ -1372,7 +1372,7 @@
       file.addEventListener('change', function () {
          edit_module_read_handler()
       })
-      win.document.title = "Module Editor"
+      win.document.title = name+" editor"
       win.document.body.appendChild(file)
       function edit_module_read_handler() {
          var file = win.document.getElementById('edit_module_file')
