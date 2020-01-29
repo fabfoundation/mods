@@ -1479,7 +1479,7 @@
       var text = document.createElement('textarea')
       text.setAttribute('id', 'edit_module_text')
       text.style.width = '100%'
-      text.style.height = '100%'
+      text.style.height = '95%'
       text.value = def
       win.document.body.appendChild(text)
       function reload_module(idnumber) {
