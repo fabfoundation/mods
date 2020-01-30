@@ -1358,7 +1358,7 @@
       var left = mod.dataset.left
       var name = mod.dataset.name
       var filename = mod.dataset.filename
-      var fontsize = 100
+      var fontsize = 130
       var win = window.open('')
       var file = document.createElement('input')
       file.setAttribute('type', 'file')
@@ -1478,9 +1478,13 @@
       win.document.body.appendChild(document.createElement('br'))
       var text = document.createElement('textarea')
       text.setAttribute('id', 'edit_module_text')
+      text.setAttribute('spellcheck', 'false')
       text.style.width = '100%'
       text.style.height = '95%'
       text.style.resize = ' none'
+      text.style.fontSize = fontsize + '%'
+      text.style.backgroundColor= '#505050'
+      text.style.color = '#FFFFFF'
       text.value = def
       win.document.body.appendChild(text)
       function reload_module(idnumber) {
