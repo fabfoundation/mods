@@ -128,7 +128,7 @@
       tx0+(ox1-ox0)*(1-1/s)  = tx1
       */
       //var el = document.elementFromPoint(evt.pageX, evt.pageY) 
-      //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { 
+      //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { // to scroll everywhere 
          set_prompt('scroll to zoom')
          //evt.preventDefault() // 
          evt.stopPropagation() // prevents default scroll action 
@@ -303,6 +303,8 @@
    // context menu
    //
    window.addEventListener('contextmenu', function (evt) {
+      var el = document.elementFromPoint(evt.pageX,evt.pageY)    
+      if ((el.tagName == "HTML") || (el.tagName == "BODY")) {
       evt.stopPropagation()
       evt.preventDefault()
       if (mods.ui.menu != null) {
@@ -622,6 +624,7 @@
             var win = window.open('https://github.com/fabfoundation/mods')
          })
          document.body.appendChild(div)
+      }
       }
    })
    //
