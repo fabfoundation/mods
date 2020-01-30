@@ -1483,8 +1483,8 @@
       text.style.height = '95%'
       text.style.resize = ' none'
       text.style.fontSize = fontsize + '%'
-      text.style.backgroundColor= '#505050'
-      text.style.color = '#FFFFFF'
+      text.style.backgroundColor= '#3C3C3C'
+      text.style.color = '#78DB78'
       text.value = def
       win.document.body.appendChild(text)
       function reload_module(idnumber) {
