@@ -25,7 +25,7 @@ var name = 'label'
 // initialization
 //
 var init = function() {
-   mod.size.value = 300
+   mod.size.value = '300'
    mod.text.value = 'hello world'
    update_text()
    }
@@ -65,7 +65,7 @@ var interface = function(div){
    div.appendChild(document.createTextNode('text: '))
    input = document.createElement('input')
       input.type = 'text'
-      input.size = 6
+      input.size = 18
       input.addEventListener('input',function(evt){
          update_text()
          })
