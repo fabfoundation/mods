@@ -48,6 +48,12 @@ var interface = function(div){
       text.style.backgroundColor='#D4E157';
       text.setAttribute('rows',mods.ui.rows)
       text.setAttribute('cols',mods.ui.cols)
+      //
+      // watch textarea for resize
+      //
+      new MutationObserver(update_module).observe(text, {
+      attributes: true, attributeFilter: [ "style" ]
+      })
       div.appendChild(text)
       mod.text = text
    div.appendChild(document.createElement('br'))
@@ -55,7 +61,12 @@ var interface = function(div){
 //
 // local functions
 //
-;
+//
+// update module
+//
+function update_module() {
+   mods.fit(mod.div)
+   }
 //
 // return values
 //
