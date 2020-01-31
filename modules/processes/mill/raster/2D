@@ -2,7 +2,8 @@
 // mill raster 2D
 //
 // Neil Gershenfeld
-// (c) Massachusetts Institute of Technology 2018
+// (c) Massachusetts Institute of Technology 2016
+// Modified by Francisco Sanchez Arroyo 31-Jan-2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
@@ -27,11 +28,11 @@ var name = 'mill raster 2D'
 var init = function() {
    mod.dia_in.value = 0.0156
    mod.dia_mm.value = 25.4*parseFloat(mod.dia_in.value)
-   mod.cut_in.value = 0.001
+   mod.cut_in.value = 0.004
    mod.cut_mm.value = 25.4*parseFloat(mod.cut_in.value)
-   mod.max_in.value = 0.001
+   mod.max_in.value = 0.004
    mod.max_mm.value = 25.4*parseFloat(mod.max_in.value)
-   mod.number.value = 1
+   mod.number.value = 4
    mod.stepover.value = 0.5
    mod.merge.value = 1
    mod.sort.checked = true
@@ -40,7 +41,7 @@ var init = function() {
 // inputs
 //
 var inputs = {
-   imageInfo:{type:'',
+   imageInfo:{type:'object',
       event:function(evt){
          mod.name = evt.detail.name
          mod.dpi = evt.detail.dpi
@@ -50,7 +51,7 @@ var inputs = {
          ctx.canvas.width = mod.width
          ctx.canvas.height = mod.height
          }},
-   path:{type:'',
+   path:{type:'array',
       event:function(evt){
          if (mod.label.nodeValue == 'calculating') {
             draw_path(evt.detail)
@@ -73,7 +74,7 @@ var inputs = {
             }
          }
       },
-   settings:{type:'',
+   settings:{type:'object',
       event:function(evt){
          set_values(evt.detail)
          }
@@ -83,18 +84,18 @@ var inputs = {
 // outputs
 //
 var outputs = {
-   diameter:{type:'',
+   diameter:{type:'number',
       event:function(){
          mods.output(mod,'diameter',Math.ceil(mod.dpi*mod.dia_in.value))
          }
       },
-   offset:{type:'',
+   offset:{type:'number',
       event:function(){
          var pixels = mod.offset*parseFloat(mod.dia_in.value)*mod.dpi
          mods.output(mod,'offset',pixels)
          }
       },
-   toolpath:{type:'',
+   toolpath:{type:'object',
       event:function(){
          cmd = {}
          cmd.path = mod.path
@@ -361,6 +362,8 @@ function set_values(settings) {
             break
          case 'offset number':
             mod.number.value = settings[s]
+         case 'overlap':
+            mod.stepover.value = settings[s]
             break
          }
       }
@@ -449,7 +452,8 @@ function add_depth() {
    var newpath = []
    for (var seg = 0; seg < mod.path.length; ++seg) {
       var depth = cut
-      if (mod.path[seg][0][0] == mod.path[seg][mod.path[seg].length-1][0]) {
+      if ((mod.path[seg][0][0] == mod.path[seg][mod.path[seg].length-1][0])
+         && (mod.path[seg][0][0] == mod.path[seg][mod.path[seg].length-1][0])) {
          var newseg = []
          while (depth <= max) {
             var idepth = -Math.round(mod.dpi*depth)
@@ -584,7 +588,6 @@ function draw_connections() {
 // return values
 //
 return ({
-   mod:mod,
    name:name,
    init:init,
    inputs:inputs,

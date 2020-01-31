@@ -3,6 +3,7 @@
 //
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2018
+// Modified by Francisco Sanchez Arroyo 31-Jan-2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
@@ -20,7 +21,7 @@ var mod = {}
 //
 // name
 //
-var name = 'set PCB defaults'
+var name = 'set Roland Mill defaults'
 //
 // initialization
 //
@@ -34,18 +35,63 @@ var init = function() {
    add_variable('max depth (in)','var02')
    mod.var02.value = '0.004'
    add_variable('offset number','var03')
-   mod.var03.value = '2'
+   mod.var03.value = '4'
+   add_variable('offset stepover','var04')
+   mod.var04.value = '0.5'
+   add_variable('speed (mm/s)','var05')
+   mod.var05.value = '4'
    //
    add_output('mill outline (1/32)')
    add_variable('tool diameter (in)','var10')
-   mod.var10.value = '0.0312'
+   mod.var10.value = '0.01'
    add_variable('cut depth (in)','var11')
-   mod.var11.value = '0.024'
+   mod.var11.value = '0.004'
    add_variable('max depth (in)','var12')
    mod.var12.value = '0.072'
    add_variable('offset number','var13')
    mod.var13.value = '1'
+   add_variable('speed (mm/s)','var15')
+   mod.var15.value = '4'
    //
+   add_output('mill traces (10 mil)')
+   add_variable('tool diameter (in)','var20')
+   mod.var20.value = '0.01'
+   add_variable('cut depth (in)','var21')
+   mod.var21.value = '0.004'
+   add_variable('max depth (in)','var22')
+   mod.var22.value = '0.004'
+   add_variable('offset number','var23')
+   mod.var23.value = '4'
+   add_variable('offset stepover','var24')
+   mod.var24.value = '0.5'
+   add_variable('speed (mm/s)','var25')
+   mod.var25.value = '2'
+   //
+   add_output('wax rough cut (1/8)')
+   add_variable('tool diameter (in)','var30')
+   mod.var30.value = '0.125'
+   add_variable('cut depth (in)','var31')
+   mod.var31.value = '0.04'
+   add_variable('offset number','var33')
+   mod.var33.value = '0'
+   add_variable('offset stepover','var34')
+   mod.var34.value = '0.5'
+   add_variable('speed (mm/s)','var35')
+   mod.var35.value = '20'
+   //
+   add_output('wax finish cut (1/8)')
+   add_variable('tool diameter (in)','var40')
+   mod.var40.value = '0.125'
+   add_variable('cut depth (in)','var41')
+   mod.var41.value = '0.04'
+   add_variable('offset number','var43')
+   mod.var43.value = '1'
+   add_variable('offset stepover','var44')
+   mod.var44.value = '0.9'
+   add_variable('speed (mm/s)','var45')
+   mod.var45.value = '20'
+   //
+
    }
 //
 // inputs
