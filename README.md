@@ -60,7 +60,7 @@ To talk with the installed printers you will need to install `cups` and `libcups
 cd mods/js
 npm install node-gyp
 npm install rebuild
-npm install printer
+npm install @things-factory/node-printer
 ```
 
 Only in the case that you have to controll a Roland MDX-20 with the original USB to serial cable you will need to install `python3` and `pip` packages from your distribution and also the following python libraries using pip:

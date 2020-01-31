@@ -3,7 +3,7 @@
 //    WebSocket print server
 //
 // dependencies:
-//    npm install printer ws
+//    npm i @things-factory/node-printer ws
 //    Windows
 //       npm install --global windows-build-tools
 //    Linux
@@ -12,6 +12,7 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2017
+// Modified by Francisco Sanchez Arroyo 31-Jan-2020
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -34,7 +35,7 @@ console.log("listening for connection from client address "+client_address+" on 
 //
 // requires
 //
-var printer = require("printer")
+var printer = require("@things-factory/node-printer")
 var WebSocketServer = require('ws').Server
 //
 // start WebSocket server
