@@ -67,6 +67,7 @@ Only in the case that you have to controll a Roland MDX-20 with the original USB
 
 ```bash
 sudo pip3 install serial
+sudo pip3 install pyserial
 sudo pip3 install websockets
 ```
 
