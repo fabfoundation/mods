@@ -12,6 +12,7 @@ module_menu('         Epilog','modules/1%20path/1.1%20machines/laser%20
 module_menu('         Trotec','modules/1%20path/1.1%20machines/laser%20cutter/Trotec')
 module_label('      precision mill')
 module_menu('         Roland MDX-20','modules/1%20path/1.1%20machines/precision%20mill/Roland%20MDX-20')
+module_menu('         Roland MDX-20 Move Beta','modules/1%20path/1.1%20machines/precision%20mill/Roland%20MDX-20%20Move%20Beta')
 module_menu('         Roland SRM-20','modules/1%20path/1.1%20machines/precision%20mill/Roland%20SRM-20')
 module_label('      vinyl cutter')
 module_menu('         Roland GX-GS-24','modules/1%20path/1.1%20machines/vinyl%20cutter/Roland%20GX-GS-24')
