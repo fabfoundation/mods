@@ -4,7 +4,7 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
-// Modified by Francisco Sanchez 2019
+// Modified by Francisco Sanchez 01-Feb-2020
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -42,7 +42,24 @@ wss.on('connection',function(ws) {
       }
    else {
       console.log("connection accepted from "+ws._socket.remoteAddress)
-      }
+    // list serial ports
+    function getSerialPortList() {
+	var portList = [] // init the list of serial devices
+        SerialPort.list().then(ports => {
+	    ports.forEach(function(port) {		    
+                if (port.pnpId !== undefined && port.manufacturer !== undefined) { // ignore ttySx
+                portList.push(port.path) // add the path to the list
+	        }
+            })
+	    // prepare the object
+	    var portListObj = {}
+	    portListObj['portList'] = portList
+	    ws.send(JSON.stringify(portListObj)) // send the object to mods
+	    ws.send('socket open')
+         })
+       }  // close getSerialDevicesList()
+       getSerialPortList()
+   } // close else
    //
    // handle messages
    //

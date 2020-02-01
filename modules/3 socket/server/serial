@@ -27,9 +27,9 @@ var name = 'WebSocket serial'
 //
 var init = function() {
    mod.address.value = '127.0.0.1'
-   mod.port.value = 1234
-   mod.device.value = 'COM8'
-   mod.baud.value = 9600
+   mod.port.value = '1234'
+   mod.device.value = 'Serialport not found'
+   mod.baud.value = '9600'
    mod.flow_none.checked = true
    mod.socket = null
    socket_open()
@@ -153,13 +153,16 @@ var interface = function(div){
    //
    // device
    //
-   div.appendChild(document.createTextNode('device:'))
-   div.appendChild(document.createElement('br'))   
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 10
-      div.appendChild(input)
-      mod.device = input
+
+   var select = document.createElement('select')
+       select.setAttribute('style', 'width:150px');
+       var el = document.createElement('option')
+          el.textContent = 'Serialport not found'
+          el.value = 'Serialport not found'
+          select.appendChild(el)
+       div.appendChild(select)
+       mod.device = select
+
    div.appendChild(document.createElement('br'))   
    //
    // baud rate
@@ -201,15 +204,6 @@ var interface = function(div){
       div.appendChild(input)
       mod.flow_rtscts = input
    div.appendChild(document.createTextNode('RTSCTS\u00A0'))
-   div.appendChild(document.createElement('br'))   
-   var input = document.createElement('input')
-      input.type = 'radio'
-      input.name = mod.div.id+'flow'
-      input.id = mod.div.id+'flow_dsrdtr'
-      div.appendChild(input)
-      input.disabled = true
-      mod.flow_dsrdtr = input
-   div.appendChild(document.createTextNode('DSRDTR\u00A0'))
    div.appendChild(document.createElement('br'))   
    //
    // file button
@@ -259,6 +253,34 @@ function socket_open() {
          mod.label.nodeValue = 'waiting for file'
          mod.labelspan.style.fontWeight = 'normal'
          }
+
+       else if (event.data[0] === '{'){  // If receiving an object
+         console.log('received object')
+         var portObject = JSON.parse(event.data) // get the object
+         var portList = portObject['portList'] // extract the list
+         if (portList) {
+            while (mod.device.hasChildNodes()) {
+               mod.device.removeChild(mod.device.lastChild); //remove all previous options
+               }
+
+         for(var i = 0; i < portList.length; i++){
+            var port = portList[i];
+            var el = document.createElement('option')
+            el.textContent = port
+            el.value = port
+            mod.device.appendChild(el)
+            }
+
+          if (portList.length == 0) {
+            var el = document.createElement('option')
+            el.textContent = 'Serialport not found'
+            el.value = 'Serialport not found'
+            mod.device.appendChild(el)               
+          }
+
+            }
+         }
+
       }
    }
 function socket_close() {
@@ -290,8 +312,6 @@ function serial_open() {
          msg.flow = 'xonxoff'
       else if (mod.flow_rtscts.checked)
          msg.flow = 'rtscts'
-      else if (mod.flow_dsrdtr.checked)
-         msg.flow = 'dsrdtr'
       mod.socket.send(JSON.stringify(msg))
       }
    }
