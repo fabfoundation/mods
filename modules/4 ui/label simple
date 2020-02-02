@@ -81,7 +81,6 @@ function update_text() {
    mod.label.nodeValue = mod.text.value
    mod.span.style.fontSize = mod.size.value+'%'
    mods.fit(mod.div)
-   outputs.text.event()
    }
 //
 // return values
