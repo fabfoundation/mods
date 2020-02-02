@@ -16,7 +16,9 @@
 //
 // module globals
 //
-var mod = {
+var mod = {}
+
+var modParam = {
   'parameters':{
       'stock_width':50.,
       'stock_height':24.,
@@ -30,9 +32,10 @@ var name = 'nest SVG Array'
 // initialization
 //
 var init = function() {
-   Object.keys(mod.parameters).forEach( function(k){
-      mod[k].value = mod.parameters[k]; //set default values
-   });
+    mod.stock_width.value = modParam.parameters.stock_width;
+    mod.stock_height.value = modParam.parameters.stock_height;
+    mod.padding.value = modParam.parameters.padding;
+
    }
 //
 // inputs
@@ -75,7 +78,7 @@ var interface = function(div){
    mod.bigview = document.createElementNS("http://www.w3.org/2000/svg", "svg"); 
 
    //add parameter inputs
-   Object.keys(mod.parameters).forEach(function(p){
+   Object.keys(modParam.parameters).forEach(function (p) {
     var textnode = document.createElement('span');
     textnode.innerHTML = p+': ';
     textnode.style="display: inline-block; width: 80px; font-size: 12px;";
@@ -108,7 +111,7 @@ var interface = function(div){
       //max text
       input_max.type='text';
       input_max.size=2;
-      input_max.value = 2*mod.parameters[p]; //set initial maximum to twice default value
+      input_max.value = 2 * modParam.parameters[p]; //set initial maximum to twice default value
       input_max.addEventListener('blur',function(){
          input_range.value = 100 * input_text.value / input_max.value;
          input_text.value = Math.min( input_text.value, input_max.value );  
@@ -156,6 +159,7 @@ var interface = function(div){
 // local functions
 
 function nest(sw_json){
+   if (!sw_json) return
    //sw_json is text json exported from soliworks of the form [{partTitle:”Part-1”, thickness:20, count:2, svgArray:[svgf1, svgf2, …],{partTitle:”Part-2”, thickness:20, count:3, svgArray:[svgf3, svgf4, …]
    //stocksize is an array [width,height] of stock dimensions
    //we scale so the stock size takes up the %75 of screen
