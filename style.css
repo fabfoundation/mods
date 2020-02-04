@@ -1,3 +1,12 @@
+button {
+    font-family : inherit;
+    font-size: 1em;
+}
+input {
+    font-family : inherit;
+    font-size: 1em;
+}
+
 .scroll-text {
  height: 50px;	
  overflow: hidden;
