@@ -166,14 +166,14 @@
          //
          mods.ui.mousedown = evt.button
          if (mods.ui.mousedown == 0) {
-            set_prompt('left-drag to pan, right-drag to select, Ctrl+Alt+d to toggle dark mode')
+            set_prompt('left-drag to pan, middle-drag to select, Ctrl+Alt+d to toggle dark mode')
             if (mods.ui.menu != null) {
                document.body.removeChild(mods.ui.menu)
                mods.ui.menu = null
             }
          }
          else if (mods.ui.mousedown == 2) {
-            set_prompt('menu; left-drag to pan, right-drag to select')
+            set_prompt('menu; left-drag to pan, middle-drag to select')
          }
          //
          // remember position
@@ -201,9 +201,9 @@
             ytrans = mods.ui.ytrans + (evt.pageY - mods.ui.ystart) / t.s
             document.body.style.transform = `scale(${t.s}) translate(${xtrans}px,${ytrans}px)`
          }
-         else if (mods.ui.mousedown == 2) {
+         else if (mods.ui.mousedown == 1) {
             //
-            // select on right drag
+            // select on middle drag
             //
             var rect = document.getElementById('svgrect')
             if (rect == undefined) {
@@ -214,7 +214,7 @@
                   document.body.removeChild(mods.ui.menu)
                   mods.ui.menu = null
                }
-               set_prompt('right-drag to select')
+               set_prompt('middle-drag to select')
                var t = mods_transform()
                var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
                rect.setAttribute('id', 'svgrect')
