@@ -27,18 +27,14 @@ var name = 'Othermill milling machine'
 // initialization
 //
 var init = function() {
-   mod.units = 40.0
-   mod.speed.value = 4
-   mod.plunge.value = 2 //added by Fran
-   mod.spindle_speed.value = 16000 //added by Fran
-   mod.tool.value = 1 // added by Fran
-   mod.ox.value = 10
-   mod.oy.value = 10
-   mod.oz.value = 0
-   mod.jz.value = 2
-   mod.hx.value = 0
-   mod.hy.value = 152.4
-   mod.hz.value = 60.5
+   mod.speed.value = 4                   // mm/s
+   mod.plunge.value = 2                  // mm/s
+   mod.spindle_speed.value = 16400       // rpm
+   mod.tool = 1                          // tool tumber
+   mod.ox.value = 10                     // x offset mm
+   mod.oy.value = 10                     // y offset mm
+   mod.jz.value = 2                      // jog height mm
+   mod.tz.value = 0.0                    // zero plate thickness in mm
    }
 //
 // inputs
@@ -70,7 +66,7 @@ var interface = function(div){
    //
    // speed
    //
-   div.appendChild(document.createTextNode('cut speed: '))
+   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0cut speed: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
@@ -90,20 +86,9 @@ var interface = function(div){
    div.appendChild(document.createTextNode(' (mm/s)'))
    div.appendChild(document.createElement('br'))
    //
-   // jog speed
-   //
-   div.appendChild(document.createTextNode('jog speed: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 6
-      div.appendChild(input)
-      //mod.plunge = input
-   div.appendChild(document.createTextNode(' (mm/s)'))
-   div.appendChild(document.createElement('br'))
-   //
    // jog
    //
-   div.appendChild(document.createTextNode('jog height:'))
+   div.appendChild(document.createTextNode('\u00a0jog height:'))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
@@ -111,31 +96,84 @@ var interface = function(div){
       mod.jz = input
    div.appendChild(document.createTextNode(' (mm)'))
    div.appendChild(document.createElement('br'))
+
    //
    // spindle speed
    //
-   div.appendChild(document.createTextNode('spindle speed: '))
+   div.appendChild(document.createTextNode('spindle rpm: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
       div.appendChild(input)
       mod.spindle_speed = input
-   div.appendChild(document.createTextNode(' (rpm)'))
+   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
    div.appendChild(document.createElement('br'))
+ 
+   div.appendChild(document.createElement('br'))
+
    //
-   // tool
+   // home
    //
-   div.appendChild(document.createTextNode('tool number: '))
+   div.appendChild(document.createTextNode('home:'))
+   div.appendChild(document.createElement('br'))
+
+
+   var btn = document.createElement('button')
+      btn.style.padding = mods.ui.padding
+      btn.style.margin = 1
+      var span = document.createElement('span')
+         var text = document.createTextNode('auto home XY')
+            span.appendChild(text)
+         btn.appendChild(span)
+         btn.addEventListener('click',function(){
+         var str = "G28.2 X0 Y0";
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.nc'
+         obj.contents = str
+         outputs.file.event(obj)
+         })
+      div.appendChild(btn)
+
+   var btn = document.createElement('button')
+      btn.style.padding = mods.ui.padding
+      btn.style.margin = 1
+      var span = document.createElement('span')
+         var text = document.createTextNode('auto home Z')
+            span.appendChild(text)
+         btn.appendChild(span)
+         btn.addEventListener('click',function(){
+         var warn = confirm("Warning: Make sure that the zero plate is over the material and is grounded to the machine")
+         if (warn == true) {
+         var str = "G28.2 Z0";
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.nc'
+         obj.contents = str
+         outputs.file.event(obj)
+         } // end if
+         })
+      div.appendChild(btn)
+
+   div.appendChild(document.createElement('br'))
+
+   div.appendChild(document.createTextNode('\u00a0zero plate thickness: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
+      input.disabled = true
       div.appendChild(input)
-      mod.tool = input
+      mod.tz = input
+   div.appendChild(document.createTextNode(' (mm)'))
    div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('br'))
+
+
+
    //
    // origin x (mm)
    //
-   div.appendChild(document.createTextNode('origin:'))
+   div.appendChild(document.createTextNode('custom origin:'))
    div.appendChild(document.createElement('br'))
    div.appendChild(document.createTextNode('x: '))
    var input = document.createElement('input')
@@ -153,27 +191,20 @@ var interface = function(div){
       mod.oy = input
    div.appendChild(document.createTextNode(' (mm)'))
    div.appendChild(document.createElement('br'))
-   //div.appendChild(document.createTextNode('z: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 6
-      //div.appendChild(input)
-      mod.oz = input
-   //div.appendChild(document.createTextNode(' (mm)'))
-   //div.appendChild(document.createElement('br'))
+
    var btn = document.createElement('button')
       btn.style.padding = mods.ui.padding
       btn.style.margin = 1
       var span = document.createElement('span')
-         var text = document.createTextNode('move to origin')
+         var text = document.createTextNode('set and move to origin')
             span.appendChild(text)
          btn.appendChild(span)
       btn.addEventListener('click',function(){
-         var x0 = mod.units*parseFloat(mod.ox.value);
-         var y0 = mod.units*parseFloat(mod.oy.value);
-         var z0 = mod.units*parseFloat(mod.oz.value);
-         var zjog = mod.units*parseFloat(mod.jz.value);
-         var str = "PA;PA;VS10;!VZ10;!PZ0,"+zjog+";PU"+x0+","+y0+";Z"+x0+","+y0+","+z0+";!MC0;"
+         var x0 = parseFloat(mod.ox.value)
+         var y0 = parseFloat(mod.oy.value)
+         var z0 = 0
+         var zjog = parseFloat(mod.jz.value)
+         var str = "G53 G10 L2 P2 X"+x0+" Y"+y0
          var obj = {}
          obj.type = 'command'
          obj.name = mod.name+'.nc'
@@ -181,57 +212,10 @@ var interface = function(div){
          outputs.file.event(obj)
          })
       div.appendChild(btn)
+   div.appendChild(document.createElement('br'))
    div.appendChild(document.createElement('br'))
 
-   //
-   // home
-   //
-   div.appendChild(document.createTextNode('home:'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('x: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 6
-      div.appendChild(input)
-      mod.hx = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode(' y: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 6
-      div.appendChild(input)
-      mod.hy = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('z: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 6
-      div.appendChild(input)
-      mod.hz = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
-   var btn = document.createElement('button')
-      btn.style.padding = mods.ui.padding
-      btn.style.margin = 1
-      var span = document.createElement('span')
-         var text = document.createTextNode('move home and stop')
-            span.appendChild(text)
-         btn.appendChild(span)
-      btn.addEventListener('click',function(){
-         var xhome = mod.units*parseFloat(mod.hx.value);
-         var yhome = mod.units*parseFloat(mod.hy.value);
-         var zhome = mod.units*parseFloat(mod.hz.value);
-         var str = "PA;PA;!PZ0,"+zhome+";PU"+xhome+","+yhome+";!MC0;";
-         var obj = {}
-         obj.type = 'command'
-         obj.name = mod.name+'.nc'
-         obj.contents = str
-         outputs.file.event(obj)
-         })
-      div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+
 
 
 
@@ -280,7 +264,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = "PA;PA;VS10;PR0,"+mod.step+";!MC0;"
+         var str = "G91 G21 G0 Y"+mod.step
          //
          // send command
          //
@@ -305,7 +289,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "PA;PA;!VZ5;PR;!ZM"+mod.step+";!MC0;"
+         var str = "G91 G21 G0 Z"+mod.step
          //
          // send command
          //
@@ -332,7 +316,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "PA;PA;VS10;PR-"+mod.step+",0;!MC0;"
+         var str = "G91 G21 G0 X-"+mod.step
          //
          // send command
          //
@@ -355,7 +339,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "PA;PA;VS10;PR0,"+mod.step+";!MC0;"
+         var str = "G28.3 X0 Y0"
          //
          // send command
          //
@@ -378,7 +362,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "PA;PA;VS10;PR"+mod.step+",0;!MC0;"
+         var str = "G91 G21 G0 X"+mod.step
          //
          // send command
          //
@@ -399,7 +383,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = "PR;!PZ0;!MC0;"
+         var str = "G28.3 Z0"
          //
          // send command
          //
@@ -427,7 +411,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = "PA;PA;VS10;PR0,-"+mod.step+";!MC0;"
+         var str = "G91 G21 G0 Y-"+mod.step
          //
          // send command
          //
@@ -452,7 +436,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "PA;PA;!VZ5;PR;!ZM-"+mod.step+";!MC0;"
+         var str = "G91 G21 G0 Z-"+mod.step
          //
          // send command
          //
@@ -474,55 +458,50 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
 function check_step() {
    //
    // Checks how big is the manual move step 
-   // Units are mm x 40 eg. 10mm is 400 units
+   // Units are mm
    //
    if (mod.range_big.checked) {
-         mod.step = 200
-         console.log('ten checked')
+         mod.step = 5
    }
    else if (mod.range_medium.checked) {
-         mod.step = 40}
+         mod.step = 1}
    else if (mod.range_small.checked) {
-         mod.step = 4}
+         mod.step = 0.1}
 }
 
 
 
 
 function make_path() {
-
-      //globals.type = ".nc" //to delete
       var dx = mod.width / mod.dpi
       var nx = mod.width
-      var cut_speed = 60 * parseFloat(mod.speed.value) / 25.4 // check units input should be mm/s and output is inch/min
-      var plunge_speed = 60 * parseFloat(mod.plunge.value) / 25.4 // check units input should be mm/s
-      var jog_height = parseFloat(mod.jz.value) / 25.4 // input in mm
+      var cut_speed = 60 * parseFloat(mod.speed.value) // check units input should be mm/s and output is mm/min
+      var plunge_speed = 60 * parseFloat(mod.plunge.value) // check units input should be mm/s
+      var jog_height = parseFloat(mod.jz.value) // input in mm
       var spindle_speed = parseFloat(mod.spindle_speed.value)
-      var tool = mod.tool.value
+      var tool = mod.tool
       var scale = dx / (nx - 1)
-      var x0 = parseFloat(mod.ox.value) / 25.4
-      var y0 = parseFloat(mod.oy.value) / 25.4
-      var z0 = parseFloat(mod.oz.value) / 25.4
+      var x0 = parseFloat(mod.ox.value)
+      var y0 = parseFloat(mod.oy.value)
+      var z0 = parseFloat(mod.oz.value)
       var xoffset = x0
       var yoffset = y0
       var zoffset = z0
       str = "%\n" // tape start
       // Clear all state: XY plane, inch mode, cancel diameter compensation, cancel length offset
-      // coordinate system 1, cancel motion, non-incremental motion, feed/minute mode
-      str += "G17\n"
-      str += "G20\n"
-      str += "G40\n"
-      str += "G49\n"
+      // coordinate system 2, cancel motion, non-incremental motion, feed/minute mode
+      str += "G17\n" // select XY plane
+      str += "G21\n" // mm mode
+      str += "G40\n" // cancel diameter compensation
+      str += "G49\n" // cancel tool length compensation
       // Othermill assumes G55 coordinate system
-      str += "G55\n"
-      str += "G80\n"
-      str += "G90\n"
-      str += "G94\n"
+      str += "G55\n" // custom coordinate system 2
+      str += "G80\n" // stop axis movement
+      str += "G90\n" // non incremental motion
+      str += "G94\n" // feed rate mode: units per minute
       str += "T" + tool + "M06\n" // tool selection, tool change
       str += "F" + cut_speed.toFixed(4) + "\n" // feed rate
       str += "S" + spindle_speed + "\n" // spindle speed
-      //if (findEl("mod_coolant_on").checked)  // not defined yet
-      //   str += "M08\n" // coolant on
       str += "G00Z" + jog_height.toFixed(4) + "\n" // move up before starting spindle
       str += "M03\n" // spindle on clockwise
       str += "G04 P1\n" // give spindle 1 second to spin up
