@@ -33,6 +33,8 @@ program_menu('      mill 2D png','programs/1%20machines/1.5%20G-code/mill%
 program_menu('      mill 2D svg','programs/1%20machines/1.5%20G-code/mill%202D%20svg')
 program_label('   1.6 RNDMC')
 program_menu('      honeycomb connect','programs/1%20machines/1.6%20RNDMC/honeycomb%20connect')
+program_label('   1.7 Othermill')
+program_menu('      PCB WIP','programs/1%20machines/1.7%20Othermill/PCB%20WIP')
 program_label('2 frep')
 program_menu('   gears','programs/2%20frep/gears')
 program_menu('   lattice torus','programs/2%20frep/lattice%20torus')
