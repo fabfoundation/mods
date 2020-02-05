@@ -483,7 +483,7 @@ function check_step() {
 
 
 function make_path() {
-      var dx = mod.width / mod.dpi
+      var dx = 25.4* mod.width / mod.dpi
       var nx = mod.width
       var cut_speed = 60 * parseFloat(mod.speed.value) // check units input should be mm/s and output is mm/min
       var plunge_speed = 60 * parseFloat(mod.plunge.value) // check units input should be mm/s
