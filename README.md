@@ -52,15 +52,13 @@ To talk to serial machines you will also need to install `ws` and `serialport` n
 cd mods/js
 npm install ws
 npm install serialport
-npm install @serialport/list
 ```
 
-To talk with the installed printers you will need to install `cups` and `libcups` in your distribution. Also install `node-gyp`, `rebuild` and `printer` npm packages inside `mods/js` folder:
+To talk with the installed printers you will need to install `cups` and `libcups` from your distribution. Also install the following  npm packages inside `mods/js` folder:
 
 ```bash
 cd mods/js
 npm install node-gyp
-npm install rebuild
 npm install @things-factory/node-printer
 ```
 
