@@ -122,11 +122,11 @@ var interface = function(div){
       btn.style.padding = mods.ui.padding
       btn.style.margin = 1
       var span = document.createElement('span')
-         var text = document.createTextNode('auto home XY')
+         var text = document.createTextNode('auto home XYZ')
             span.appendChild(text)
          btn.appendChild(span)
          btn.addEventListener('click',function(){
-         var str = "G28.2 X0 Y0";
+         var str = "G28.2 X0 Y0 Z0\n";
          var obj = {}
          obj.type = 'command'
          obj.name = mod.name+'.nc'
@@ -139,13 +139,21 @@ var interface = function(div){
       btn.style.padding = mods.ui.padding
       btn.style.margin = 1
       var span = document.createElement('span')
-         var text = document.createTextNode('auto home Z')
+         var text = document.createTextNode('Probe Z0 Plate')
             span.appendChild(text)
          btn.appendChild(span)
          btn.addEventListener('click',function(){
          var warn = confirm("Warning: Make sure that the zero plate is over the material and is grounded to the machine")
          if (warn == true) {
-         var str = "G28.2 Z0";
+         var jog_height = parseFloat(mod.jz.value)
+         var zero_plate = parseFloat(mod.tz.value)
+         var str = "G91\n"
+         str += "G38.2 Z-70 F90\n"
+         str += "G90\n"
+         str += "G10 L20 P2 Z"+zero_plate+"\n"
+         str += "G91\n"
+         str += "G0 Z"+jog_height+"\n"
+         str += "G90\n"
          var obj = {}
          obj.type = 'command'
          obj.name = mod.name+'.nc'
@@ -161,7 +169,6 @@ var interface = function(div){
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
-      input.disabled = true
       div.appendChild(input)
       mod.tz = input
    div.appendChild(document.createTextNode(' (mm)'))
@@ -196,7 +203,7 @@ var interface = function(div){
       btn.style.padding = mods.ui.padding
       btn.style.margin = 1
       var span = document.createElement('span')
-         var text = document.createTextNode('set and move to origin')
+         var text = document.createTextNode('move to custom origin')
             span.appendChild(text)
          btn.appendChild(span)
       btn.addEventListener('click',function(){
@@ -204,7 +211,7 @@ var interface = function(div){
          var y0 = parseFloat(mod.oy.value)
          var z0 = 0
          var zjog = parseFloat(mod.jz.value)
-         var str = "G53 G10 L2 P2 X"+x0+" Y"+y0
+         var str = " G55 G90 G0 X"+x0+" Y"+y0 +"\n" // go to x0 y0 in abs coordinates 
          var obj = {}
          obj.type = 'command'
          obj.name = mod.name+'.nc'
@@ -255,7 +262,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
 
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('+Y'))
+      btn.appendChild(document.createTextNode('+ Y'))
       btn.addEventListener('click',function() {
          //
          // Check step
@@ -264,7 +271,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = "G91 G21 G0 Y"+mod.step
+         var str = "G91 G21 G0 Y"+mod.step +"\n"
          //
          // send command
          //
@@ -276,7 +283,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          })
       div.appendChild(btn)
 
-div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
 
    var btn = document.createElement('button')
       btn.style.margin = 1
@@ -289,7 +296,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "G91 G21 G0 Z"+mod.step
+         var str = "G91 G21 G0 Z"+mod.step +"\n"
          //
          // send command
          //
@@ -303,6 +310,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
 
    div.appendChild(document.createElement('br'))   
 
+div.appendChild(document.createTextNode('\u00a0\u00a0'))
 
 
    var btn = document.createElement('button')
@@ -316,7 +324,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "G91 G21 G0 X-"+mod.step
+         var str = "G91 G21 G0 X-"+mod.step +"\n"
          //
          // send command
          //
@@ -339,7 +347,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "G28.3 X0 Y0"
+         var str = "G28.3 X0 Y0\n"
          //
          // send command
          //
@@ -350,6 +358,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          mods.output(mod,'file',obj)
          })
       div.appendChild(btn)
+
 
    var btn = document.createElement('button')
       btn.style.margin = 1
@@ -362,7 +371,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "G91 G21 G0 X"+mod.step
+         var str = "G91 G21 G0 X"+mod.step +"\n"
          //
          // send command
          //
@@ -374,7 +383,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          })
       div.appendChild(btn)
 
-div.appendChild(document.createTextNode('\u00a0\u00a0'))
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0'))
 
    var btn = document.createElement('button')
       btn.style.margin = 1
@@ -383,7 +392,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = "G28.3 Z0"
+         var str = "G28.3 Z0\n"
          //
          // send command
          //
@@ -394,6 +403,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0'))
          mods.output(mod,'file',obj)
          })
       div.appendChild(btn)
+
 
    div.appendChild(document.createElement('br'))   
 
@@ -402,7 +412,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
 
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('-Y'))
+      btn.appendChild(document.createTextNode('- Y'))
       btn.addEventListener('click',function() {
          //
          // Check step
@@ -411,7 +421,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = "G91 G21 G0 Y-"+mod.step
+         var str = "G91 G21 G0 Y-"+mod.step +"\n"
          //
          // send command
          //
@@ -423,11 +433,11 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          })
       div.appendChild(btn)
 
-div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
 
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('- Z'))
+      btn.appendChild(document.createTextNode('-Z'))
       btn.addEventListener('click',function() {
          //
          // Check step
@@ -436,7 +446,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u0
          //
          // Create message
          //
-         var str = "G91 G21 G0 Z-"+mod.step
+         var str = "G91 G21 G0 Z-"+mod.step +"\n"
          //
          // send command
          //
@@ -483,7 +493,7 @@ function make_path() {
       var scale = dx / (nx - 1)
       var x0 = parseFloat(mod.ox.value)
       var y0 = parseFloat(mod.oy.value)
-      var z0 = parseFloat(mod.oz.value)
+      var z0 = 0
       var xoffset = x0
       var yoffset = y0
       var zoffset = z0
@@ -537,8 +547,6 @@ function make_path() {
       //
       str += "G00Z" + jog_height.toFixed(4) + "\n" // move up before stopping spindle
       str += "M05\n" // spindle stop
-      //if (findEl("mod_coolant_on").checked)  // undefined
-      //   str += "M09\n" // coolant off
       str += "M30\n" // program end and reset
       str += "%\n" // tape end
 
@@ -553,77 +561,6 @@ function make_path() {
    obj.name = mod.name+'.nc'
    obj.contents = str
    outputs.file.event(obj)
-
-
-/*
-
-   var dx = 25.4*mod.width/mod.dpi
-   var nx = mod.width
-   var speed = parseFloat(mod.speed.value)
-   var jog = parseFloat(mod.jz.value)
-   var ijog = Math.floor(mod.units*jog)
-   var scale = mod.units*dx/(nx-1)
-   var x0 = parseFloat(mod.ox.value)
-   var y0 = parseFloat(mod.oy.value)
-   var z0 = parseFloat(mod.oz.value)
-   var xoffset = mod.units*x0
-   var yoffset = mod.units*y0
-   var zoffset = mod.units*z0
-   var str = "PA;PA;" // plot absolute
-   str += "VS"+speed+";!VZ"+speed+";"
-   str += "!PZ"+0+","+ijog+";" // set jog
-   str += "!MC1;\n" // turn motor on
-   //
-   // follow segments
-   //
-   for (var seg = 0; seg < mod.path.length; ++seg) {
-      //
-      // move up to starting point
-      //
-      x = xoffset+scale*mod.path[seg][0][0]
-      y = yoffset+scale*mod.path[seg][0][1]
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n"
-      //
-      // move down
-      //
-      z = zoffset+scale*mod.path[seg][0][2]
-      str += "Z"+x.toFixed(0)+","+y.toFixed(0)+","+z.toFixed(0)+";\n"
-      for (var pt = 1; pt < mod.path[seg].length; ++pt) {
-         //
-         // move to next point
-         //
-         x = xoffset+scale*mod.path[seg][pt][0]
-         y = yoffset+scale*mod.path[seg][pt][1]
-         z = zoffset+scale*mod.path[seg][pt][2]
-         str += "Z"+x.toFixed(0)+","+y.toFixed(0)+","+z.toFixed(0)+";\n"
-         }
-      //
-      // move up
-      //
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n"
-      }
-   //
-   // turn off motor and move back
-   //
-   var xhome = mod.units*parseFloat(mod.hx.value)
-   var yhome = mod.units*parseFloat(mod.hy.value)
-   var zhome = mod.units*parseFloat(mod.hz.value)
-   str += "PA;PA;!PZ0,"+zhome+";PU"+xhome+","+yhome+";!MC0;"
-
-
-
-
-
-   //
-   // output string
-   //
-   var obj = {}
-   obj.type = 'file'
-   obj.name = mod.name+'.nc'
-   obj.contents = str
-   outputs.file.event(obj)
-
-*/
 
    }
 //

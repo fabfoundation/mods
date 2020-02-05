@@ -28,9 +28,9 @@ var name = 'WebSocket serial'
 var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = '1234'
-   mod.device.value = 'Serialport not found'
-   mod.baud.value = '9600'
-   mod.flow_none.checked = true
+   mod.device.value = '/dev/ttyUSB0'
+   mod.baud.value = '115200'
+   mod.flow_none.checked = false
    mod.socket = null
    socket_open()
    }
@@ -193,7 +193,6 @@ var interface = function(div){
       input.name = mod.div.id+'flow'
       input.id = mod.div.id+'flow_xonxoff'
       div.appendChild(input)
-      input.disabled = true
       mod.flow_xonxoff = input
    div.appendChild(document.createTextNode('XONXOFF'))
    div.appendChild(document.createElement('br'))   
