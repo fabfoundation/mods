@@ -37,7 +37,7 @@ function list_files(path) {
          if (match == null)
             var prefix = ''
          else {
-            var prefix = Array(match.length).join('\u00A0\u00A0\u00A0')
+            var prefix = Array(match.length).join('\u00A0')
             }
          str += "program_menu('"
          str += prefix+file+"','"
@@ -53,7 +53,7 @@ function list_files(path) {
          if (match == null)
             var prefix = ''
          else {
-            var prefix = Array(match.length).join('\u00A0\u00A0\u00A0')
+            var prefix = Array(match.length).join('\u00A0')
             }
          str += "program_label('"+prefix+file+"')\n"
          list_files(path+'/'+file)
