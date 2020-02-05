@@ -46,6 +46,7 @@ var interface = function(div){
    //
    var text = document.createElement('textarea')
       text.style.backgroundColor='#D4E157';
+      text.setAttribute('spellcheck', 'false')
       text.setAttribute('rows',mods.ui.rows)
       text.setAttribute('cols',mods.ui.cols)
       //

@@ -17,6 +17,7 @@ module_menu('   Roland MDX-20 Move Beta','modules/1%20path/1.1%20machines/pre
 module_menu('   Roland SRM-20','modules/1%20path/1.1%20machines/precision%20mill/Roland%20SRM-20')
 module_label('  vinyl cutter')
 module_menu('   Roland GX-GS-24','modules/1%20path/1.1%20machines/vinyl%20cutter/Roland%20GX-GS-24')
+module_menu('   Silhouette Cameo Beta','modules/1%20path/1.1%20machines/vinyl%20cutter/Silhouette%20Cameo%20Beta')
 module_label(' 1.2 formats')
 module_menu('  dxf','modules/1%20path/1.2%20formats/dxf')
 module_menu('  g-code','modules/1%20path/1.2%20formats/g-code')
