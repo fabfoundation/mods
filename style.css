@@ -25,6 +25,13 @@ button:active {
 input {
     font-family : inherit;
     font-size: 1em;
+    border: 1px solid #bbb;
+    padding: 1px;
+    margin: 1px;
+}
+input[type=text]:focus {
+  outline: none;
+  border: 1px solid red;
 }
 
 .scroll-text {
