@@ -957,9 +957,11 @@
                var str = req.response
                var text = "<html>\n"
                text += "<head><meta charset='utf-8'>\n"
-               text += "<title>mods</title>\n"
+               text += "<title>mods CE</title>\n"
+	       text += '<link rel="icon" href="https://raw.githubusercontent.com/fabfoundation/mods/master/favicon.ico" type="image/x-icon" />\n'
+	       text += '<link rel="stylesheet" type="text/css" href="https://fabfoundation.github.io/mods/style.css" />\n'
                text += "</head>\n"
-               text += "<body link='black' alink='black' vlink='black'>\n"
+	       text += "<body>\n"
                text += "<" + "script" + ">\n"
                text += str
                text += "var prog = JSON.parse(JSON.stringify(" + JSON.stringify(prog) + "))\n"
