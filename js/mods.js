@@ -127,8 +127,9 @@
       tx0+(ox1-ox0)+(ox0-ox1)/s  = tx1
       tx0+(ox1-ox0)*(1-1/s)  = tx1
       */
-      //var el = document.elementFromPoint(evt.pageX, evt.pageY) 
-      //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { // to scroll everywhere 
+      var elem = document.elementFromPoint(evt.pageX, evt.pageY) // store where you are using the wheel
+      //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { // scroll works in the white area
+        if (!([...document.querySelectorAll('.context-menu')].some(el => el == elem || el.contains(elem)))) { // scroll works unless in the context menu
          set_prompt('scroll to zoom')
          //evt.preventDefault() // 
          evt.stopPropagation() // prevents default scroll action 
@@ -147,7 +148,7 @@
          var ty = t.ty + (evt.pageY - t.oy) * (1 - 1 / t.s)
          document.body.style.transform = `scale(${scale}) translate(${tx}px,${ty}px)`
          document.body.style.transformOrigin = `${evt.pageX}px ${evt.pageY}px`
-     // }
+      }
    })
    //
    // body mouse events
@@ -319,6 +320,7 @@
       add_menu(div, 'options', options)
       document.body.appendChild(div)
       function make_menu(div) {
+	 div.className = "context-menu"	
          mods.ui.menu = div
          div.style.position = "absolute"
          var t = mods_transform()
