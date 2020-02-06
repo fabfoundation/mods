@@ -60,6 +60,8 @@ var outputs = {
 //
 var interface = function(div){
    mod.div = div
+   div.appendChild(document.createTextNode('THIS IS WIP MODULE'))
+   div.appendChild(document.createElement('br'))
    div.appendChild(document.createTextNode('\u00A0\u00A0\u00A0force (g): '))
    var input = document.createElement('input')
       input.type = 'text'

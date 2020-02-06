@@ -40,7 +40,7 @@ var init = function() {
 // inputs
 //
 var inputs = {
-   path:{type:'',
+   toolpath:{type:'object',
       event:function(evt){
          mod.name = evt.detail.name
          mod.path = evt.detail.path
@@ -53,7 +53,7 @@ var inputs = {
 // outputs
 //
 var outputs = {
-   file:{type:'',
+   file:{type:'object',
       event:function(obj){
          mods.output(mod,'file',obj)
          }}}
@@ -185,10 +185,265 @@ var interface = function(div){
          })
       div.appendChild(btn)
    div.appendChild(document.createElement('br'))
+
+
+   //
+   // manual move buttons
+   //
+   div.appendChild(document.createTextNode('manual move:'))
+   div.appendChild(document.createElement('br'))
+
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'range'
+      input.id = mod.div.id+'range_big'
+      div.appendChild(input)
+      mod.range_big = input
+   div.appendChild(document.createTextNode('5mm'))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'range'
+      input.id = mod.div.id+'range_medium'
+      div.appendChild(input)
+      mod.range_medium = input
+      mod.range_medium.checked = true
+   div.appendChild(document.createTextNode('1mm'))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'range'
+      input.id = mod.div.id+'range_small'
+      div.appendChild(input)
+      mod.range_small = input
+   div.appendChild(document.createTextNode('0.1mm'))
+   div.appendChild(document.createElement('br'))   
+
+   
+
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('+Y'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;VS10;PR0,"+mod.step+";!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('+Z'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;!VZ5;PR;!ZM"+mod.step+";!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+   div.appendChild(document.createElement('br'))   
+
+div.appendChild(document.createTextNode('\u00a0\u00a0'))
+
+
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('-X'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;VS10;PR-"+mod.step+",0;!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+   var btn = document.createElement('button')
+      btn.disabled = true
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('XY0'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;VS10;PR0,"+mod.step+";!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('+X'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;VS10;PR"+mod.step+",0;!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0'))
+
+   var btn = document.createElement('button')
+      btn.disabled = true
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('Z0'))
+      btn.addEventListener('click',function() {
+         //
+         // Create message
+         //
+         var str = "PR;!PZ0;!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+   div.appendChild(document.createElement('br'))   
+
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+
+
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('-Y'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;VS10;PR0,-"+mod.step+";!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('-Z'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "PA;PA;!VZ5;PR;!ZM-"+mod.step+";!MC0;"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.rml'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+
+
+
    }
 //
 // local functions
 //
+
+function check_step() {
+   //
+   // Checks how big is the manual move step 
+   // Units are mm x 40 eg. 10mm is 400 units
+   //
+   if (mod.range_big.checked) {
+         mod.step = 200
+         console.log('ten checked')
+   }
+   else if (mod.range_medium.checked) {
+         mod.step = 40}
+   else if (mod.range_small.checked) {
+         mod.step = 4}
+}
+
+
+
+
 function make_path() {
    var dx = 25.4*mod.width/mod.dpi
    var nx = mod.width

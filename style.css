@@ -22,6 +22,12 @@ button:active {
   box-shadow: 0 4px #666;
   transform: translateY(3px);
 }
+button:disabled {
+	background-color: #ccc;
+	box-shadow: 0 4px #bbb;
+	cursor: not-allowed;
+}
+
 input {
     font-family : inherit;
     font-size: 1em;
