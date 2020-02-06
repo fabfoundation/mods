@@ -15,6 +15,8 @@ module_menu('   Othermill','modules/1%20path/1.1%20machines/precision%20mill/
 module_menu('   Roland MDX-20','modules/1%20path/1.1%20machines/precision%20mill/Roland%20MDX-20')
 module_menu('   Roland SRM-20','modules/1%20path/1.1%20machines/precision%20mill/Roland%20SRM-20')
 module_label('  vinyl cutter')
+module_menu('   Cricut vinyl cutter','modules/1%20path/1.1%20machines/vinyl%20cutter/Cricut%20vinyl%20cutter')
+module_menu('   GCC vinyl cutter','modules/1%20path/1.1%20machines/vinyl%20cutter/GCC%20vinyl%20cutter')
 module_menu('   Roland GX-GS-24','modules/1%20path/1.1%20machines/vinyl%20cutter/Roland%20GX-GS-24')
 module_menu('   Silhouette Cameo','modules/1%20path/1.1%20machines/vinyl%20cutter/Silhouette%20Cameo')
 module_label(' 1.2 formats')

@@ -1,5 +1,5 @@
 //
-// Roland GX/GS-24 vinyl cutter
+// Cricut vinyl cutter
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
@@ -21,7 +21,7 @@ var mod = {}
 //
 // name
 //
-var name = 'Roland GX/GS-24 vinyl cutter'
+var name = 'Cricut vinyl cutter'
 //
 // initialization
 //
@@ -59,7 +59,8 @@ var outputs = {
 //
 var interface = function(div){
    mod.div = div
-
+   div.appendChild(document.createTextNode('THIS MODULE IS WIP'))
+   div.appendChild(document.createElement('br'))
    //
    // manual move to origin
    //

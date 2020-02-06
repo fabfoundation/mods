@@ -1,5 +1,5 @@
 //
-// Roland GX/GS-24 vinyl cutter
+// GCC vinyl cutter
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
@@ -21,7 +21,7 @@ var mod = {}
 //
 // name
 //
-var name = 'Roland GX/GS-24 vinyl cutter'
+var name = 'GCC vinyl cutter'
 //
 // initialization
 //
