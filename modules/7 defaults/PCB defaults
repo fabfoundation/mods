@@ -21,7 +21,7 @@ var mod = {}
 //
 // name
 //
-var name = 'set Roland Mill defaults'
+var name = 'set PCB defaults'
 //
 // initialization
 //
@@ -66,31 +66,7 @@ var init = function() {
    mod.var24.value = '0.5'
    add_variable('speed (mm/s)','var25')
    mod.var25.value = '2'
-   //
-   add_output('wax rough cut (1/8)')
-   add_variable('tool diameter (in)','var30')
-   mod.var30.value = '0.125'
-   add_variable('cut depth (in)','var31')
-   mod.var31.value = '0.04'
-   add_variable('offset number','var33')
-   mod.var33.value = '0'
-   add_variable('offset stepover','var34')
-   mod.var34.value = '0.5'
-   add_variable('speed (mm/s)','var35')
-   mod.var35.value = '20'
-   //
-   add_output('wax finish cut (1/8)')
-   add_variable('tool diameter (in)','var40')
-   mod.var40.value = '0.125'
-   add_variable('cut depth (in)','var41')
-   mod.var41.value = '0.04'
-   add_variable('offset number','var43')
-   mod.var43.value = '1'
-   add_variable('offset stepover','var44')
-   mod.var44.value = '0.9'
-   add_variable('speed (mm/s)','var45')
-   mod.var45.value = '20'
-   //
+ 
 
    }
 //
