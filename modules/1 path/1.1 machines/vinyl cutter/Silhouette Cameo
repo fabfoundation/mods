@@ -27,8 +27,8 @@ var name = 'Silhouette Cameo vinyl cutter'
 // initialization
 //
 var init = function() {
-   mod.force.value = 50
-   mod.speed.value = 2
+   mod.force.value = 10
+   mod.speed.value = 10
    }
 //
 // inputs
@@ -51,7 +51,7 @@ var outputs = {
       event:function(str){
          obj = {}
          obj.type = 'file'
-         obj.name = mod.name+'.camm'
+         obj.name = mod.name+'.bin'
          obj.contents = str
          mods.output(mod,'file',obj)
          }}}
@@ -90,13 +90,13 @@ var interface = function(div){
          //
          // Create message
          //
-         var str = "PA;PA;VS50;PR -400,0000;"
+         var str = ";;PR;VS50;PU 200,0;\n"
          //
          // send command
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.camm'
+         obj.name = mod.name+'.bin'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -108,13 +108,13 @@ var interface = function(div){
          //
          // Create message
          //
-         var str = "PA;PA;VS50;PR 400,0000;"
+         var str = "O 200,0"
          //
          // send command
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.camm'
+         obj.name = mod.name+'.bin'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -132,7 +132,7 @@ var interface = function(div){
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.camm'
+         obj.name = mod.name+'.bin'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -150,7 +150,7 @@ var interface = function(div){
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.camm'
+         obj.name = mod.name+'.bin'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -171,7 +171,7 @@ var interface = function(div){
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.camm'
+         obj.name = mod.name+'.bin'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
