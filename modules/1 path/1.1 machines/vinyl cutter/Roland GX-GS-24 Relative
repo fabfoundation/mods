@@ -370,31 +370,6 @@ function make_path() {
       var yoffset = 40.0*(oy-dy)
       }
 
-/*
-   //
-   // loop over segments abs coordinates
-   //
-   for (var seg = 0; seg < mod.path.length; ++seg) {
-      x = xoffset+scale*mod.path[seg][0][0]  // current x coordinate in steps units
-      y = yoffset+scale*mod.path[seg][0][1]
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move up to start point
-      str += "PD"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move down
-      //
-      // loop over points
-      //
-      for (var pt = 1; pt < mod.path[seg].length; ++pt) {
-         x = xoffset+scale*mod.path[seg][pt][0]
-         y = yoffset+scale*mod.path[seg][pt][1]
-         str += "PD"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move down
-         }
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move up at last point
-      }
-   //
-   // return to origin
-   //
-   str += "PU0,0;\n" // pen up to origin
-
-*/
    //
    // loop over segments relative coordinates
    //
