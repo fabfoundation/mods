@@ -3,6 +3,7 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
+// modified by Francisco Sanchez Arroyo 08-Feb-2020
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -52,6 +53,12 @@ var interface = function(div){
       text.setAttribute('rows',mods.ui.rows)
       text.setAttribute('cols',mods.ui.cols)
       div.appendChild(text)
+      //
+      // watch textarea for resize
+      //
+      new MutationObserver(update_module).observe(text, {
+      attributes: true, attributeFilter: [ "style" ]
+      })
       mod.text = text
    div.appendChild(document.createElement('br'))
    div.appendChild(document.createTextNode('format: '))
@@ -79,6 +86,12 @@ var interface = function(div){
 //
 // local functions
 //
+//
+// update module
+//
+function update_module() {
+   mods.fit(mod.div)
+   }
 function view_window() {
    var win = window.open('')
    var btn = document.createElement('button')
