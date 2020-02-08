@@ -1,4 +1,3 @@
-
 //
 // deviceserver.js
 //    WebSocket device server
@@ -88,6 +87,24 @@ wss.on('connection',function(ws) {
             // continue
             //
             else {
+		    fs.write(file,job.contents,function(err,written,string) {
+			    if (err) {
+				    console.log('error '+err)
+				    ws.send('error '+err)
+			    }
+			    else {
+                        console.log('done')
+	                ws.send('done')
+                        fs.close(file,function(err) {
+                           if (err) {
+                              console.log('error: '+err)
+                              ws.send('error: '+err)
+                              }
+                           })
+
+			    }
+		    })
+		    /*  Neil's fs.write function. Very slow with Silhouette Cameo
                fs.write(file,job.contents[count],function(err,written,string) {
                   if (err) {
                      console.log('error '+err+' count '+count)
@@ -110,6 +127,7 @@ wss.on('connection',function(ws) {
                         }
                      }
                   })
+		  */
                }
             }
          }
