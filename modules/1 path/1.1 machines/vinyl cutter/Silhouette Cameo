@@ -7,18 +7,23 @@
 // 
 // GPGL Language 
 // Uses \x03 ASCII control character 'End of Text' ETX as a separator (equivalent to ; in HPGL)
-// Filetype is .bin
+// I am using .gpgl but any file extension works
 // Resolution 20 steps per 1 mm
-// FN0 set portrait mode (rotate 90CW), FN1 landscape mode
-// SO0 set origin
-// H home the machine
-// FXpres sets the force with pres 1:31
-// !vel sets velocity with vel 1:10
-// M x,y move absolute coordinates with pen up
+// FN0 set portrait mode (+x media out, +y head left), FN1 landscape mode (+x head left, +y media in) FN command seems to be persistent
+// SO0 set origin not working?
+// H homes the machine on the left end
+// FXpres sets the force with pres 1:31 untested
+// !vel sets velocity with vel 1:10 untested
+// M x,y move absolute coordinates with pen up only accepts positive values
 // O x,y move relative coordinates with pen up
-// D x1,y1,x1,y2... draw absolute with pen down
+// D x1,y1,x1,y2... draw absolute with pen down (only positive values?)
 // E x1,y1,x1,y2... draw relative with pen down
 // more commands at https://www.ohthehugemanatee.net/2011/07/gpgl-reference-courtesy-of-graphtec/
+//
+// Debugging notes:
+// - When using Neil's deviceserver.js it takes around 3s to send 27 chars. But echo the string the the device or cat the file to the device it works just fine. I modified deviceserver.js to send the file at once.
+// - The coordinate system of this machine is confusing. When you load a page Abs(0,0) is at the top right even though the page is aligned to the left. Home command moves the head to the left but keeps the abs zero intact. +x is to the left unlike Roland machines.
+// - Moving the machine with the front panel keys sets the new Abs(0,0). That means the machine won't move to the right or above this point. For some reason SO0 does not set the zero. 
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -65,7 +70,7 @@ var outputs = {
       event:function(str){
          obj = {}
          obj.type = 'file'
-         obj.name = mod.name+'.bin'
+         obj.name = mod.name+'.gpgl'
          obj.contents = str
          mods.output(mod,'file',obj)
          }}}
@@ -120,13 +125,13 @@ var interface = function(div){
          //
          // Create message
          //
-         var str = "O"+mod.step+",0\n"
+         var str = "O"+mod.step+",0\x03"
          //
          // send command
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.bin'
+         obj.name = 'left.gpgl'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -148,7 +153,7 @@ var interface = function(div){
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.bin'
+         obj.name = 'right.gpgl'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -170,7 +175,7 @@ var interface = function(div){
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.bin'
+         obj.name = 'in.gpgl'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -192,7 +197,7 @@ var interface = function(div){
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.bin'
+         obj.name = 'out.gpgl'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -201,20 +206,24 @@ var interface = function(div){
 
 
   var btn = document.createElement('button')
-      btn.disabled = true
+      //btn.disabled = true
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('set origin here'))
+      btn.appendChild(document.createTextNode('test cut'))
       btn.addEventListener('click',function() {
          //
          // Create message
          //
-         var str = "SO0\x03"
+         var str = "E200,0"
+         str += ",0,200"
+         str += ",-200,0"
+         str += ",0,-200\x03"
+         str += "O 0,0\x03" // pen up
          //
          // send command
          //
          var obj = {}
          obj.type = 'command'
-         obj.name = mod.name+'.bin'
+         obj.name = 'testcut.gpgl'
          obj.contents = str
          mods.output(mod,'file',obj)
          })
@@ -388,7 +397,7 @@ function make_path() {
       rx = x-lx // calculate the relative x movement
       ry = y-ly // calculate the relative y movement
       str += "O"+rx.toFixed(0)+","+ry.toFixed(0)+"\x03" // move up to start point
-      str += "E 0,0\x03" // pen down
+      str += "E 0,0" // pen down
       lx = x // store last x coordinate
       ly = y // store last y coordinate
       //
@@ -399,11 +408,12 @@ function make_path() {
          y = yoffset+scale*mod.path[seg][pt][1]
          rx = x-lx // calculate the relative x movement
          ry = y-ly // calculate the relative y movement
-         str += "E"+rx.toFixed(0)+","+ry.toFixed(0)+"\x03" // move down
+         str += ","+rx.toFixed(0)+","+ry.toFixed(0) // append next point to the string
          lx = x // store last x coordinate
          ly = y // store last y coordinate
          }
-      str += "O 0,0\x03" // move up at last point
+      str += "\x03" // terminate the E command
+      str += "O 0,0\x03" // pen up at last point
       }
    //
    // return to origin
