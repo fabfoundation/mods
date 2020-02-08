@@ -4,7 +4,21 @@
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
 // Modified by Francisco Sanchez Arroyo 05-Feb-2020
-// See wiki at github.com/fabfoundation/mods for Graphtec language details
+// 
+// GPGL Language 
+// Uses \x03 ASCII control character 'End of Text' ETX as a separator (equivalent to ; in HPGL)
+// Filetype is .bin
+// Resolution 20 steps per 1 mm
+// FN0 set portrait mode (rotate 90CW), FN1 landscape mode
+// SO0 set origin
+// H home the machine
+// FXpres sets the force with pres 1:31
+// !vel sets velocity with vel 1:10
+// M x,y move absolute coordinates with pen up
+// O x,y move relative coordinates with pen up
+// D x1,y1,x1,y2... draw absolute with pen down
+// E x1,y1,x1,y2... draw relative with pen down
+// more commands at https://www.ohthehugemanatee.net/2011/07/gpgl-reference-courtesy-of-graphtec/
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -60,7 +74,154 @@ var outputs = {
 //
 var interface = function(div){
    mod.div = div
-   div.appendChild(document.createTextNode('THIS IS WIP MODULE'))
+   div.appendChild(document.createTextNode('THIS MODULE IS WIP'))
+   div.appendChild(document.createElement('br'))
+
+   div.appendChild(document.createTextNode('set origin:'))
+   div.appendChild(document.createElement('br'))
+
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'range'
+      input.id = mod.div.id+'range_big'
+      div.appendChild(input)
+      mod.range_big = input
+   div.appendChild(document.createTextNode('50mm'))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'range'
+      input.id = mod.div.id+'range_medium'
+      div.appendChild(input)
+      mod.range_medium = input
+      mod.range_medium.checked = true
+   div.appendChild(document.createTextNode('10mm'))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'range'
+      input.id = mod.div.id+'range_small'
+      div.appendChild(input)
+      mod.range_small = input
+   div.appendChild(document.createTextNode('1mm'))
+   div.appendChild(document.createElement('br'))   
+
+   //
+   // left/right
+   //
+   div.appendChild(document.createTextNode('manual move:'))
+   div.appendChild(document.createElement('br'))
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('left'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "O"+mod.step+",0\n"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.bin'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('right'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "O-"+mod.step+",0\x03"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.bin'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+  var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('in'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "O0,"+mod.step+"\x03"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.bin'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+  var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('out'))
+      btn.addEventListener('click',function() {
+         //
+         // Check step
+         //
+         check_step()
+         //
+         // Create message
+         //
+         var str = "O0,-"+mod.step+"\x03"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.bin'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+   div.appendChild(document.createElement('br'))
+
+
+  var btn = document.createElement('button')
+      btn.disabled = true
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('set origin here'))
+      btn.addEventListener('click',function() {
+         //
+         // Create message
+         //
+         var str = "SO0\x03"
+         //
+         // send command
+         //
+         var obj = {}
+         obj.type = 'command'
+         obj.name = mod.name+'.bin'
+         obj.contents = str
+         mods.output(mod,'file',obj)
+         })
+      div.appendChild(btn)
+   div.appendChild(document.createElement('br'))
+
+   div.appendChild(document.createTextNode('set parameters:'))
    div.appendChild(document.createElement('br'))
    div.appendChild(document.createTextNode('\u00A0\u00A0\u00A0force (g): '))
    var input = document.createElement('input')
@@ -78,130 +239,66 @@ var interface = function(div){
    div.appendChild(document.createElement('br'))
 
 
-   //
-   // left/right
-   //
-   div.appendChild(document.createTextNode('manual move:'))
-   div.appendChild(document.createElement('br'))
-   var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('left'))
-      btn.addEventListener('click',function() {
-         //
-         // Create message
-         //
-         var str = ";;PR;VS50;PU 200,0;\n"
-         //
-         // send command
-         //
-         var obj = {}
-         obj.type = 'command'
-         obj.name = mod.name+'.bin'
-         obj.contents = str
-         mods.output(mod,'file',obj)
-         })
-      div.appendChild(btn)
-   var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('right'))
-      btn.addEventListener('click',function() {
-         //
-         // Create message
-         //
-         var str = "O 200,0"
-         //
-         // send command
-         //
-         var obj = {}
-         obj.type = 'command'
-         obj.name = mod.name+'.bin'
-         obj.contents = str
-         mods.output(mod,'file',obj)
-         })
-      div.appendChild(btn)
-  var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('in'))
-      btn.addEventListener('click',function() {
-         //
-         // Create message
-         //
-         var str = "PA;PA;VS50;PR 0,-400;"
-         //
-         // send command
-         //
-         var obj = {}
-         obj.type = 'command'
-         obj.name = mod.name+'.bin'
-         obj.contents = str
-         mods.output(mod,'file',obj)
-         })
-      div.appendChild(btn)
-  var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('out'))
-      btn.addEventListener('click',function() {
-         //
-         // Create message
-         //
-         var str = "PA;PA;VS50;PR 0,400;"
-         //
-         // send command
-         //
-         var obj = {}
-         obj.type = 'command'
-         obj.name = mod.name+'.bin'
-         obj.contents = str
-         mods.output(mod,'file',obj)
-         })
-      div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
 
 
-  var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('set origin here'))
-      btn.addEventListener('click',function() {
-         //
-         // Create message
-         //
-         var str = "PA;PA;VS50;PR 0,400;"
-         //
-         // send command
-         //
-         var obj = {}
-         obj.type = 'command'
-         obj.name = mod.name+'.bin'
-         obj.contents = str
-         mods.output(mod,'file',obj)
-         })
-      div.appendChild(btn)
+   div.appendChild(document.createTextNode('image origin:'))
    div.appendChild(document.createElement('br'))
 
-   div.appendChild(document.createTextNode('origin in image:'))
-   div.appendChild(document.createElement('br'))
    var input = document.createElement('input')
       input.type = 'radio'
       input.name = mod.div.id+'origin'
       input.id = mod.div.id+'topleft'
       div.appendChild(input)
       mod.topleft = input
-   div.appendChild(document.createTextNode(' left \u00A0 top \u00A0 right '))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'origin'
+      input.id = mod.div.id+'topmid'
+      div.appendChild(input)
+      mod.topmid = input   
    var input = document.createElement('input')
       input.type = 'radio'
       input.name = mod.div.id+'origin'
       input.id = mod.div.id+'topright'
       div.appendChild(input)
       mod.topright = input
+
    div.appendChild(document.createElement('br'))
+
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'origin'
+      input.id = mod.div.id+'midleft'
+      div.appendChild(input)
+      mod.midleft = input
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'origin'
+      input.id = mod.div.id+'midmid'
+      div.appendChild(input)
+      mod.midmid = input   
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'origin'
+      input.id = mod.div.id+'midright'
+      div.appendChild(input)
+      mod.midright = input
+
+   div.appendChild(document.createElement('br'))
+
    var input = document.createElement('input')
       input.type = 'radio'
       input.name = mod.div.id+'origin'
       input.id = mod.div.id+'botleft'
-      input.checked = true
       div.appendChild(input)
       mod.botleft = input
-   div.appendChild(document.createTextNode(' left\u00A0 bottom right '))
+      mod.botleft.checked = true
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'origin'
+      input.id = mod.div.id+'botmid'
+      div.appendChild(input)
+      mod.botmid = input   
    var input = document.createElement('input')
       input.type = 'radio'
       input.name = mod.div.id+'origin'
@@ -214,6 +311,20 @@ var interface = function(div){
 //
 // local functions
 //
+function check_step() {
+   //
+   // Checks how big is the manual move step 
+   // Units are mm x 20 eg. 10mm is 200 units
+   //
+   if (mod.range_big.checked) {
+         mod.step = 1000
+         console.log('ten checked')
+   }
+   else if (mod.range_medium.checked) {
+         mod.step = 200}
+   else if (mod.range_small.checked) {
+         mod.step = 20}
+}
 function make_path() {
    var dx = 25.4*mod.width/mod.dpi
    var dy = 25.4*mod.height/mod.dpi
@@ -221,50 +332,87 @@ function make_path() {
    var ny = mod.height
    var force = parseFloat(mod.force.value)
    var speed = parseFloat(mod.speed.value)
-   var str = "PA;PA;!ST1;!FS"+force+";VS"+speed+";\n"
-   var scale = 40.0*dx/(nx-1.0) // 40/mm
+   var str = "FN1\x03" // landscape mode
+
+   var scale = 20.0*dx/(nx-1.0) // 20 steps per mm
    var ox = 0
    var oy = 0
+
    if (mod.botleft.checked) {
-      var xoffset = 40.0*ox
-      var yoffset = 40.0*oy
+      var xoffset = 20.0*ox
+      var yoffset = 20.0*oy
+      }
+   else if (mod.botmid.checked) {
+      var xoffset = 20.0*(ox-dx)/2
+      var yoffset = 20.0*oy
       }
    else if (mod.botright.checked) {
-      var xoffset = 40.0*(ox-dx)
-      var yoffset = 40.0*oy
+      var xoffset = 20.0*(ox-dx)
+      var yoffset = 20.0*oy
+      }
+   else if (mod.midleft.checked) {
+      var xoffset = 20.0*ox
+      var yoffset = 20.0*(oy-dy)/2
+      }
+   else if (mod.midmid.checked) {
+      var xoffset = 20.0*(ox-dx)/2
+      var yoffset = 20.0*(oy-dy)/2
+      }
+   else if (mod.midright.checked) {
+      var xoffset = 20.0*(ox-dx)
+      var yoffset = 20.0*(oy-dy)/2
       }
    else if (mod.topleft.checked) {
-      var xoffset = 40.0*ox
-      var yoffset = 40.0*(oy-dy)
+      var xoffset = 20.0*ox
+      var yoffset = 20.0*(oy-dy)
+      }
+   else if (mod.topmid.checked) {
+      var xoffset = 20.0*(ox-dx)/2
+      var yoffset = 20.0*(oy-dy)
       }
    else if (mod.topright.checked) {
-      var xoffset = 40.0*(ox-dx)
-      var yoffset = 40.0*(oy-dy)
+      var xoffset = 20.0*(ox-dx)
+      var yoffset = 20.0*(oy-dy)
       }
+
    //
-   // loop over segments
+   // loop over segments relative coordinates
    //
+   var lx = 0 // init the last x coordinate
+   var ly = 0 // init the last y coordinate 
+   var rx = 0 // init relative movement in x
+   var ry = 0 // init relative movement in y
    for (var seg = 0; seg < mod.path.length; ++seg) {
-      x = xoffset+scale*mod.path[seg][0][0]
+      x = xoffset+scale*mod.path[seg][0][0]  // x destination in steps units
       y = yoffset+scale*mod.path[seg][0][1]
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move up to start point
-      //str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n" // hack: repeat in case comm dropped
-      str += "PD"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move down
-      //str += "PD"+x.toFixed(0)+","+y.toFixed(0)+";\n" // hack: repeat in case comm dropped
+      rx = x-lx // calculate the relative x movement
+      ry = y-ly // calculate the relative y movement
+      str += "O"+rx.toFixed(0)+","+ry.toFixed(0)+"\x03" // move up to start point
+      str += "E 0,0\x03" // pen down
+      lx = x // store last x coordinate
+      ly = y // store last y coordinate
       //
       // loop over points
       //
       for (var pt = 1; pt < mod.path[seg].length; ++pt) {
-         x = xoffset+scale*mod.path[seg][pt][0]
+         x = xoffset+scale*mod.path[seg][pt][0] // x destination in steps units
          y = yoffset+scale*mod.path[seg][pt][1]
-         str += "PD"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move down
-         //str += "PD"+x.toFixed(0)+","+y.toFixed(0)+";\n" // hack: repeat in case comm dropped
+         rx = x-lx // calculate the relative x movement
+         ry = y-ly // calculate the relative y movement
+         str += "E"+rx.toFixed(0)+","+ry.toFixed(0)+"\x03" // move down
+         lx = x // store last x coordinate
+         ly = y // store last y coordinate
          }
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n" // move up at last point
-      //str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n" // hack: repeat in case comm dropped
+      str += "O 0,0\x03" // move up at last point
       }
-   str += "PU0,0;\n" // pen up to origin
-   //str += "PU0,0;\n" // hack: repeat in case comm dropped
+   //
+   // return to origin
+   //
+   str += "O "+(-1)*lx.toFixed(0)+", "+(-1)*ly.toFixed(0)+"\x03" // pen up to origin, relative movement is (-lx,-ly)
+
+   //
+   // send the string
+   //
    outputs.file.event(str)
    }
 
