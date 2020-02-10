@@ -28,7 +28,7 @@ var name = 'WebSocket serial'
 var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = '1234'
-   mod.device.value = '/dev/ttyUSB0'
+   mod.device.value = 'Serialport not found'
    mod.baud.value = '115200'
    mod.flow_none.checked = false
    mod.socket = null
@@ -70,33 +70,30 @@ var outputs = {
 //
 var interface = function(div){
    mod.div = div
+
+
    //
    // server
    //
    var a = document.createElement('a')
       a.href = './js/serialserver.js'
-      a.innerHTML = 'serialserver:'
+      a.innerHTML = 'serialserver.js:'
       a.target = '_blank'
    div.appendChild(a)
    div.appendChild(document.createElement('br'))
    //
-   // open/close
+   // status
    //
-   var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('open'))
-      btn.addEventListener('click',function() {
-         socket_open()
-         })
-      div.appendChild(btn)
-   var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('close'))
-      btn.addEventListener('click',function() {
-         socket_close()
-         })
-      div.appendChild(btn)
+   //div.appendChild(document.createTextNode('\u00a0status: '))
+   var input = document.createElement('input')
+      input.classList.add("marquee")     
+      input.disabled = true
+      input.type = 'text'
+      input.size = 19
+      div.appendChild(input)
+      mod.status = input
    div.appendChild(document.createElement('br'))
+
    //
    // address
    //
@@ -118,37 +115,30 @@ var interface = function(div){
       mod.port = input
    div.appendChild(document.createElement('br'))
    //
-   // status
-   //
-   div.appendChild(document.createTextNode('\u00a0status: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 10
-      div.appendChild(input)
-      mod.status = input
-   div.appendChild(document.createElement('br'))
-   //
-   // serial
-   //
-   div.appendChild(document.createTextNode('serial device:'))
-   div.appendChild(document.createElement('br'))
-   //
    // open/close
    //
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('open'))
+      btn.appendChild(document.createTextNode('open socket'))
       btn.addEventListener('click',function() {
-         serial_open()
+         socket_open()
          })
       div.appendChild(btn)
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('close'))
+      btn.appendChild(document.createTextNode('close socket'))
       btn.addEventListener('click',function() {
-         serial_close()
+         socket_close()
          })
       div.appendChild(btn)
+   div.appendChild(document.createElement('br'))
+
+
+
+   //
+   // serial
+   //
+   div.appendChild(document.createTextNode('serial port:'))
    div.appendChild(document.createElement('br'))
    //
    // device
@@ -168,10 +158,9 @@ var interface = function(div){
    // baud rate
    //
    div.appendChild(document.createTextNode('baud rate:'))
-   div.appendChild(document.createElement('br'))   
    var input = document.createElement('input')
       input.type = 'text'
-      input.size = 10
+      input.size = 6
       div.appendChild(input)
       mod.baud = input
    div.appendChild(document.createElement('br'))   
@@ -202,8 +191,30 @@ var interface = function(div){
       input.id = mod.div.id+'flow_rtscts'
       div.appendChild(input)
       mod.flow_rtscts = input
+      mod.flow_rtscts.checked = true
    div.appendChild(document.createTextNode('RTSCTS\u00A0'))
-   div.appendChild(document.createElement('br'))   
+   div.appendChild(document.createElement('br')) 
+
+   //
+   // open/close
+   //
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('open port'))
+      btn.addEventListener('click',function() {
+         serial_open()
+         })
+      div.appendChild(btn)
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('close port'))
+      btn.addEventListener('click',function() {
+         serial_close()
+         })
+      div.appendChild(btn)
+   div.appendChild(document.createElement('br'))
+
+  
    //
    // file button
    //
