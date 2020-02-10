@@ -56,9 +56,14 @@ wss.on('connection',function(ws) {
       // start job
       //
       else {
-         var count = 0
+	 var job = JSON.parse(msg)
+         if (job == undefined) {
+	 console.log('no job to send')
+	 ws.send('no job to send')
+	 }
+	 else {
+	 var count = 0
          var file
-         var job = JSON.parse(msg)
 	 console.log('writing '+job.name+' (length '+job.contents.length+') to '+job.device)
          cancel = false
          fs.open(job.device,'w',function(err,fd) {
@@ -129,8 +134,9 @@ wss.on('connection',function(ws) {
                   })
 		  */
                }
-            }
-         }
+            } // end of write_char
+    	   } //end of else
+         } // end of else
       })
    //
    // close
