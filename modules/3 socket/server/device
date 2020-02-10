@@ -69,6 +69,17 @@ var interface = function(div){
       a.target = '_blank'
    div.appendChild(a)
    div.appendChild(document.createElement('br'))
+   //
+   // status
+   //
+   input = document.createElement('input')
+      input.classList.add("marquee")     
+      input.disabled = true
+      input.type = 'text'
+      input.size = 19
+      div.appendChild(input)
+      mod.status = input
+   div.appendChild(document.createElement('br'))
    div.appendChild(document.createTextNode('address: '))
    input = document.createElement('input')
       input.type = 'text'
@@ -83,26 +94,20 @@ var interface = function(div){
       div.appendChild(input)
       mod.port = input
    div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('\u00a0status: '))
-   input = document.createElement('input')
-      input.type = 'text'
-      input.size = 10
-      div.appendChild(input)
-      mod.status = input
-   div.appendChild(document.createElement('br'))
+
    //
    // open/close
    //
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('open'))
+      btn.appendChild(document.createTextNode('open socket'))
       btn.addEventListener('click',function() {
          socket_open()
          })
       div.appendChild(btn)
    var btn = document.createElement('button')
       btn.style.margin = 1
-      btn.appendChild(document.createTextNode('close'))
+      btn.appendChild(document.createTextNode('close socket'))
       btn.addEventListener('click',function() {
          socket_close()
          })
