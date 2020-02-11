@@ -82,7 +82,9 @@
 	   if (thisUrl == 'https://fabfoundation.github.io/mods/') {
 	   	console.log('mods online')
 	   }
-	   console.log('mods local')
+	   else {
+	   	console.log('mods local')
+	   }
    }
 
    //
