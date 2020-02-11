@@ -3,8 +3,7 @@
 //
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2018
-// Modified by Francisco Sanchez at The Beach Lab 2019
-//  - UI changes
+// Modified by Francisco Sanchez at The Beach Lab 2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
@@ -73,19 +72,44 @@
    // 
    mods.theme = mods.lighttheme
    //
-   // check version
+   // check version function
    //
-   check_version()
    function check_version() {
 	   var thisUrl = window.location.href
 	   console.log(thisUrl)
 	   if (thisUrl.slice(0,37) == 'https://fabfoundation.github.io/mods/') {
 	   	console.log('mods online')
+		set_version('')   
 	   }
 	   else {
 	   	console.log('mods local')
-	   }
-   }
+                var onlineVersion
+	        var localVersion
+		// we check the local version
+		fetch('./version')
+			.then(function(response) {
+			 response.text().then(function(text) {
+			 localVersion = text;
+			 console.log('local version: '+localVersion)
+		         // now we check the online version
+			 fetch('https://fabfoundation.github.io/mods/version',{cache: "no-store"})
+				.then(function(response) {
+				 response.text()
+				.then(function(text) {
+				 onlineVersion = text;
+				 console.log('online version: '+onlineVersion)
+			         // now we compare both
+			         if (parseInt(localVersion) < parseInt(onlineVersion)) {
+					set_version('outdated local mods, please pull.')   
+					}
+				 else console.log('mods up to date')
+				});
+				})
+				.catch(function() { console.log('error getting the online version') })
+			});		
+			});
+		} // end else
+   } // end check_version
    //
    // Toggle Dark Mode 'Ctrl+Alt+d'
    //
@@ -659,6 +683,14 @@
    document.body.appendChild(span)
    document.body.appendChild(document.createTextNode(' '))
    var span = document.createElement('span')
+   span.setAttribute('id', 'version')
+   span.style.display = 'inline-block'
+   span.style.verticalAlign = 'middle'
+   var innerspan = document.createElement('span')
+   span.appendChild(innerspan)
+   document.body.appendChild(span)
+   document.body.appendChild(document.createTextNode(' '))
+   var span = document.createElement('span')
    span.setAttribute('id', 'prompt')
    span.style.display = 'inline-block'
    span.style.verticalAlign = 'middle'
@@ -737,6 +769,7 @@
       return logo
    }
    set_prompt('right click/two finger/long press for menu; scroll for zoom, drag for pan')
+   check_version()
    //
    // SVG canvas for drawing
    //
@@ -1587,6 +1620,11 @@
    function set_prompt(txt) {
       var span = document.getElementById('prompt')
       span.childNodes[0].innerHTML = ' ' + txt
+   }
+   function set_version(txt) {
+      var span = document.getElementById('version')
+      span.childNodes[0].innerHTML = ' ' + txt
+      span.childNodes[0].style.fontWeight = 'bold'
    }
    function nothing(evt) {
       evt.preventDefault()

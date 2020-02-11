@@ -1,5 +1,5 @@
 #!/bin/bash
-# This file executes 3 javascript programs to generate 
+# This section executes 3 javascript programs to generate 
 # the index of files, programs and modules.
 # Refer to files.js, programs.js and modules.js
 # for more info.

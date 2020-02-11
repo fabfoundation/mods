@@ -1,0 +1,5 @@
+#!/bin/bash
+# set version number as seconds since Unix epoch
+date \+%s > version
+echo version updated
+
