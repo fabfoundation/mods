@@ -68,7 +68,23 @@
       logodot: "red",
       logorect: "blue"
    }
+   //
+   // set theme
+   // 
    mods.theme = mods.lighttheme
+   //
+   // check version
+   //
+   check_version()
+   function check_version() {
+	   var thisUrl = window.location.href
+	   console.log(thisUrl)
+	   if (thisUrl == 'https://fabfoundation.github.io/mods/') {
+	   	console.log('mods online')
+	   }
+	   console.log('mods local')
+   }
+
    //
    // Toggle Dark Mode 'Ctrl+Alt+d'
    //
