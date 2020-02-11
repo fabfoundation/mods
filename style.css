@@ -2,6 +2,10 @@
  * mods css stylesheet 
  * created by Francisco Sanchez Arroyo February 2020
 */
+body {
+	overflow: hidden;
+	font-family: monospace;
+}
 button {
     font-family : inherit;
     font-size: 1em;

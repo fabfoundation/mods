@@ -94,8 +94,6 @@
    //
    // UI
    //
-   document.body.style.overflow = "hidden"
-   document.body.style.fontFamily = "monospace"
    document.body.style.backgroundColor = mods.theme.background
    document.body.aLink = mods.theme.alink
    document.body.link = mods.theme.link
