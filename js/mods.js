@@ -79,14 +79,13 @@
    function check_version() {
 	   var thisUrl = window.location.href
 	   console.log(thisUrl)
-	   if (thisUrl == 'https://fabfoundation.github.io/mods/') {
+	   if (thisUrl.slice(0,37) == 'https://fabfoundation.github.io/mods/') {
 	   	console.log('mods online')
 	   }
 	   else {
 	   	console.log('mods local')
 	   }
    }
-
    //
    // Toggle Dark Mode 'Ctrl+Alt+d'
    //
