@@ -45,8 +45,8 @@
       ystart: null,
       xtrans: null,
       ytrans: null,
-      maxzoom: 1.9,
-      minzoom: 0.4
+      maxzoom: 2.5,
+      minzoom: 0.3
    }
    mods.darktheme = {
       status: "dark",
@@ -135,12 +135,12 @@
          if (evt.deltaY > 0)
          {
              if (t.s < mods.ui.maxzoom)
-               var scale = t.s * 1.1
+               var scale = t.s * 1.2
          }
          else
          {
             if (t.s > mods.ui.minzoom)
-               var scale = t.s * 0.9
+               var scale = t.s * 0.8
          }
          var tx = t.tx + (evt.pageX - t.ox) * (1 - 1 / t.s)
          var ty = t.ty + (evt.pageY - t.oy) * (1 - 1 / t.s)
