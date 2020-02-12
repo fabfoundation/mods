@@ -4,6 +4,7 @@
 #    send a serial file with handshaking
 #
 # Neil Gershenfeld 1/17/20
+# modified by Francisco Sanchez Arroyo 12-Feb-2020
 #
 # This work may be reproduced, modified, distributed,
 # performed, and displayed for any purpose, but must
@@ -25,6 +26,7 @@ if (len(sys.argv) != 3):
    sys.exit()
 client = sys.argv[1]
 port = int(sys.argv[2])
+print("listening for connection from client address "+client+" on server port "+str(port))
 #
 # WebSocket handler
 #
@@ -37,6 +39,7 @@ async def receive(websocket,path):
          # reject client
          #
          print("connection rejected from "+address)
+         await websocket.send(f"connection rejected from {address}")
          continue
       #
       # accept client
