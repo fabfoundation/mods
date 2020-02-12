@@ -157,7 +157,7 @@ var interface = function(div){
    //
    // baud rate
    //
-   div.appendChild(document.createTextNode('baud rate:'))
+   div.appendChild(document.createTextNode('baud rate: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
