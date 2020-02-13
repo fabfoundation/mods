@@ -343,8 +343,9 @@
    // context menu
    //
    window.addEventListener('contextmenu', function (evt) {
-      var el = document.elementFromPoint(evt.pageX,evt.pageY)    
-      if ((el.tagName == "HTML") || (el.tagName == "BODY")) {
+      //var el = document.elementFromPoint(evt.pageX,evt.pageY)    
+      //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { // context menu in white area
+      if (true) { // context menu everywhere
       evt.stopPropagation()
       evt.preventDefault()
       if (mods.ui.menu != null) {
