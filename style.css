@@ -56,10 +56,11 @@ input.marquee {
   -webkit-animation: marquee 3s infinite;
   -webkit-animation-timing-function: linear;
   }
-.select-style {
+select {
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
+    width: 100%;
     font-family: inherit;
     font-size: 1em;
     height: 20px;
@@ -76,16 +77,16 @@ input.marquee {
     background-position: right 0.3em top 50%, 0 0;
     background-repeat: no-repeat;
     }
-.select-style:hover {
+select:hover {
     border: 1px solid red;
     }
 
-.select-style:focus {
+select:focus {
     outline: none;
 
 }
 
-.select-style:-moz-focusring {
+select:-moz-focusring {
     color: transparent;
     text-shadow: 0 0 0 #000;
 }

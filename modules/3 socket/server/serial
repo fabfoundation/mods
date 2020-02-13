@@ -145,7 +145,6 @@ var interface = function(div){
    //
 
    var select = document.createElement('select')
-       select.setAttribute('style', 'width:150px');
        var el = document.createElement('option')
           el.textContent = 'Serialport not found'
           el.value = 'Serialport not found'

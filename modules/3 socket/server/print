@@ -120,8 +120,6 @@ var interface = function(div){
    div.appendChild(document.createTextNode('printer:'))
        div.appendChild(document.createElement('br'))
        var select = document.createElement('select')
-       select.className = "select-style"
-       select.setAttribute('style', 'width:185px');
       var el = document.createElement('option')
           el.textContent = 'Printer not found'
           el.value = 'Printer not found'
