@@ -49,5 +49,5 @@ Logout or reboot for the changes to take effect. The permissions are now persist
 ## Using `mods`
 
 - Step 1: Run `sh start-servers` inside the `mods` directory 
-- Step 2: Open a browser and go to `http://localhost:8080` or ` https://fabfoundation.github.io/mods/`
+- Step 2: Open a browser and go to http://localhost:8080 or https://fabfoundation.github.io/mods/
 
