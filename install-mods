@@ -13,7 +13,7 @@ cd js
 npm install ws
 npm install serialport
 npm install node-gyp
-npm install printer
+npm install @things-factory/node-printer
 cd ..
 echo "All npm packages installed"
 
