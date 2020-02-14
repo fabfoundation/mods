@@ -23,7 +23,7 @@ if (process.argv.length < 4) {
 //
 var client_address = process.argv[2] // get the server IP address from the command line argument 2
 var server_port = process.argv[3]   // get the server port from the command line argument 3
-console.log("listening for connection from client address "+client_address+" on server port "+server_port)
+console.log("serialserver listening for connection from client address "+client_address+" on server port "+server_port)
 var SerialPort = require('serialport') // require the library
 var port = null
 var WebSocketServer = require('ws').Server

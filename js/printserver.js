@@ -12,7 +12,7 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2017
-// Modified by Francisco Sanchez Arroyo 31-Jan-2020
+// Modified by Francisco Sanchez Arroyo 14-Feb-2020
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -31,7 +31,7 @@ if (process.argv.length < 4) {
 //
 var client_address = process.argv[2]
 var server_port = process.argv[3]
-console.log("listening for connection from client address "+client_address+" on server port "+server_port)
+console.log("printserver listening for connection from client address "+client_address+" on server port "+server_port)
 //
 // requires
 //

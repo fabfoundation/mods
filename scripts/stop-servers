@@ -13,6 +13,10 @@
 #
 pkill -f "node printserver.js"
 pkill -f "node serialserver.js"
-pkill -f "http-server -p 8080"
-zenity --info --text 'mods server stopped'
+pkill -f "node deviceserver.js"
+pkill -f "node udpserver.js"
+pkill -f "node echoserver.js"
+pkill -f "python3 serialserver.py"
+pkill -f "http-server -a 127.0.0.1 -p 8080"
+echo 'all mods servers stopped'
 

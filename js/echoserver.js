@@ -4,7 +4,8 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
-// 
+// modified by Francisco Sanchez Arroyo 14-Feb-2020
+//
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
 // project. Copyright is retained and must be preserved. The work is 
@@ -22,7 +23,7 @@ if (process.argv.length < 4) {
 //
 var client_address = process.argv[2]
 var server_port = process.argv[3]
-console.log("listening for connection from client address "+client_address+" on server port "+server_port)
+console.log("echoserver listening for connection from client address "+client_address+" on server port "+server_port)
 var fs = require("fs")
 var WebSocketServer = require('ws').Server
 wss = new WebSocketServer({port:server_port})

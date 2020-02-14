@@ -4,6 +4,7 @@
 //
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2016
+// modified by Francisco Sanchez Arroyo 14-Feb-2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
@@ -36,7 +37,7 @@ for (var i in interfaces) {
 var dgram = require("dgram")
 var client_address = process.argv[2]
 var server_port = process.argv[3]
-console.log("listening for connection from client address "+client_address+" on server port "+server_port)
+console.log("udpserver listening for connection from client address "+client_address+" on server port "+server_port)
 var WebSocketServer = require('ws').Server
 wss = new WebSocketServer({port:server_port})
 //

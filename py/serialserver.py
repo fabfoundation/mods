@@ -26,7 +26,7 @@ if (len(sys.argv) != 3):
    sys.exit()
 client = sys.argv[1]
 port = int(sys.argv[2])
-print("listening for connection from client address "+client+" on server port "+str(port))
+print("python3 serialserver listening for connection from client address "+client+" on server port "+str(port))
 #
 # WebSocket handler
 #

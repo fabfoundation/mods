@@ -22,7 +22,7 @@ if (process.argv.length < 4) {
 //
 var client_address = process.argv[2]
 var server_port = process.argv[3]
-console.log("listening for connection from client address "+client_address+" on server port "+server_port)
+console.log("deviceserver listening for connection from client address "+client_address+" on server port "+server_port)
 var fs = require("fs")
 var WebSocketServer = require('ws').Server
 wss = new WebSocketServer({port:server_port})

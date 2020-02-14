@@ -1,0 +1,108 @@
+#!/bin/bash
+#
+# start mods server
+#
+# Neil Gershenfeld 
+# (c) Massachusetts Institute of Technology 2016
+# Modified bt Francisco Sanchez Arroyo 2020
+#
+# This work may be reproduced, modified, distributed, performed, and 
+# displayed for any purpose, but must acknowledge the fab modules 
+# project. Copyright is retained and must be preserved. The work is 
+# provided as is; no warranty is provided, and users accept all 
+# liability.
+
+function finish() {
+        echo "** Trapped CTRL-C"
+	echo "** Killing all servers"
+	pkill -f "python3 serialserver.py"
+        pkill -f "node serialserver.js"
+	pkill -f "node deviceserver.js"
+	pkill -f "node printserver.js"
+	pkill -f "node udpserver.js"
+	pkill -f "node echoserver.js"
+        pkill -f "http-server -a 127.0.0.1 -p 8080"
+	echo "** all servers killed!"
+	exit 130
+}
+
+# trap ctrl-c and call ctrl_c()
+trap finish INT TERM 
+
+#
+# find path, following symlinks
+#    from http://www.ostricher.com/2014/10/the-right-way-to-get-the-directory-of-a-bash-script/
+#
+get_script_dir () {
+   SOURCE="${BASH_SOURCE[0]}"
+   while [ -h "$SOURCE" ]; do
+      DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+      SOURCE="$( readlink "$SOURCE" )"
+      [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+   done
+   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+   echo "$DIR"
+   }
+path=$(get_script_dir)
+
+#
+# cd to script
+#
+cd $path
+cd ..
+cd js
+clear
+
+#
+# uncomment to start node print server (kills before if already running)
+# for printer permission:
+#    sudo adduser user_name lp
+#    sudo adduser user_name lpadmin
+#
+pkill -f "node printserver.js"
+node printserver.js ::ffff:127.0.0.1 1234 &
+
+#
+# uncomment to start node device server (kills before if already running)
+# for lp device permission:
+#    sudo adduser user_name lp lpadmin
+#
+pkill -f "node deviceserver.js"
+node deviceserver.js ::ffff:127.0.0.1 1236 &
+
+#
+# uncomment to start node echo server (kills before if already running)
+#
+pkill -f "node echoserver.js"
+node  echoserver.js ::ffff:127.0.0.1 1237 &
+
+#
+# uncomment to start node udp server (kills before if already running)
+#
+pkill -f "node udpserver.js"
+node udpserver.js ::ffff:127.0.0.1 1238 &
+
+# uncomment to start node serial server (kills before if already running)
+# for serial permission:
+#    sudo adduser user_name dialout
+#
+pkill -f "node serialserver.js"
+node serialserver.js ::ffff:127.0.0.1 1235 &
+
+#
+# uncomment to start a python serial server (kills before if already running)
+# for serial permission:
+#    sudo adduser user_name dialout
+#
+pkill -f "python3 serialserver.py"
+cd ..
+cd py
+python3 serialserver.py 127.0.0.1 1239 &
+
+#
+# uncomment to start local http server (kills before if already running)
+#
+cd ..
+pkill -f "http-server -a 127.0.0.1 -p 8080"
+http-server -a 127.0.0.1 -p 8080 
+
