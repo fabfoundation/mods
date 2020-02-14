@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Install all the npm packages
+# by Francisco Sanchez Arroyo 14-Feb-2020 
+#
+# This work may be reproduced, modified, distributed, performed, and 
+# displayed for any purpose, but must acknowledge the fab modules 
+# project. Copyright is retained and must be preserved. The work is 
+# provided as is; no warranty is provided, and users accept all 
+# liability.
+npm install http-server
+cd js
+npm install ws
+npm install serialport
+npm install node-gyp
+npm install printer
+cd ..
+echo "All npm packages installed"
+
