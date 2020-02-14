@@ -401,7 +401,7 @@
          //
          // open server module
          //
-         add_menu(div, 'open server module', function (evt) {
+         add_menu(div, 'open module', function (evt) {
             function module_label(label) {
                var div = document.createElement('div')
                var i = document.createElement('i')
@@ -454,7 +454,7 @@
          //
          // open local module
          //
-         add_menu(div, 'open local module', function (evt) {
+         add_menu(div, 'open module from file', function (evt) {
             var t = mods_transform()
             mods.ui.top = t.oy - t.ty + (evt.pageY - t.oy) / t.s
             mods.ui.left = t.ox - t.tx + (evt.pageX - t.ox) / t.s
@@ -467,11 +467,11 @@
          //
          // open remote module
          //
-         add_menu(div, 'open remote module', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
-            mods.ui.menu = null
-            set_prompt('remotes not yet implemented')
-         })
+//         add_menu(div, 'open remote module', function (evt) {
+//            document.body.removeChild(evt.target.parentNode)
+//            mods.ui.menu = null
+//            set_prompt('remotes not yet implemented')
+//         })
          document.body.appendChild(div)
       }
       //
@@ -487,7 +487,7 @@
          //
          // open local program
          //
-         add_menu(div, 'open local program', function (evt) {
+         add_menu(div, 'open program from file', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var file = document.getElementById('prog_input')
@@ -497,7 +497,7 @@
          //
          // open server program
          //
-         add_menu(div, 'open server program', function (evt) {
+         add_menu(div, 'open program', function (evt) {
             function program_label(label) {
                var div = document.createElement('div')
                var i = document.createElement('i')
@@ -554,15 +554,15 @@
          //
          // open remote program
          //
-         add_menu(div, 'open remote program', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
-            mods.ui.menu = null
-            set_prompt('remotes not yet implemented')
-         })
+//         add_menu(div, 'open remote program', function (evt) {
+//            document.body.removeChild(evt.target.parentNode)
+//            mods.ui.menu = null
+//            set_prompt('remotes not yet implemented')
+//         })
          //
          // save local program
          //
-         add_menu(div, 'save local program', function (evt) {
+         add_menu(div, 'save program to file', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             save_program()
@@ -570,7 +570,7 @@
          //
          // save local page
          //
-         add_menu(div, 'save local page', function (evt) {
+         add_menu(div, 'save html page', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             save_page()
@@ -642,7 +642,7 @@
          //
          // view files
          //
-         add_menu(div, 'view files', function (evt) {
+         add_menu(div, 'view local files', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('files.html')
@@ -660,7 +660,7 @@
          //
          // view forked project
          //
-         add_menu(div, 'view mods Community Edition project', function (evt) {
+         add_menu(div, 'view mods CE project', function (evt) {
             document.body.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('https://github.com/fabfoundation/mods')
