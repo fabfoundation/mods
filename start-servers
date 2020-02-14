@@ -21,9 +21,9 @@ function finish() {
 	pkill -f "node printserver.js"
 	pkill -f "node udpserver.js"
 	pkill -f "node echoserver.js"
-        pkill -f "http-server -a 127.0.0.1 -p 8080"
+        pkill -f "http-server -a 127.0.0.1 -p 8080 -s"
 	echo "** all servers killed!"
-	exit 130
+	exit
 }
 
 # trap ctrl-c and call ctrl_c()
@@ -52,6 +52,13 @@ cd $path
 cd ..
 cd js
 clear
+
+echo "=================================="
+echo "= USE CTRL-C TO EXIT ALL SERVERS ="
+echo "=================================="
+echo ""
+echo "http-server at http://127.0.0.1:8080"
+echo ""
 
 #
 # uncomment to start node print server (kills before if already running)
@@ -103,6 +110,6 @@ python3 serialserver.py 127.0.0.1 1239 &
 # uncomment to start local http server (kills before if already running)
 #
 cd ..
-pkill -f "http-server -a 127.0.0.1 -p 8080"
-http-server -a 127.0.0.1 -p 8080 
+pkill -f "http-server -a 127.0.0.1 -p 8080 -s"
+http-server -a 127.0.0.1 -p 8080 -s
 
