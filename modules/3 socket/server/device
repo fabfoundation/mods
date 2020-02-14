@@ -27,7 +27,7 @@ var name = 'WebSocket device'
 //
 var init = function() {
    mod.address.value = '127.0.0.1'
-   mod.port.value = '1234'
+   mod.port.value = '1236'
    mod.device.value = '/dev/usb/lp0'
    mod.socket = null
    socket_open()

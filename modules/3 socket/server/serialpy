@@ -27,7 +27,7 @@ var name = 'WebSocket Python serial'
 //
 var init = function() {
    mod.address.value = '127.0.0.1'
-   mod.port.value = '1234'
+   mod.port.value = '1239'
    mod.device.value = '/dev/ttyUSB0'
    mod.baud.value = '9600'
    mod.flow_dsrdtr.checked = true

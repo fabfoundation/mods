@@ -27,7 +27,7 @@ var name = 'WebSocket serial'
 //
 var init = function() {
    mod.address.value = '127.0.0.1'
-   mod.port.value = '1234'
+   mod.port.value = '1235'
    mod.device.value = 'Serialport not found'
    mod.baud.value = '115200'
    mod.flow_none.checked = false
