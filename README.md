@@ -22,7 +22,7 @@ The goal of the community edition is to provide documentation, support and help 
 
 ## Installation
 
-- Step 1: Install [node.js](https://docs.npmjs.com/getting-started/installing-node), which should include `npm` package manager; python3(https://www.python.org/downloads/) and pip(https://pip.pypa.io/en/stable/installing/)
+- Step 1: Install [node.js](https://docs.npmjs.com/getting-started/installing-node), which should include `npm` package manager; [python3](https://www.python.org/downloads/) and [pip3](https://pip.pypa.io/en/stable/installing/)
 - Step 2: Clone the `mods` repository: `git clone https://github.com/fabfoundation/mods.git`
 - Step 3: Run the installation script `sh install-mods` inside the `mods` folder
 
