@@ -49,7 +49,6 @@ path=$(get_script_dir)
 # cd to script
 #
 cd $path
-cd ..
 cd js
 clear
 
