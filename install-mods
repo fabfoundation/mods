@@ -8,9 +8,9 @@
 # project. Copyright is retained and must be preserved. The work is 
 # provided as is; no warranty is provided, and users accept all 
 # liability.
-sudo pip3 install serial
-sudo pip3 install websockets
-sudo pip3 install pyserial
+pip3 install --user serial
+pip3 install --user websockets
+pip3 install --user pyserial
 npm install http-server
 cd js
 npm install bufferutil
