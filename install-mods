@@ -18,7 +18,7 @@ npm install utf-8-validate
 npm install ws
 npm install serialport
 npm install node-gyp
-npm install @things-factory/node-printer
+npm install printer
 cd ..
 echo "All npm packages installed"
 

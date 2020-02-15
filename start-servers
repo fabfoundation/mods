@@ -18,7 +18,6 @@ function finish() {
 	pkill -f "python3 serialserver.py"
         pkill -f "node serialserver.js"
 	pkill -f "node deviceserver.js"
-	pkill -f "node printserver.js"
 	pkill -f "node udpserver.js"
 	pkill -f "node echoserver.js"
         pkill -f "http-server -a 127.0.0.1 -p 8080 -s"
@@ -65,8 +64,8 @@ echo ""
 #    sudo adduser user_name lp
 #    sudo adduser user_name lpadmin
 #
-pkill -f "node printserver.js"
-node printserver.js ::ffff:127.0.0.1 1234 &
+#pkill -f "node printserver.js"
+#node printserver.js ::ffff:127.0.0.1 1234 &
 
 #
 # uncomment to start node device server (kills before if already running)
