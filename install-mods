@@ -18,7 +18,6 @@ npm install utf-8-validate
 npm install ws
 npm install serialport
 npm install node-gyp
-npm install printer
+npm install printer --build-from-source
 cd ..
-echo "All npm packages installed"
 

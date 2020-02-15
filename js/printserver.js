@@ -3,7 +3,7 @@
 //    WebSocket print server
 //
 // dependencies:
-//    npm i @things-factory/node-printer ws
+//    npm i printer ws
 //    Windows
 //       npm install --global windows-build-tools
 //    Linux
@@ -35,7 +35,7 @@ console.log("printserver listening for connection from client address "+client_a
 //
 // requires
 //
-var printer = require("@things-factory/node-printer")
+var printer = require("printer")
 var WebSocketServer = require('ws').Server
 //
 // start WebSocket server

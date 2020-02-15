@@ -17,14 +17,15 @@ function finish() {
 	echo "** Killing all servers"
         pkill -f "node serialserver.js"
 	pkill -f "node deviceserver.js"
+	pkill -f "node printserver.js"
 	pkill -f "node udpserver.js"
 	pkill -f "node echoserver.js"
-        pkill -f "http-server -a 127.0.0.1 -p 8080 -s"
+        pkill -f "http-server"
 	echo "** all servers killed!"
 	exit
 }
 
-# trap ctrl-c and call ctrl_c()
+# trap ctrl-c and call finish()
 trap finish INT TERM 
 
 #
@@ -63,8 +64,8 @@ echo ""
 #    sudo adduser user_name lp
 #    sudo adduser user_name lpadmin
 #
-#pkill -f "node printserver.js"
-#node printserver.js ::ffff:127.0.0.1 1234 &
+pkill -f "node printserver.js"
+node printserver.js ::ffff:127.0.0.1 1234 &
 
 #
 # uncomment to start node device server (kills before if already running)
@@ -107,6 +108,6 @@ node serialserver.js ::ffff:127.0.0.1 1235 &
 # uncomment to start local http server (kills before if already running)
 #
 cd ..
-pkill -f "http-server -a 127.0.0.1 -p 8080 -s"
-http-server -a 127.0.0.1 -p 8080 -s
+pkill -f "http-server"
+node node_modules/http-server/bin/http-server -o
 
