@@ -13,6 +13,8 @@ sudo pip3 install websockets
 sudo pip3 install pyserial
 npm install http-server
 cd js
+npm install bufferutil
+npm install utf-8-validate
 npm install ws
 npm install serialport
 npm install node-gyp

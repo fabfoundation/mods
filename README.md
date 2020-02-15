@@ -22,9 +22,9 @@ The goal of the community edition is to provide documentation, support and help 
 
 ## Installation
 
-- Step 1: Install [node.js](https://docs.npmjs.com/getting-started/installing-node), which should include `npm` package manager; [python3](https://www.python.org/downloads/) and [pip3](https://pip.pypa.io/en/stable/installing/)
+- Step 1: Install **the latest LTS** [node.js](https://docs.npmjs.com/getting-started/installing-node) (which should include `npm` package manager), [python3](https://www.python.org/downloads/) and [pip3](https://pip.pypa.io/en/stable/installing/)
 - Step 2: Clone the `mods` repository: `git clone https://github.com/fabfoundation/mods.git`
-- Step 3: Run the installation script `sh install-mods` inside the `mods` folder
+- Step 3: Run the installation script `bash install-mods` inside the `mods` folder
 
 ## Setting persistent permissions in Linux
 
@@ -48,6 +48,6 @@ Logout or reboot for the changes to take effect. The permissions are now persist
 
 ## Using `mods`
 
-- Step 1: Run `sh start-servers` inside the `mods` directory 
+- Step 1: Run `bash start-servers` inside the `mods` directory 
 - Step 2: Open a browser and go to http://localhost:8080 or https://fabfoundation.github.io/mods/
 
