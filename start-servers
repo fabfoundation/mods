@@ -15,7 +15,6 @@
 function finish() {
         echo "** Trapped CTRL-C"
 	echo "** Killing all servers"
-	pkill -f "python3 serialserver.py"
         pkill -f "node serialserver.js"
 	pkill -f "node deviceserver.js"
 	pkill -f "node udpserver.js"
@@ -99,10 +98,10 @@ node serialserver.js ::ffff:127.0.0.1 1235 &
 # for serial permission:
 #    sudo adduser user_name dialout
 #
-pkill -f "python3 serialserver.py"
-cd ..
-cd py
-python3 serialserver.py 127.0.0.1 1239 &
+#pkill -f "python3 serialserver.py"
+#cd ..
+#cd py
+#python3 serialserver.py 127.0.0.1 1239 &
 
 #
 # uncomment to start local http server (kills before if already running)
