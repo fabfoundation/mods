@@ -11,6 +11,7 @@ Just like `mods`, but cooler :sunglasses:
 * [Installation](#installation)
 * [Setting persistent permissions in Linux](#setting-persistent-permissions-in-linux)
 * [Using `mods`](#using-mods)
+* [Current status](#current-status)
 
 <!-- vim-markdown-toc -->
 
@@ -23,6 +24,13 @@ The goal of the community edition is to provide documentation, support and help 
 ## Installation
 
 - Step 1: Install **the latest LTS** [node.js](https://docs.npmjs.com/getting-started/installing-node) (which should include `npm` package manager), [python3](https://www.python.org/downloads/) and [pip3](https://pip.pypa.io/en/stable/installing/)
+```bash
+sudo apt update
+sudo apt install python3
+sudo apt install python3-pip
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt install nodejs
+```
 - Step 2: Clone the `mods` repository: `git clone https://github.com/fabfoundation/mods.git`
 - Step 3: Run the installation script `bash install-mods` inside the `mods` folder
 
@@ -50,4 +58,13 @@ Logout or reboot for the changes to take effect. The permissions are now persist
 
 - Step 1: Run `bash start-servers` inside the `mods` directory 
 - Step 2: Open a browser and go to http://localhost:8080 or https://fabfoundation.github.io/mods/
+
+## Current status
+
+|                 |  Windows 10 WSL Ubuntu 18 LTS | Ubuntu 18 LTS | Arch Linux |
+|-----------------|-------------------------------|---------------|------------|
+| Installation    | PASS                          | PASS          | PASS       |
+| Running         | PASS                          | PASS          | PASS       |
+| Moving machines | SERIAL AND PRINTERS (?)       | ALL           | ALL        |
+
 
