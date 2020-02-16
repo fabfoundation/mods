@@ -67,6 +67,8 @@
       logodot: "red",
       logorect: "blue"
    }
+   var header = document.getElementById('header-mods')
+   var main = document.getElementById('main-mods')
    //
    // set theme
    // 
@@ -125,7 +127,7 @@
          {
             mods.theme = mods.lighttheme
          }
-         document.body.style.backgroundColor = mods.theme.background
+         main.style.backgroundColor = mods.theme.background
          div.style.color = mods.theme.text
          document.body.aLink = mods.theme.alink
          document.body.link = mods.theme.link
@@ -135,25 +137,25 @@
    //
    // UI
    //
-   document.body.style.backgroundColor = mods.theme.background
+   main.style.backgroundColor = mods.theme.background
    document.body.aLink = mods.theme.alink
    document.body.link = mods.theme.link
    document.body.vLink = mods.theme.vlink
    function mods_transform() {
-      var transform = document.body.style.transform
-      var m = new DOMMatrix(getComputedStyle(document.body).transform)
+      var transform = main.style.transform
+      var m = new DOMMatrix(getComputedStyle(main).transform)
       var s = m.m11
       var tx = m.m41/s
       var ty = m.m42/s
-      var origin = document.body.style.transformOrigin
+      var origin = main.style.transformOrigin
       var pxx = origin.indexOf('px')
       var ox = parseFloat(origin.slice(0, pxx))
       var pxy = origin.indexOf('px', pxx + 2)
       var oy = parseFloat(origin.slice(pxx + 2, pxy))
       return ({ s: s, tx: tx, ty: ty, ox: ox, oy: oy })
    }
-   document.body.style.transform = 'scale(1) translate(0px,0px)'
-   document.body.style.transformOrigin = '0px 0px'
+   main.style.transform = 'scale(1) translate(0px,0px)'
+   main.style.transformOrigin = '0px 0px'
    //
    // scroll wheel event
    //
@@ -185,8 +187,8 @@
          }
          var tx = t.tx + (evt.pageX - t.ox) * (1 - 1 / t.s)
          var ty = t.ty + (evt.pageY - t.oy) * (1 - 1 / t.s)
-         document.body.style.transform = `scale(${scale}) translate(${tx}px,${ty}px)`
-         document.body.style.transformOrigin = `${evt.pageX}px ${evt.pageY}px`
+         main.style.transform = `scale(${scale}) translate(${tx}px,${ty}px)`
+         main.style.transformOrigin = `${evt.pageX}px ${evt.pageY}px`
       }
    })
    //
@@ -200,7 +202,8 @@
       //
       // check if on body
       //
-      if ((el.tagName == "HTML") || (el.tagName == "BODY")) {
+      if ((el.tagName == "HTML") || (el.tagName == "BODY") || (el.id =="main-mods")) {
+      //if ((el.id == "main-mods") {
          //
          // remember button
          //
@@ -208,7 +211,7 @@
          if (mods.ui.mousedown == 0) {
             set_prompt('left-drag to pan, middle-drag to select, Ctrl+Alt+d to toggle dark mode')
             if (mods.ui.menu != null) {
-               document.body.removeChild(mods.ui.menu)
+               main.removeChild(mods.ui.menu)
                mods.ui.menu = null
             }
          }
@@ -239,7 +242,7 @@
             //
             xtrans = mods.ui.xtrans + (evt.pageX - mods.ui.xstart) / t.s
             ytrans = mods.ui.ytrans + (evt.pageY - mods.ui.ystart) / t.s
-            document.body.style.transform = `scale(${t.s}) translate(${xtrans}px,${ytrans}px)`
+            main.style.transform = `scale(${t.s}) translate(${xtrans}px,${ytrans}px)`
          }
          else if (mods.ui.mousedown == 1) {
             //
@@ -251,7 +254,7 @@
                // start dragging
                //
                if (mods.ui.menu != null) {
-                  document.body.removeChild(mods.ui.menu)
+                  main.removeChild(mods.ui.menu)
                   mods.ui.menu = null
                }
                set_prompt('middle-drag to select')
@@ -349,7 +352,7 @@
       evt.stopPropagation()
       evt.preventDefault()
       if (mods.ui.menu != null) {
-         document.body.removeChild(mods.ui.menu)
+         main.removeChild(mods.ui.menu)
          mods.ui.menu = null
       }
       var div = document.createElement('div')
@@ -358,7 +361,7 @@
       add_menu(div, 'programs', programs)
       add_menu(div, 'edit', edit)
       add_menu(div, 'options', options)
-      document.body.appendChild(div)
+      main.appendChild(div)
       function make_menu(div) {
 	 div.className = "context-menu"	
          mods.ui.menu = div
@@ -394,7 +397,7 @@
       function modules(evt) {
          evt.preventDefault()
          evt.stopPropagation()
-         document.body.removeChild(evt.target.parentNode)
+         main.removeChild(evt.target.parentNode)
          var div = document.createElement('div')
          make_menu(div)
          set_prompt('modules')
@@ -423,7 +426,7 @@
                div.addEventListener('mousedown', function (evt) {
                   evt.preventDefault()
                   evt.stopPropagation()
-                  document.body.removeChild(evt.target.parentNode)
+                  main.removeChild(evt.target.parentNode)
                   mods.ui.menu = null
                   var t = mods_transform()
                   mod_message_handler(module,
@@ -433,10 +436,10 @@
                div.appendChild(document.createElement('br'))
                menu.appendChild(div)
             }
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             var menu = document.createElement('div')
             make_menu(menu)
-            document.body.appendChild(menu)
+            main.appendChild(menu)
             menu.style.width = mods.ui.canvas
             menu.style.height = mods.ui.canvas
             menu.style.overflow = 'auto'
@@ -458,7 +461,7 @@
             var t = mods_transform()
             mods.ui.top = t.oy - t.ty + (evt.pageY - t.oy) / t.s
             mods.ui.left = t.ox - t.tx + (evt.pageX - t.ox) / t.s
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var file = document.getElementById('mod_input')
             file.value = null
@@ -472,7 +475,7 @@
 //            mods.ui.menu = null
 //            set_prompt('remotes not yet implemented')
 //         })
-         document.body.appendChild(div)
+         main.appendChild(div)
       }
       //
       // programs menu
@@ -480,7 +483,7 @@
       function programs(evt) {
          evt.preventDefault()
          evt.stopPropagation()
-         document.body.removeChild(evt.target.parentNode)
+         main.removeChild(evt.target.parentNode)
          var div = document.createElement('div')
          make_menu(div)
          set_prompt('programs')
@@ -488,7 +491,7 @@
          // open local program
          //
          add_menu(div, 'open program from file', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var file = document.getElementById('prog_input')
             file.value = null
@@ -527,16 +530,16 @@
                         + location.port + '?program=' + program
                   set_prompt('<a href=' + uri + '>program link</a>')
                   prog_message_handler(program)
-                  document.body.removeChild(evt.target.parentNode)
+                  main.removeChild(evt.target.parentNode)
                   mods.ui.menu = null
                })
                div.appendChild(document.createElement('br'))
                menu.appendChild(div)
             }
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             var menu = document.createElement('div')
             make_menu(menu)
-            document.body.appendChild(menu)
+            main.appendChild(menu)
             menu.style.width = mods.ui.canvas
             menu.style.height = mods.ui.canvas
             menu.style.overflow = 'auto'
@@ -563,7 +566,7 @@
          // save local program
          //
          add_menu(div, 'save program to file', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             save_program()
          })
@@ -571,11 +574,11 @@
          // save local page
          //
          add_menu(div, 'save html page', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             save_page()
          })
-         document.body.appendChild(div)
+         main.appendChild(div)
       }
       //
       // edit menu
@@ -583,7 +586,7 @@
       function edit(evt) {
          evt.preventDefault()
          evt.stopPropagation()
-         document.body.removeChild(evt.target.parentNode)
+         main.removeChild(evt.target.parentNode)
          var div = document.createElement('div')
          make_menu(div)
          set_prompt('edit')
@@ -593,7 +596,7 @@
          add_menu(div, 'cut', function (evt) {
             evt.preventDefault()
             evt.stopPropagation()
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             if ((Object.keys(mods.ui.selected).length) == 0) {
                set_prompt("nothing selected")
@@ -612,7 +615,7 @@
          add_menu(div, 'copy', function (evt) {
             evt.preventDefault()
             evt.stopPropagation()
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             set_prompt('copy not yet implemented')
          })
@@ -622,11 +625,11 @@
          add_menu(div, 'paste', function (evt) {
             evt.preventDefault()
             evt.stopPropagation()
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             set_prompt('paste not yet implemented')
          })
-         document.body.appendChild(div)
+         main.appendChild(div)
       }
       //
       // options menu
@@ -634,7 +637,7 @@
       function options(evt) {
          evt.preventDefault()
          evt.stopPropagation()
-         document.body.removeChild(evt.target.parentNode)
+         main.removeChild(evt.target.parentNode)
          mods.ui.menu = null
          var div = document.createElement('div')
          make_menu(div)
@@ -643,36 +646,36 @@
          // view files
          //
          add_menu(div, 'view local files', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('files.html')
          })
-         document.body.appendChild(div)
+         main.appendChild(div)
          //
          // view original project
          //
          add_menu(div, 'view mods CBA project', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('https://gitlab.cba.mit.edu/pub/mods')
          })
-         document.body.appendChild(div)
+         main.appendChild(div)
          //
          // view forked project
          //
          add_menu(div, 'view mods CE project', function (evt) {
-            document.body.removeChild(evt.target.parentNode)
+            main.removeChild(evt.target.parentNode)
             mods.ui.menu = null
             var win = window.open('https://github.com/fabfoundation/mods')
          })
-         document.body.appendChild(div)
+         main.appendChild(div)
       }
       }
    })
    //
    // prompt
    //
-   document.body.appendChild(document.createTextNode(' '))
+   header.appendChild(document.createTextNode(' '))
    var span = document.createElement('span')
    span.setAttribute('id', 'logo')
    span.style.display = 'inline-block'
@@ -681,23 +684,23 @@
    span.style.height = 20
    span.style.padding = mods.ui.padding
    span.appendChild(logo(1))
-   document.body.appendChild(span)
-   document.body.appendChild(document.createTextNode(' '))
+   header.appendChild(span)
+   header.appendChild(document.createTextNode(' '))
    var span = document.createElement('span')
    span.setAttribute('id', 'version')
    span.style.display = 'inline-block'
    span.style.verticalAlign = 'middle'
    var innerspan = document.createElement('span')
    span.appendChild(innerspan)
-   document.body.appendChild(span)
-   document.body.appendChild(document.createTextNode(' '))
+   header.appendChild(span)
+   header.appendChild(document.createTextNode(' '))
    var span = document.createElement('span')
    span.setAttribute('id', 'prompt')
    span.style.display = 'inline-block'
    span.style.verticalAlign = 'middle'
    var innerspan = document.createElement('span')
    span.appendChild(innerspan)
-   document.body.appendChild(span)
+   header.appendChild(span)
    function logo(size) {
       var x = 0
       var y = 2.8 * size / 3.8
@@ -776,7 +779,7 @@
    //
    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
    svg.style.position = 'absolute'
-   svg.style.backgroundColor = 'rgba(200,200,200,0)'
+   svg.style.backgroundColor = 'rgba(200,200,200,255)'
    svg.style.top = mods.ui.header
    svg.style.left = 0
    svg.style.zIndex = 0
@@ -785,7 +788,7 @@
    svg.setAttribute('height', 40)
    svg.setAttribute('id', 'svg')
    svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink")
-   document.body.appendChild(svg)
+   main.appendChild(svg)
    //
    // link container
    //
@@ -808,7 +811,7 @@
    file.addEventListener('change', function () {
       mod_read_handler()
    })
-   document.body.appendChild(file)
+   main.appendChild(file)
    var file = document.createElement('input')
    file.setAttribute('type', 'file')
    file.setAttribute('id', 'prog_input')
@@ -821,13 +824,13 @@
    file.addEventListener('change', function () {
       prog_read_handler()
    })
-   document.body.appendChild(file)
+   main.appendChild(file)
    //
    // module container
    //
    var div = document.createElement('div')
    div.setAttribute('id', 'modules')
-   document.body.appendChild(div)
+   main.appendChild(div)
    //
    // check for program load query
    //
@@ -955,9 +958,9 @@
             encodeURIComponent(text))
          a.setAttribute('download', filename)
          a.style.display = 'none'
-         document.body.appendChild(a)
+         main.appendChild(a)
          a.click()
-         document.body.removeChild(a)
+         main.removeChild(a)
       }
    }
    function save_page() {
@@ -1026,9 +1029,9 @@
                   encodeURIComponent(text))
                a.setAttribute('download', filename)
                a.style.display = 'none'
-               document.body.appendChild(a)
+               main.appendChild(a)
                a.click()
-               document.body.removeChild(a)
+               main.removeChild(a)
             }
          }
          //
