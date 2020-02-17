@@ -1,8 +1,11 @@
 # `mods` Community Edition
 
-Just like `mods`, but cooler :sunglasses:
+Just like `mods`, but cooler :sunglasses: 
+
+> This is a variant branch with a fixed topbar
 
 ![](mods.png)
+
 
 
 <!-- vim-markdown-toc GFM -->

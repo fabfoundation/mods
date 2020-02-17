@@ -127,7 +127,7 @@
          {
             mods.theme = mods.lighttheme
          }
-         main.style.backgroundColor = mods.theme.background
+         document.body.style.backgroundColor = mods.theme.background
          div.style.color = mods.theme.text
          document.body.aLink = mods.theme.alink
          document.body.link = mods.theme.link
@@ -137,7 +137,7 @@
    //
    // UI
    //
-   main.style.backgroundColor = mods.theme.background
+   document.body.style.backgroundColor = mods.theme.background
    document.body.aLink = mods.theme.alink
    document.body.link = mods.theme.link
    document.body.vLink = mods.theme.vlink
@@ -779,7 +779,7 @@
    //
    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
    svg.style.position = 'absolute'
-   svg.style.backgroundColor = 'rgba(200,200,200,255)'
+   svg.style.backgroundColor = 'rgba(200,200,200,0)'
    svg.style.top = mods.ui.header
    svg.style.left = 0
    svg.style.zIndex = 0
