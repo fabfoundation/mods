@@ -39,7 +39,7 @@ async def receive(websocket,path):
          # reject client
          #
          print("connection rejected from "+address)
-         #await websocket.send(f"connection rejected from {address}")
+         await websocket.send(f"connection rejected from {address}")
          continue
       #
       # accept client

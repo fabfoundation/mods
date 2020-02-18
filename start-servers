@@ -99,10 +99,10 @@ node serialserver.js ::ffff:127.0.0.1 1235 &
 # for serial permission:
 #    sudo adduser user_name dialout
 #
-#pkill -f "python3 serialserver.py"
-#cd ..
-#cd py
-#python3 serialserver.py 127.0.0.1 1239 &
+pkill -f "python3 serialserver.py"
+cd ..
+cd py
+python3 serialserver.py 127.0.0.1 1239 & #|| echo "There was an error trying to start serialserver.py"
 
 #
 # uncomment to start local http server (kills before if already running)
