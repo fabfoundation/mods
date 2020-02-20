@@ -55,8 +55,6 @@ echo "=================================="
 echo "= USE CTRL-C TO EXIT ALL SERVERS ="
 echo "=================================="
 echo ""
-echo "http-server at http://127.0.0.1:8080"
-echo ""
 
 #
 # uncomment to start node print server (kills before if already running)
@@ -102,7 +100,7 @@ node serialserver.js ::ffff:127.0.0.1 1235 &
 pkill -f "python3 serialserver.py"
 cd ..
 cd py
-python3 serialserver.py 127.0.0.1 1239 & #|| echo "There was an error trying to start serialserver.py"
+python3 serialserver.py 127.0.0.1 1239 &
 
 #
 # uncomment to start local http server (kills before if already running)
