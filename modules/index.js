@@ -21,6 +21,7 @@ module_menu('   GCC vinyl cutter','modules/1%20path/1.1%20machines/vinyl%20cu
 module_menu('   Roland GX-GS-24 Absolute','modules/1%20path/1.1%20machines/vinyl%20cutter/Roland%20GX-GS-24%20Absolute')
 module_menu('   Roland GX-GS-24 Relative','modules/1%20path/1.1%20machines/vinyl%20cutter/Roland%20GX-GS-24%20Relative')
 module_menu('   Silhouette Cameo','modules/1%20path/1.1%20machines/vinyl%20cutter/Silhouette%20Cameo')
+module_menu('   Silhouette Cameo 2','modules/1%20path/1.1%20machines/vinyl%20cutter/Silhouette%20Cameo%202')
 module_label(' 1.2 formats')
 module_menu('  dxf','modules/1%20path/1.2%20formats/dxf')
 module_menu('  g-code','modules/1%20path/1.2%20formats/g-code')
