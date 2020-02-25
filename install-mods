@@ -8,6 +8,8 @@
 # project. Copyright is retained and must be preserved. The work is 
 # provided as is; no warranty is provided, and users accept all 
 # liability.
+sudo apt update
+sudo apt install libcups2-dev
 pip3 install --user serial
 pip3 install --user websockets
 pip3 install --user pyserial
