@@ -43,7 +43,7 @@ var init = function() {
    mod.speed.value = 4
    mod.ox.value = 10
    mod.oy.value = 10
-   mod.oz.value = 10
+   mod.oz.value = 2
    mod.jz.value = 2
    mod.hx.value = 0
    mod.hy.value = 152.4
@@ -89,32 +89,32 @@ var interface = function(div){
    //
    // origin
    //
-   div.appendChild(document.createTextNode('origin:'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('x: '))
+   //div.appendChild(document.createTextNode('origin:'))
+   //div.appendChild(document.createElement('br'))
+   //div.appendChild(document.createTextNode('x: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
-      div.appendChild(input)
+      //div.appendChild(input)
       mod.ox = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode(' y: '))
+   //div.appendChild(document.createTextNode(' (mm)'))
+   //div.appendChild(document.createElement('br'))
+   //div.appendChild(document.createTextNode(' y: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
-      div.appendChild(input)
+      //div.appendChild(input)
       mod.oy = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('z: '))
+   //div.appendChild(document.createTextNode(' (mm)'))
+   //div.appendChild(document.createElement('br'))
+   //div.appendChild(document.createTextNode('z: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
-      div.appendChild(input)
+      //div.appendChild(input)
       mod.oz = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
+   //div.appendChild(document.createTextNode(' (mm)'))
+   //div.appendChild(document.createElement('br'))
    var btn = document.createElement('button')
       btn.style.padding = mods.ui.padding
       btn.style.margin = 1
@@ -150,14 +150,14 @@ var interface = function(div){
          obj.contents = str
          outputs.file.event(obj)
          })
-      div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+      //div.appendChild(btn)
+   //div.appendChild(document.createElement('br'))
    //
    // jog
    //
-   div.appendChild(document.createTextNode('jog height:'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('z: '))
+   div.appendChild(document.createTextNode('jog z:'))
+   //div.appendChild(document.createElement('br'))
+   //div.appendChild(document.createTextNode('z: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
@@ -278,7 +278,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = ";;VS10;PR0,"+mod.step+";!MC0;"
+         var str = ";;VS10;PR;PU0,"+mod.step+";PD;!MC0;"
          //
          // send command
          //
@@ -400,7 +400,7 @@ div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0'))
          //
          // Create message
          //
-         var str = ";;PR;!PZ0;!MC0;"
+         var str = ";;PA;!PZ0;!MC0;"  // not working?
          //
          // send command
          //
@@ -500,25 +500,33 @@ function make_path() {
    var xoffset = mod.units*x0
    var yoffset = mod.units*y0
    var zoffset = mod.units*z0
-   var str = "PA;PA;" // plot absolute
-   str += "VS"+speed+";!VZ"+speed+";"
+   var str = ";;PR;" // plot relative
+   str += "VS"+speed+";!VZ"+speed+";" // set feed speed and plunge speed
    str += "!PZ"+0+","+ijog+";" // set jog
    str += "!MC1;\n" // turn motor on
    //
    // follow segments
    //
+   var lx = 0 // init the last x coordinate
+   var ly = 0 // init the last y coordinate 
+   var rx = 0 // init relative movement in x
+   var ry = 0 // init relative movement in y
    for (var seg = 0; seg < mod.path.length; ++seg) {
       //
       // move up to starting point
       //
       x = xoffset+scale*mod.path[seg][0][0]
       y = yoffset+scale*mod.path[seg][0][1]
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n"
+      rx = x-lx // calculate the relative x movement
+      ry = y-ly // calculate the relative y movement
+      str += "PU"+rx.toFixed(0)+","+ry.toFixed(0)+";\n"
       //
       // move down
       //
       z = zoffset+scale*mod.path[seg][0][2]
-      str += "Z"+x.toFixed(0)+","+y.toFixed(0)+","+z.toFixed(0)+";\n"
+      str += "Z0,0,"+z.toFixed(0)+";\n"    // move down in relative coordinates. PD?
+      lx = x // store last x coordinate
+      ly = y // store last y coordinate
       for (var pt = 1; pt < mod.path[seg].length; ++pt) {
          //
          // move to next point
@@ -526,20 +534,24 @@ function make_path() {
          x = xoffset+scale*mod.path[seg][pt][0]
          y = yoffset+scale*mod.path[seg][pt][1]
          z = zoffset+scale*mod.path[seg][pt][2]
-         str += "Z"+x.toFixed(0)+","+y.toFixed(0)+","+z.toFixed(0)+";\n"
+         rx = x-lx // calculate the relative x movement
+         ry = y-ly // calculate the relative y movement
+         str += "Z"+rx.toFixed(0)+","+ry.toFixed(0)+","+z.toFixed(0)+";\n" 
+         lx = x // store last x coordinate
+         ly = y // store last y coordinate
          }
       //
       // move up
       //
-      str += "PU"+x.toFixed(0)+","+y.toFixed(0)+";\n"
+      str += "PU 0,0;\n"
       }
    //
    // turn off motor and move back
    //
-   var xhome = mod.units*parseFloat(mod.hx.value)
+   var xhome = mod.units*parseFloat(mod.hx.value) // not needed?
    var yhome = mod.units*parseFloat(mod.hy.value)
    var zhome = mod.units*parseFloat(mod.hz.value)
-   str += "PA;PA;!PZ0,"+zhome+";PU"+xhome+","+yhome+";!MC0;"
+   str += ";;PR;!PZ0,"+ijog+";PU"+(-1)*lx.toFixed(0)+","+(-1)*ly.toFixed(0)+";!MC0;"
    //
    // output string
    //
@@ -560,3 +572,4 @@ return ({
    interface:interface
    })
 }())
+
