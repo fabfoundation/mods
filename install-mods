@@ -8,8 +8,42 @@
 # project. Copyright is retained and must be preserved. The work is 
 # provided as is; no warranty is provided, and users accept all 
 # liability.
-sudo apt update
-sudo apt install libcups2-dev
+
+# detect linux distribution
+if [ -f /etc/os-release ]
+then
+        . /etc/os-release
+        if [[ $ID_LIKE = debian ]]; then
+            echo "Running Debian-like distribution"
+	    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+	    sudo apt update
+	    sudo apt install nodejs python3 python3-pip libcups2-dev
+	    sudo adduser $USER lp
+	    sudo adduser $USER lpadmin
+	    sudo adduser $USER dialout
+	elif [[ $ID_LIKE = arch ]]; then
+            echo "Running Arch-like distribution"
+            sudo pacman -Syu
+	    sudo pacman -S curl wget nodejs python python-pip libcups
+	    sudo usermod -a -G lp $USER
+	    sudo usermod -a -G lpadmin $USER
+	    sudo usermod -a -G uucp $USER
+        elif [[ $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
+            echo "Running Fedora-like distribution"
+	    echo "Install nodejs, python3 and pip packages manually"
+	    read -p "Press [Enter] to continue..."
+        elif [[ $ID_LIKE = suse ]]; then
+            echo "Running Arch-like distribution"
+	    echo "Install nodejs, python3 and pip packages manually"
+	    read -p "Press [Enter] to continue..."
+	fi
+else
+        echo "WARNING!! Cannot detect your Linux distribution. Install all packages manually. Exiting script..."
+        # exit script...
+        exit
+fi
+
+# Install for all distributions
 pip3 install --user serial
 pip3 install --user websockets
 pip3 install --user pyserial
@@ -22,4 +56,4 @@ npm install serialport
 npm install node-gyp
 npm install printer --build-from-source
 cd ..
-
+echo "Reboot for the group permissions to take effect."

@@ -23,41 +23,14 @@ The goal of the community edition is to provide documentation, support and help 
 
 ## Installation
 
-- Step 1: Install **the latest LTS** [node.js](https://docs.npmjs.com/getting-started/installing-node) (which should include `npm` package manager), [python3](https://www.python.org/downloads/) and [pip3](https://pip.pypa.io/en/stable/installing/)
-```bash
-sudo apt update
-sudo apt install python3
-sudo apt install python3-pip
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-sudo apt install nodejs
-```
-- Step 2: Clone the `mods` repository: `git clone https://github.com/fabfoundation/mods.git`
-- Step 3: Run the installation script `bash install-mods` inside the `mods` folder
+- Step 1: Clone the `mods` repository: `git clone https://github.com/fabfoundation/mods.git`
+- Step 2: Run the installation script `bash install-mods` inside the `mods` folder
 
-## Setting persistent permissions in Linux
-
-To talk to the machines in Linux you need to grant permissions. In Ubuntu Linux: 
-
-```bash
-sudo adduser $USER lp
-sudo adduser $USER lpadmin
-sudo adduser $USER dialout
-```
-
-In Arch Linux et al.,
-
-```bash
-sudo usermod -a -G lp $USER
-sudo usermod -a -G lpadmin $USER
-sudo usermod -a -G uucp $USER
-```
-
-Logout or reboot for the changes to take effect. The permissions are now persistent.
+Logout or reboot for the permission changes to take effect.
 
 ## Using `mods`
 
-- Step 1: Run `bash start-servers` inside the `mods` directory 
-- Step 2: Open a browser and go to http://localhost:8080 or https://fabfoundation.github.io/mods/
+- Run `bash start-servers` inside the `mods` directory 
 
 ## Current status
 
