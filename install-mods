@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Install all the npm packages
-# by Francisco Sanchez Arroyo 14-Feb-2020 
+# Install all the packages required by mods for debian/arch/fedora based distributions
+# by Francisco Sanchez Arroyo 01-Mar-2020 
 #
 # This work may be reproduced, modified, distributed, performed, and 
 # displayed for any purpose, but must acknowledge the fab modules 
@@ -13,27 +13,28 @@
 if [ -f /etc/os-release ]
 then
         . /etc/os-release
-        if [[ $ID_LIKE = debian ]]; then
+        if [[ $ID_LIKE = debian || $ID = debian ]]; then
             echo "Running Debian-like distribution"
 	    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	    sudo apt update
 	    sudo apt install nodejs python3 python3-pip libcups2-dev
 	    sudo adduser $USER lp
-	    sudo adduser $USER lpadmin
 	    sudo adduser $USER dialout
-	elif [[ $ID_LIKE = arch ]]; then
+	elif [[ $ID_LIKE = arch || $ID = arch ]]; then
             echo "Running Arch-like distribution"
             sudo pacman -Syu
-	    sudo pacman -S curl wget nodejs python python-pip libcups
+	    sudo pacman -S --needed curl wget nodejs python python-pip libcups
 	    sudo usermod -a -G lp $USER
-	    sudo usermod -a -G lpadmin $USER
 	    sudo usermod -a -G uucp $USER
-        elif [[ $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
+        elif [[ $ID = fedora || $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
             echo "Running Fedora-like distribution"
-	    echo "Install nodejs, python3 and pip packages manually"
-	    read -p "Press [Enter] to continue..."
+	    sudo dnf install -y gcc-c++ make
+	    curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
+	    sudo dnf install nodejs
+	    sudo usermod -a -G lp $USER
+	    sudo usermod -a -G dialout $USER
         elif [[ $ID_LIKE = suse ]]; then
-            echo "Running Arch-like distribution"
+            echo "Running Suse-like distribution"
 	    echo "Install nodejs, python3 and pip packages manually"
 	    read -p "Press [Enter] to continue..."
 	fi
