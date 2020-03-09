@@ -4,7 +4,8 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
-// Modified by Francisco Sanchez 01-Feb-2020
+// Modified by: Francisco Sanchez 01-Feb-2020
+//            : xytaz                Mar-2020
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -66,6 +67,7 @@ wss.on('connection',function(ws) {
    var cancel
    ws.on("message",function(message) {
       var msg = JSON.parse(message)
+      var le_suffix = {none: '', nl: '\n', cr: '\r', nlcr: '\n\r'}
       //
       // open port
       //
@@ -117,7 +119,7 @@ wss.on('connection',function(ws) {
       //
       else if (msg.type == 'string') {
          console.log(msg.string)
-         port.write(msg.string,function(){
+         port.write(msg.string + le_suffix[msg.line_ending],function(){
             port.drain(function(err){
                if (err)
                   ws.send(err.message)
@@ -128,7 +130,6 @@ wss.on('connection',function(ws) {
       // send command
       //
       else if (msg.type == 'command') {
-         console.log(msg.contents)
          port.write(msg.contents,function(){
             port.drain(function(err){
                if (err)

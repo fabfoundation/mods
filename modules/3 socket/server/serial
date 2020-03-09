@@ -3,7 +3,8 @@
 //
 // Neil Gershenfeld 
 // (c) Massachusetts Institute of Technology 2016
-// Modified by Francisco Sanchez 2019
+// Modified by: Francisco Sanchez 2019
+//            : xytaz         Mar-2020
 // 
 // This work may be reproduced, modified, distributed, performed, and 
 // displayed for any purpose, but must acknowledge the mods
@@ -163,6 +164,27 @@ var interface = function(div){
       div.appendChild(input)
       mod.baud = input
    div.appendChild(document.createElement('br'))   
+   //
+   // line ending
+   //
+   div.appendChild(document.createTextNode('line ending:'))
+   div.appendChild(document.createElement('br'))   
+   var input = document.createElement('select')
+   input.type = 'select'
+
+   var option_labels = ['none', 'new line', 'carriage return', 'nl & cr']
+   var option_values = ['none', 'nl', 'cr', 'nlcr']
+   for (var i=0; i < option_labels.length; i++) {
+      var option = document.createElement('option')
+      option.text  = option_labels[i]
+      option.value = option_values[i]
+      input.appendChild(option)
+   }
+
+   div.appendChild(input)
+   mod.line_ending = input
+
+   div.appendChild(document.createElement('br'))
    //
    // flow control
    //
@@ -343,6 +365,7 @@ function serial_send_string(str) {
       var msg = {}
       msg.type = 'string'
       msg.string = str
+      msg.line_ending = mod.line_ending.value
       mod.socket.send(JSON.stringify(msg))
       mod.status.value = 'transmit'
       }
