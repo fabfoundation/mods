@@ -3,7 +3,8 @@
 //
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2018
-// Modified by Francisco Sanchez at The Beach Lab 2020
+// Modified by: Francisco Sanchez at The Beach Lab 2020
+//            : xytaz                          Mar-2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
