@@ -1383,11 +1383,11 @@
       while (line < lines.length) {
          if (lines[line].indexOf(".value =") != -1) {
             var start = 4 + lines[line].indexOf("mod.")
-            var end = lines[line].indexOf(".value")
+            var end = lines[line].indexOf(".value =")
             var key = lines[line].slice(start, end)
             var value = mods.mod[id][key]['value']
-            if (value.indexOf('\n') != -1)
-            value = value.replace(/\n/g,"\\n")           
+            if (String(value+'\n').indexOf('\n') != -1)
+            value = String(value).replace(/\n/g,"\\n")
             lines[line] = "   mod." + key + ".value = '" + value + "'"
          }
          else if (lines[line].indexOf(".checked =") != -1) {
