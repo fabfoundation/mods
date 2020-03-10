@@ -30,7 +30,11 @@ Logout or reboot for the permission changes to take effect.
 
 ## Using `mods`
 
-- Run `bash start-servers` inside the `mods` directory 
+- Run `bash start-servers` inside the `mods` directory.
+
+## Documentation and tutorials
+
+Check out the [wiki](https://github.com/fabfoundation/mods/wiki) for a set of guides and tutorials.
 
 ## Current status
 
