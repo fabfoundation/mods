@@ -1,5 +1,5 @@
 //
-// Roland MDX-20 milling machine
+// Roland MDX milling machine
 //
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2016
@@ -21,20 +21,18 @@ var mod = {}
 //
 // name
 //
-var name = 'Roland MDX-20 milling machine'
+var name = 'Roland MDX milling machine'
 //
 // initialization
 //
 var init = function() {
-   mod.units = 40.0
    mod.speed.value = 4
    mod.ox.value = 10
    mod.oy.value = 10
    mod.oz.value = 0
    mod.jz.value = 2
-   mod.hx.value = 0
-   mod.hy.value = 152.4
-   mod.hz.value = 60.5
+   mod.model.value = 'mdx_20'
+   mod.model.dispatchEvent(new Event('change'))
    }
 //
 // inputs
@@ -60,8 +58,55 @@ var outputs = {
 //
 // interface
 //
+var models = {
+  'mdx_15':{
+    units: 40.0,
+    hx: 0,
+    hy: 92.4,
+    hz: 60.5 
+  },
+  'mdx_20':{
+    units: 40.0,
+    hx: 0,
+    hy: 152.4,
+    hz: 60.5 
+  },
+  'mdx_40':{
+    units: 100.0,
+    hx: 0,
+    hy: 152.4,
+    hz: 60.5
+  }}
 var interface = function(div){
    mod.div = div
+   //
+   // model
+   //
+   div.appendChild(document.createTextNode('model: '))
+   var select = document.createElement('select')
+     select.setAttribute('style', 'width:150px');
+     var el = document.createElement('option')
+        el.textContent = 'MDX-15'
+        el.value = 'mdx_15'
+        select.appendChild(el)
+     var el = document.createElement('option')
+        el.textContent = 'MDX-20'
+        el.value = 'mdx_20'
+        select.appendChild(el)
+     var el = document.createElement('option')
+        el.textContent = 'MDX-40'
+        el.value = 'mdx_40'
+        select.appendChild(el)
+     select.addEventListener('change',function(){
+        var model = models[this.value]
+        mod.units = model.units
+        mod.hx.value = model.hx
+        mod.hy.value = model.hy
+        mod.hz.value = model.hz
+        })
+     div.appendChild(select)
+     mod.model = select
+   div.appendChild(document.createElement('br'))
    //
    // speed
    //
