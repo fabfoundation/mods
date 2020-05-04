@@ -3,6 +3,7 @@
 //
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2016
+// Modified by Francisco Sanchez 4th May 2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
@@ -27,6 +28,7 @@ var name = 'WebSocket UDP'
 var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = '1238'
+   mod.localhost.value = '127.0.0.1'
    mod.localport.value = '2345'
    mod.remotehost.value = '127.0.0.1'
    mod.remoteport.value = '3456'
@@ -58,25 +60,22 @@ var interface = function(div){
    //
    // server
    //
-   div.appendChild(document.createTextNode('udpserver:'))
+   var a = document.createElement('a')
+      a.href = './js/udpserver.js'
+      a.innerHTML = 'udpserver.js'
+      a.target = '_blank'
+   div.appendChild(a)
    div.appendChild(document.createElement('br'))
    //
-   // open/close
+   // status
    //
-   var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('open'))
-      btn.addEventListener('click',function() {
-         socket_open()
-         })
-      div.appendChild(btn)
-   var btn = document.createElement('button')
-      btn.style.margin = 1
-      btn.appendChild(document.createTextNode('close'))
-      btn.addEventListener('click',function() {
-         socket_close()
-         })
-      div.appendChild(btn)
+   input = document.createElement('input')
+      input.classList.add("marquee")     
+      input.disabled = true
+      input.type = 'text'
+      input.size = 19
+      div.appendChild(input)
+      mod.status = input
    div.appendChild(document.createElement('br'))
    //
    // address
@@ -91,7 +90,7 @@ var interface = function(div){
    //
    // port
    //
-   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0port: '))
+   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0port: '))
    input = document.createElement('input')
       input.type = 'text'
       input.size = 10
@@ -99,15 +98,24 @@ var interface = function(div){
       mod.port = input
    div.appendChild(document.createElement('br'))
    //
-   // status
+   // open/close
    //
-   div.appendChild(document.createTextNode('\u00a0\u00a0status: '))
-   input = document.createElement('input')
-      input.type = 'text'
-      input.size = 10
-      div.appendChild(input)
-      mod.status = input
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('open socket'))
+      btn.addEventListener('click',function() {
+         socket_open()
+         })
+      div.appendChild(btn)
+   var btn = document.createElement('button')
+      btn.style.margin = 1
+      btn.appendChild(document.createTextNode('close socket'))
+      btn.addEventListener('click',function() {
+         socket_close()
+         })
+      div.appendChild(btn)
    div.appendChild(document.createElement('br'))
+
    //
    // local
    //
