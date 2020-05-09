@@ -11,6 +11,8 @@ program_menu('   PCB Relative','programs/1%20machines/1.1%20Roland/SRM-20%20m
 program_menu('   PCB xDesign','programs/1%20machines/1.1%20Roland/SRM-20%20mill/PCB%20xDesign')
 program_menu('   mill 2.5D stl','programs/1%20machines/1.1%20Roland/SRM-20%20mill/mill%202.5D%20stl')
 program_menu('   mill 2.5D stl xDesign','programs/1%20machines/1.1%20Roland/SRM-20%20mill/mill%202.5D%20stl%20xDesign')
+program_label('  iModela mill')
+program_menu('   PCB','programs/1%20machines/1.1%20Roland/iModela%20mill/PCB')
 program_label(' 1.2 Epilog')
 program_menu('  cut','programs/1%20machines/1.2%20Epilog/cut')
 program_menu('  cut xDesign','programs/1%20machines/1.2%20Epilog/cut%20xDesign')
