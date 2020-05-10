@@ -15,8 +15,9 @@ then
         . /etc/os-release
         if [[ $ID_LIKE = debian || $ID = debian ]]; then
             echo "Running Debian-like distribution"
-	    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	    sudo apt update
+	    sudo apt install curl
+	    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	    sudo apt install nodejs python3 python3-pip libcups2-dev
 	    sudo adduser $USER lp
 	    sudo adduser $USER dialout
@@ -28,7 +29,7 @@ then
 	    sudo usermod -a -G uucp $USER
         elif [[ $ID = fedora || $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
             echo "Running Fedora-like distribution"
-	    sudo dnf install -y gcc-c++ make
+	    sudo dnf install -y curl gcc-c++ make
 	    curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
 	    sudo dnf install nodejs
 	    sudo usermod -a -G lp $USER

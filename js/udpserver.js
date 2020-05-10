@@ -95,7 +95,7 @@ wss.on('connection',function(ws) {
       //
       else if (msg.type = 'send string') {
          var client = dgram.createSocket("udp4")
-         client.send(msg.string,0,msg.string.length,msg.port,msg.host,
+         client.send(msg.string.toString(),0,msg.string.length,msg.port,msg.host,
             function(err) {
                client.close()
                msg = {}
