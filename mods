@@ -107,5 +107,5 @@ python3 serialserver.py 127.0.0.1 1239 &
 #
 cd ..
 pkill -f "http-server"
-node node_modules/http-server/bin/http-server -o
-
+#node node_modules/http-server/bin/http-server -o
+hs -o
