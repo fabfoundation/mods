@@ -17,7 +17,7 @@ then
             echo "Running Debian-like distribution"
 	    sudo apt update
 	    sudo apt install curl
-	    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+	    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 	    sudo apt install nodejs python3 python3-pip libcups2-dev
 	    sudo adduser $USER lp
 	    sudo adduser $USER dialout
@@ -30,7 +30,7 @@ then
         elif [[ $ID = fedora || $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
             echo "Running Fedora-like distribution"
 	    sudo dnf install -y curl gcc-c++ make
-	    curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
+	    curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
 	    sudo dnf install nodejs
 	    sudo usermod -a -G lp $USER
 	    sudo usermod -a -G dialout $USER
@@ -56,20 +56,7 @@ npm install utf-8-validate
 npm install ws
 npm install serialport
 npm install node-gyp
-
-# Install printer
-# detect linux distribution
-if [ -f /etc/os-release ]
-then
-        . /etc/os-release
-        if [[ $ID_LIKE = debian || $ID = debian ]]; then
-		echo "Installing printer for Debian-like distribution"
-		npm install printer
-	else
-		npm install printer --build-from-source
-	fi
-fi
-
+npm install printer --build-from-source
 # Ending script
 cd ..
 echo "Reboot for the group permissions to take effect."
