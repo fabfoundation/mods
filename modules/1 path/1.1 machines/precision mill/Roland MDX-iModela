@@ -63,8 +63,8 @@ var models = {
   'imodela':{
     units: 100.0,
     hx: 0,
-    hy: 55,
-    hz: 26 
+    hy: 55.0,
+    hz: 26.0 
   },
   'mdx_15':{
     units: 40.0,
@@ -127,7 +127,7 @@ var interface = function(div){
       input.size = 6
       div.appendChild(input)
       mod.speed = input
-   div.appendChild(document.createTextNode(' (mm/s)'))
+   div.appendChild(document.createTextNode(' (mm/s)\u00a0\u00a0'))
    div.appendChild(document.createElement('br'))
    //
    // origin x (mm)
