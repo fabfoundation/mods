@@ -56,6 +56,20 @@ npm install utf-8-validate
 npm install ws
 npm install serialport
 npm install node-gyp
-npm install printer --build-from-source
+
+# Install printer
+# detect linux distribution
+if [ -f /etc/os-release ]
+then
+        . /etc/os-release
+        if [[ $ID_LIKE = debian || $ID = debian ]]; then
+		echo "Installing printer for Debian-like distribution"
+		npm install printer
+	else
+		npm install printer --build-from-source
+	fi
+fi
+
+# Ending script
 cd ..
 echo "Reboot for the group permissions to take effect."
