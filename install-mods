@@ -47,7 +47,7 @@ else
 fi
 
 # Install for all distributions
-pip3 install --user serial
+pip3 uninstall serial
 pip3 install --user websockets
 pip3 install --user pyserial
 npm install http-server
