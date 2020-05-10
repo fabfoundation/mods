@@ -9,8 +9,8 @@ Just like `mods`, but cooler :sunglasses:
 
 * [What is `mods`?](#what-is-mods)
 * [Installation](#installation)
-* [Setting persistent permissions in Linux](#setting-persistent-permissions-in-linux)
 * [Using `mods`](#using-mods)
+* [Documentation and tutorials](#documentation-and-tutorials)
 * [Current status](#current-status)
 
 <!-- vim-markdown-toc -->
@@ -30,7 +30,7 @@ Logout or reboot for the permission changes to take effect.
 
 ## Using `mods`
 
-- Run `bash start-servers` inside the `mods` directory.
+- Run `bash mods` inside the `mods` directory.
 
 ## Documentation and tutorials
 
@@ -38,10 +38,10 @@ Check out the [wiki](https://github.com/fabfoundation/mods/wiki) for a set of gu
 
 ## Current status
 
-|                 |  Windows 10 WSL Ubuntu 18 LTS | Ubuntu 18 LTS | Arch Linux |
-|-----------------|-------------------------------|---------------|------------|
-| Installation    | PASS                          | PASS          | PASS       |
-| Running         | PASS                          | PASS          | PASS       |
-| Moving machines | SERIAL AND PRINTERS (?)       | ALL           | ALL        |
+|                 |  Windows 10 WSL Ubuntu 18/20 LTS | Ubuntu 20 LTS | Arch Linux |
+|-----------------|----------------------------------|---------------|------------|
+| Installation    | PASS                             | PASS          | PASS       |
+| Running         | PASS                             | PASS          | PASS       |
+| Moving machines | SERIAL AND PRINTERS (?)          | ALL           | ALL        |
 
 
