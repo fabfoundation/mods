@@ -19,6 +19,7 @@ then
 	    sudo apt install curl
 	    curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 	    sudo apt install nodejs python3 python3-pip libcups2-dev
+	    sudo ln -s /usr/bin/python3 /usr/bin/python
 	    sudo adduser $USER lp
 	    sudo adduser $USER dialout
 	elif [[ $ID_LIKE = arch || $ID = arch ]]; then
