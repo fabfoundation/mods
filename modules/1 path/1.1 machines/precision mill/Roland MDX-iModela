@@ -22,7 +22,7 @@ var mod = {}
 //
 // name
 //
-var name = 'Roland MDX/iModela milling machine'
+var name = 'Roland MDX / iModela'
 //
 // initialization
 //
@@ -39,7 +39,7 @@ var init = function() {
 // inputs
 //
 var inputs = {
-   toolpath:{type:'object',
+   path:{type:'',
       event:function(evt){
          mod.name = evt.detail.name
          mod.path = evt.detail.path
@@ -52,7 +52,7 @@ var inputs = {
 // outputs
 //
 var outputs = {
-   file:{type:'object',
+   file:{type:'',
       event:function(obj){
          mods.output(mod,'file',obj)
          }}}
@@ -91,7 +91,7 @@ var interface = function(div){
    //
    div.appendChild(document.createTextNode('model: '))
    var select = document.createElement('select')
-     select.setAttribute('style', 'width:150px');
+     select.setAttribute('style', 'width:100px');
      var el = document.createElement('option')
         el.textContent = 'iModela'
         el.value = 'imodela'
@@ -117,18 +117,28 @@ var interface = function(div){
         })
      div.appendChild(select)
      mod.model = select
+   div.appendChild(document.createElement('hr'))
+   //
+   // job parameters
+   //
+   div.appendChild(document.createTextNode('job settings:'))
    div.appendChild(document.createElement('br'))
-   //
-   // speed
-   //
-   div.appendChild(document.createTextNode('speed: '))
+   div.appendChild(document.createTextNode('cut speed: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
       div.appendChild(input)
       mod.speed = input
-   div.appendChild(document.createTextNode(' (mm/s)\u00a0\u00a0'))
+   div.appendChild(document.createTextNode(' (mm/s)'))
    div.appendChild(document.createElement('br'))
+   div.appendChild(document.createTextNode('\u00a0\u00a0jog z: '))
+   var input = document.createElement('input')
+      input.type = 'text'
+      input.size = 6
+      div.appendChild(input)
+      mod.jz = input
+   div.appendChild(document.createTextNode(' (mm)'))
+   div.appendChild(document.createElement('hr'))
    //
    // origin x (mm)
    //
@@ -178,20 +188,8 @@ var interface = function(div){
          outputs.file.event(obj)
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
-   //
-   // jog
-   //
-   div.appendChild(document.createTextNode('jog height:'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createTextNode('z: '))
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 6
-      div.appendChild(input)
-      mod.jz = input
-   div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
+
    //
    // home
    //
@@ -240,7 +238,7 @@ var interface = function(div){
          outputs.file.event(obj)
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
 
    //
@@ -271,6 +269,7 @@ var interface = function(div){
       div.appendChild(input)
       mod.range_small = input
    div.appendChild(document.createTextNode('0.1mm'))
+   div.appendChild(document.createElement('br'))
    div.appendChild(document.createElement('br'))   
 
    

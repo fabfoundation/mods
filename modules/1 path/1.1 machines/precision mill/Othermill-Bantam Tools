@@ -22,7 +22,7 @@ var mod = {}
 //
 // name
 //
-var name = 'Othermill milling machine'
+var name = 'Othermill / Bantam Tools'
 //
 // initialization
 //
@@ -40,7 +40,7 @@ var init = function() {
 // inputs
 //
 var inputs = {
-   toolpath:{type:'object',
+   path:{type:'',
       event:function(evt){
          mod.name = evt.detail.name
          mod.path = evt.detail.path
@@ -53,7 +53,7 @@ var inputs = {
 // outputs
 //
 var outputs = {
-   file:{type:'object',
+   file:{type:'',
       event:function(obj){
          mods.output(mod,'file',obj)
          }}}
@@ -64,6 +64,8 @@ var outputs = {
 var interface = function(div){
    mod.div = div
    div.appendChild(document.createTextNode('THIS MODULE IS WIP'))
+   div.appendChild(document.createElement('hr'))
+   div.appendChild(document.createTextNode('job parameters:'))
    div.appendChild(document.createElement('br'))
    //
    // speed
@@ -90,28 +92,29 @@ var interface = function(div){
    //
    // jog
    //
-   div.appendChild(document.createTextNode('\u00a0jog height:'))
+   div.appendChild(document.createTextNode('\u00a0jog height: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
       div.appendChild(input)
       mod.jz = input
-   div.appendChild(document.createTextNode(' (mm)'))
+   div.appendChild(document.createTextNode(' (mm)\u00a0'))
    div.appendChild(document.createElement('br'))
 
    //
    // spindle speed
    //
-   div.appendChild(document.createTextNode('spindle rpm: '))
+   div.appendChild(document.createTextNode('spindle speed: '))
    var input = document.createElement('input')
       input.type = 'text'
       input.size = 6
       div.appendChild(input)
       mod.spindle_speed = input
-   div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
+   div.appendChild(document.createTextNode(' (rpm)\u00a0\u00a0'))
+   //div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0'))
    div.appendChild(document.createElement('br'))
  
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
    //
    // home
@@ -174,10 +177,7 @@ var interface = function(div){
       div.appendChild(input)
       mod.tz = input
    div.appendChild(document.createTextNode(' (mm)'))
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createElement('br'))
-
-
+   div.appendChild(document.createElement('hr'))
 
    //
    // origin x (mm)
@@ -221,8 +221,8 @@ var interface = function(div){
          outputs.file.event(obj)
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
+
 
 
 
@@ -256,7 +256,8 @@ var interface = function(div){
       div.appendChild(input)
       mod.range_small = input
    div.appendChild(document.createTextNode('0.1mm'))
-   div.appendChild(document.createElement('br'))   
+   div.appendChild(document.createElement('br')) 
+   div.appendChild(document.createElement('br'))  
 
    
 
