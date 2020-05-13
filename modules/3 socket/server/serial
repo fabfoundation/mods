@@ -30,8 +30,8 @@ var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = '1235'
    mod.device.value = 'Serialport not found'
-   mod.baud.value = '115200'
-   mod.flow_none.checked = false
+   mod.baud.value = '9600'
+   mod.flow_rtscts.checked = true
    mod.socket = null
    socket_open()
    }
@@ -85,7 +85,6 @@ var interface = function(div){
    //
    // status
    //
-   //div.appendChild(document.createTextNode('\u00a0status: '))
    var input = document.createElement('input')
       input.classList.add("marquee")     
       input.disabled = true
@@ -132,21 +131,23 @@ var interface = function(div){
          socket_close()
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
 
 
    //
    // serial
    //
-   div.appendChild(document.createTextNode('serial port:'))
+   div.appendChild(document.createTextNode('serial device:'))
    div.appendChild(document.createElement('br'))
    //
    // device
    //
 
    var select = document.createElement('select')
+       
        var el = document.createElement('option')
+          
           el.textContent = 'Serialport not found'
           el.value = 'Serialport not found'
           select.appendChild(el)
@@ -160,19 +161,53 @@ var interface = function(div){
    div.appendChild(document.createTextNode('baud rate: '))
    var input = document.createElement('input')
       input.type = 'text'
-      input.size = 6
+      input.size = 7
       div.appendChild(input)
       mod.baud = input
+   div.appendChild(document.createTextNode(' (bps)'))
    div.appendChild(document.createElement('br'))   
+
+   //
+   // flow control
+   //
+   div.appendChild(document.createTextNode('flow control:'))
+   div.appendChild(document.createElement('br'))   
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'flow'
+      input.id = mod.div.id+'flow_none'
+      div.appendChild(input)
+      mod.flow_none = input
+   div.appendChild(document.createTextNode('none\u00a0\u00a0\u00a0'))
+   div.appendChild(document.createElement('br'))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'flow'
+      input.id = mod.div.id+'flow_xonxoff'
+      div.appendChild(input)
+      mod.flow_xonxoff = input
+   div.appendChild(document.createTextNode('XONXOFF'))
+   div.appendChild(document.createElement('br'))
+   var input = document.createElement('input')
+      input.type = 'radio'
+      input.name = mod.div.id+'flow'
+      input.id = mod.div.id+'flow_rtscts'
+      div.appendChild(input)
+      mod.flow_rtscts = input
+      mod.flow_rtscts.checked = true
+   div.appendChild(document.createTextNode('RTSCTS\u00a0'))
+   div.appendChild(document.createElement('br')) 
+   div.appendChild(document.createElement('br'))
+
    //
    // line ending
    //
-   div.appendChild(document.createTextNode('line ending:'))
-   div.appendChild(document.createElement('br'))   
+   //div.appendChild(document.createTextNode('line ending:'))
+   //div.appendChild(document.createElement('br'))   
    var input = document.createElement('select')
    input.type = 'select'
 
-   var option_labels = ['none', 'new line', 'carriage return', 'nl & cr']
+   var option_labels = ['line ending: none', 'line ending: NL', 'line ending: CR', 'line ending: NL + CR']
    var option_values = ['none', 'nl', 'cr', 'nlcr']
    for (var i=0; i < option_labels.length; i++) {
       var option = document.createElement('option')
@@ -185,36 +220,6 @@ var interface = function(div){
    mod.line_ending = input
 
    div.appendChild(document.createElement('br'))
-   //
-   // flow control
-   //
-   div.appendChild(document.createTextNode('flow control:'))
-   div.appendChild(document.createElement('br'))   
-   var input = document.createElement('input')
-      input.type = 'radio'
-      input.name = mod.div.id+'flow'
-      input.id = mod.div.id+'flow_none'
-      div.appendChild(input)
-      mod.flow_none = input
-   div.appendChild(document.createTextNode('none\u00A0\u00A0\u00A0'))
-   div.appendChild(document.createElement('br'))   
-   var input = document.createElement('input')
-      input.type = 'radio'
-      input.name = mod.div.id+'flow'
-      input.id = mod.div.id+'flow_xonxoff'
-      div.appendChild(input)
-      mod.flow_xonxoff = input
-   div.appendChild(document.createTextNode('XONXOFF'))
-   div.appendChild(document.createElement('br'))   
-   var input = document.createElement('input')
-      input.type = 'radio'
-      input.name = mod.div.id+'flow'
-      input.id = mod.div.id+'flow_rtscts'
-      div.appendChild(input)
-      mod.flow_rtscts = input
-      mod.flow_rtscts.checked = true
-   div.appendChild(document.createTextNode('RTSCTS\u00A0'))
-   div.appendChild(document.createElement('br')) 
 
    //
    // open/close
@@ -233,7 +238,7 @@ var interface = function(div){
          serial_close()
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
   
    //
@@ -264,6 +269,8 @@ var interface = function(div){
          })
       div.appendChild(btn)
    }
+
+
 //
 // local functions
 //
@@ -333,6 +340,10 @@ function serial_open() {
       mod.status.value = "socket not open"
       }
    else {
+      if (mod.device.value == "Serialport not found") {
+	mod.status.value = "no serial devices found"
+	}
+	else {
       var msg = {}
       msg.type = 'open'
       msg.device = mod.device.value
@@ -344,6 +355,7 @@ function serial_open() {
       else if (mod.flow_rtscts.checked)
          msg.flow = 'rtscts'
       mod.socket.send(JSON.stringify(msg))
+	}
       }
    }
 function serial_close() {
@@ -351,10 +363,16 @@ function serial_close() {
       mod.status.value = "socket not open"
       }
    else {
+      if (mod.device.value == "Serialport not found") {
+	mod.status.value = "serial device not open"
+	}
+	else {
+
       var msg = {}
       msg.type = 'close'
       msg.device = mod.device.value
       mod.socket.send(JSON.stringify(msg))
+      }
       }
    }
 function serial_send_string(str) {

@@ -12,13 +12,15 @@
 // project. Copyright is retained and must be preserved. The work is 
 // provided as is; no warranty is provided, and users accept all 
 // liability.
+
 //
 // check command line
 //
 if (process.argv.length < 4) {
-   console.log("command line: node serialserver.js client_address server_port")
+   console.log("that didn't work, try again: node serialserver.js client_address server_port")
    process.exit(-1)
    }
+
 //
 // start server
 //

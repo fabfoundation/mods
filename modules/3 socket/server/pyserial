@@ -21,14 +21,14 @@ var mod = {}
 //
 // name
 //
-var name = 'WebSocket Python serial'
+var name = 'WebSocket pyserial'
 //
 // initialization
 //
 var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = '1239'
-   mod.device.value = '/dev/ttyUSB0'
+   mod.device.value = 'Serialport not found'
    mod.baud.value = '9600'
    mod.flow_dsrdtr.checked = true
    mod.socket = null
@@ -128,7 +128,7 @@ var interface = function(div){
          socket_close()
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br')) 
+   div.appendChild(document.createElement('hr')) 
    //
    // serial
    //
@@ -138,21 +138,30 @@ var interface = function(div){
    //
    // device
    //
-   var input = document.createElement('input')
-      input.type = 'text'
-      input.size = 17
-      div.appendChild(input)
-      mod.device = input
-   div.appendChild(document.createElement('br'))   
+
+
+   var select = document.createElement('select')
+       
+       var el = document.createElement('option')
+          
+          el.textContent = 'Serialport not found'
+          el.value = 'Serialport not found'
+          select.appendChild(el)
+       div.appendChild(select)
+       mod.device = select
+
+   div.appendChild(document.createElement('br')) 
+
    //
    // baud rate
    //
    div.appendChild(document.createTextNode('baud rate: '))
    var input = document.createElement('input')
       input.type = 'text'
-      input.size = 6
+      input.size = 7
       div.appendChild(input)
       mod.baud = input
+   div.appendChild(document.createTextNode(' (bps)'))
    div.appendChild(document.createElement('br'))   
    //
    // flow control
@@ -190,6 +199,7 @@ var interface = function(div){
       div.appendChild(input)
       mod.flow_dsrdtr = input
    div.appendChild(document.createTextNode('DSRDTR\u00A0'))
+   div.appendChild(document.createElement('br')) 
    div.appendChild(document.createElement('br'))   
    //
    // open/close
@@ -208,7 +218,7 @@ var interface = function(div){
          serial_close()
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
    //
    // file button
    //
@@ -245,7 +255,6 @@ function socket_open() {
    mod.socket = new WebSocket(url)
    mod.socket.onopen = function(event) {
       mod.status.value = "socket opened"
-      serial_open()
       }
    mod.socket.onerror = function(event) {
       mod.status.value = "can not open"
@@ -258,8 +267,47 @@ function socket_open() {
          mod.label.nodeValue = 'waiting for file'
          mod.labelspan.style.fontWeight = 'normal'
          }
+      //
+      // port list
+      //
+      else if (event.data[0] === '{'){  // If receiving an object
+         console.log('received object')
+         var portObject = JSON.parse(event.data) // get the object
+         var portList = portObject['portList'] // extract the list
+         if (portList) {
+            while (mod.device.hasChildNodes()) {
+               mod.device.removeChild(mod.device.lastChild); //remove all previous options
+               }
+
+         for(var i = 0; i < portList.length; i++){
+            var port = portList[i];
+            var el = document.createElement('option')
+            el.textContent = port
+            el.value = port
+            mod.device.appendChild(el)
+            }
+
+          if (portList.length == 0) {
+            var el = document.createElement('option')
+            el.textContent = 'Serialport not found'
+            el.value = 'Serialport not found'
+            mod.device.appendChild(el)               
+          }
+
+            }
+         }
+
+
+
+
+
       }
    }
+
+
+
+
+
 function socket_close() {
    mod.socket.close()
    mod.status.value = "socket closed"
@@ -279,6 +327,10 @@ function serial_open() {
       mod.status.value = "socket not open"
       }
    else {
+      if (mod.device.value == "Serialport not found") {
+	mod.status.value = "no serial devices found"
+	}
+	else {
       var msg = {}
       msg.type = 'open'
       msg.device = mod.device.value
@@ -287,9 +339,12 @@ function serial_open() {
          msg.flow = 'none'
       else if (mod.flow_rtscts.checked)
          msg.flow = 'rtscts'
+      else if (mod.flow_xonxoff.checked)
+         msg.flow = 'xonxoff'
       else if (mod.flow_dsrdtr.checked)
          msg.flow = 'dsrdtr'
       mod.socket.send(JSON.stringify(msg))
+	}
       }
    }
 function serial_close() {
@@ -297,10 +352,16 @@ function serial_close() {
       mod.status.value = "socket not open"
       }
    else {
+      if (mod.device.value == "Serialport not found") {
+	mod.status.value = "serial device not open"
+	}
+	else {
+
       var msg = {}
       msg.type = 'close'
       msg.device = mod.device.value
       mod.socket.send(JSON.stringify(msg))
+	}
       }
    }
 function serial_send_string(str) {
@@ -311,6 +372,7 @@ function serial_send_string(str) {
       var msg = {}
       msg.type = 'string'
       msg.string = str
+      //msg.line_ending = mod.line_ending.value //future
       mod.socket.send(JSON.stringify(msg))
       mod.status.value = 'transmit'
       }
