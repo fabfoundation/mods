@@ -89,7 +89,7 @@ var interface = function(div){
       mod.range_small = input
    div.appendChild(document.createTextNode('1mm'))
    div.appendChild(document.createElement('br'))   
-
+   div.appendChild(document.createElement('br'))   
 
 
    var btn = document.createElement('button')
@@ -180,7 +180,7 @@ var interface = function(div){
          mods.output(mod,'file',obj)
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
    div.appendChild(document.createTextNode('set parameters:'))
    div.appendChild(document.createElement('br'))
@@ -230,7 +230,7 @@ var interface = function(div){
          mods.output(mod,'file',obj)
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
 
    div.appendChild(document.createTextNode('image origin:'))
@@ -297,7 +297,8 @@ var interface = function(div){
       input.id = mod.div.id+'botright'
       div.appendChild(input)
       mod.botright = input
-
+   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('br'))
 
    }
 //

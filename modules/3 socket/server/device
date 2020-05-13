@@ -112,7 +112,7 @@ var interface = function(div){
          socket_close()
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
    //
    // device
    //
@@ -123,7 +123,7 @@ var interface = function(div){
       input.size = 15
       div.appendChild(input)
       mod.device = input
-   div.appendChild(document.createElement('br'))   
+   div.appendChild(document.createElement('hr'))   
    var btn = document.createElement('button')
       btn.style.padding = mods.ui.padding
       btn.style.margin = 1

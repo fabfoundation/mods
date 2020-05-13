@@ -40,11 +40,12 @@ wss.on('connection',function(ws) {
    //
    if (ws._socket.remoteAddress != client_address) {
       console.log("connection rejected from "+ws._socket.remoteAddress)
-      ws.send('socket closed')
+      ws.send('connection rejected')
       ws.close()
       }
    else {
       console.log("connection accepted from "+ws._socket.remoteAddress)
+      ws.send('connection accepted')
     // list serial ports
     function getSerialPortList() {
 	var portList = [] // init the list of serial devices
@@ -58,7 +59,6 @@ wss.on('connection',function(ws) {
 	    var portListObj = {}
 	    portListObj['portList'] = portList
 	    ws.send(JSON.stringify(portListObj)) // send the object to mods
-	    ws.send('socket open')
          })
        }  // close getSerialDevicesList()
        getSerialPortList()
@@ -82,11 +82,9 @@ wss.on('connection',function(ws) {
             if (flow == 'none')
                port = new SerialPort(device,{baudRate:baud})
             else if (flow == 'xonxoff')
-               port = new SerialPort(device,{baudRate:baud,xonxoff:true})
+               port = new SerialPort(device,{baudRate:baud,xon:true,xoff:true})
             else if (flow == 'rtscts')
                port = new SerialPort(device,{baudRate:baud,rtscts:true})
-            else if (flow == 'dsrdtr')
-               port = new SerialPort(device,{baudRate:baud,dsrdtr:true})
             }
          port.on('open',function() {
             ws.send('serial port opened')

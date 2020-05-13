@@ -28,7 +28,7 @@ var name = 'WebSocket UDP'
 var init = function() {
    mod.address.value = '127.0.0.1'
    mod.port.value = '1238'
-   mod.localhost.value = '127.0.0.1'
+   mod.localhost.value = '127.0.0.1,192.168.1.63'
    mod.localport.value = '2345'
    mod.remotehost.value = '127.0.0.1'
    mod.remoteport.value = '3456'
@@ -114,7 +114,7 @@ var interface = function(div){
          socket_close()
          })
       div.appendChild(btn)
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
 
    //
    // local
@@ -140,7 +140,7 @@ var interface = function(div){
       input.size = 10
       div.appendChild(input)
       mod.localport = input
-   div.appendChild(document.createElement('br'))
+   div.appendChild(document.createElement('hr'))
    //
    // remote
    //
