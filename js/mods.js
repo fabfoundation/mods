@@ -70,7 +70,7 @@
     }
     //
     // set theme
-    // 
+    //
     mods.theme = mods.lighttheme
     //
     // check version function
@@ -176,8 +176,8 @@
         //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { // scroll works in the white area
         if (!([...document.querySelectorAll('.context-menu')].some(el => el == elem || el.contains(elem)))) { // scroll works unless in the context menu
             set_prompt('scroll to zoom')
-            //evt.preventDefault() // 
-            evt.stopPropagation() // prevents default scroll action 
+            //evt.preventDefault() //
+            evt.stopPropagation() // prevents default scroll action
             var t = mods_transform()
             if (evt.deltaY > 0) {
                 if (t.s < mods.ui.maxzoom)
@@ -340,7 +340,7 @@
     // context menu
     //
     window.addEventListener('contextmenu', function(evt) {
-        //var el = document.elementFromPoint(evt.pageX,evt.pageY)    
+        //var el = document.elementFromPoint(evt.pageX,evt.pageY)
         //if ((el.tagName == "HTML") || (el.tagName == "BODY")) { // context menu in white area
         if (true) { // context menu everywhere
             evt.stopPropagation()
@@ -944,6 +944,7 @@
                         idnumber, module.dataset.definition),
                     top: module.dataset.top,
                     left: module.dataset.left,
+                    filename: module.dataset.filename,
                     inputs: {},
                     outputs: {}
                 }
@@ -993,6 +994,7 @@
                         idnumber, module.dataset.definition),
                     top: module.dataset.top,
                     left: module.dataset.left,
+                    filename: module.dataset.filename,
                     inputs: {},
                     outputs: {}
                 }
