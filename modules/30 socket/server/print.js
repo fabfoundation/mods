@@ -1,0 +1,221 @@
+//
+// print server module
+//
+// Neil Gershenfeld 
+// (c) Massachusetts Institute of Technology 2017
+// Modified by Francisco Sanchez 2020
+// 
+// This work may be reproduced, modified, distributed, performed, and 
+// displayed for any purpose, but must acknowledge the mods
+// project. Copyright is retained and must be preserved. The work is 
+// provided as is; no warranty is provided, and users accept all 
+// liability.
+//
+// closure
+//
+(function() {
+    //
+    // module globals
+    //
+    var mod = {}
+    //
+    // name
+    //
+    var name = 'WebSocket print'
+    //
+    // initialization
+    //
+    var init = function() {
+        mod.address.value = '127.0.0.1'
+        mod.port.value = '1234'
+        mod.printers.value = 'Printer not found'
+        mod.socket = null
+        socket_open()
+    }
+    //
+    // inputs
+    //
+    var inputs = {
+        file: {
+            type: '',
+            event: function(evt) {
+                if (evt.detail.type == 'file') {
+                    mod.job = evt.detail
+                    mod.label.nodeValue = 'send file to printer'
+                    mod.labelspan.style.fontWeight = 'bold'
+                } else if (evt.detail.type == 'command') {
+                    mod.job = evt.detail
+                    mod.job.printer = mod.printers.value
+                    socket_send(JSON.stringify(mod.job))
+                }
+            }
+        }
+    }
+    //
+    // outputs
+    //
+    var outputs = {}
+    //
+    // interface
+    //
+    var interface = function(div) {
+        mod.div = div
+        //
+        // server
+        //
+        var a = document.createElement('a')
+        a.href = './js/printserver.js'
+        a.innerHTML = 'printserver:'
+        a.target = '_blank'
+        div.appendChild(a)
+        div.appendChild(document.createElement('br'))
+        //
+        // status
+        //
+        input = document.createElement('input')
+        input.className = 'marquee'
+        input.disabled = true
+        input.type = 'text'
+        input.size = 19
+        div.appendChild(input)
+        mod.status = input
+        div.appendChild(document.createElement('br'))
+
+        div.appendChild(document.createTextNode('address: '))
+        input = document.createElement('input')
+        input.type = 'text'
+        input.size = 10
+        div.appendChild(input)
+        mod.address = input
+        div.appendChild(document.createElement('br'))
+        div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0port: '))
+        input = document.createElement('input')
+        input.type = 'text'
+        input.size = 10
+        div.appendChild(input)
+        mod.port = input
+        div.appendChild(document.createElement('br'))
+
+
+        //
+        // open/close
+        //
+        var btn = document.createElement('button')
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('open socket'))
+        btn.addEventListener('click', function() {
+            socket_open()
+        })
+        div.appendChild(btn)
+        var btn = document.createElement('button')
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('close socket'))
+        btn.addEventListener('click', function() {
+            socket_close()
+        })
+        div.appendChild(btn)
+        div.appendChild(document.createElement('br'))
+        //
+        // printer
+        //
+        div.appendChild(document.createTextNode('printer:'))
+        div.appendChild(document.createElement('br'))
+        var select = document.createElement('select')
+        var el = document.createElement('option')
+        el.textContent = 'Printer not found'
+        el.value = 'Printer not found'
+        select.appendChild(el)
+        div.appendChild(select)
+        mod.printers = select
+        div.appendChild(document.createElement('br'))
+        var btn = document.createElement('button')
+        btn.style.padding = mods.ui.padding
+        btn.style.margin = 1
+        var span = document.createElement('span')
+        var text = document.createTextNode('waiting for file')
+        mod.label = text
+        span.appendChild(text)
+        mod.labelspan = span
+        btn.appendChild(span)
+        btn.addEventListener('click', function() {
+            if (mod.socket == null) {
+                mod.status.value = "can't send, not open"
+            } else if (mod.label.nodeValue == 'send file to printer') {
+                mod.job.printer = mod.printers.value
+                socket_send(JSON.stringify(mod.job))
+                mod.label.nodeValue = 'cancel'
+            } else if (mod.label.nodeValue == 'cancel') {
+                socket_send('cancel')
+            }
+        })
+        div.appendChild(btn)
+    }
+    //
+    // local functions
+    //
+    function socket_open() {
+        var url = "ws://" + mod.address.value + ':' + mod.port.value
+        mod.socket = new WebSocket(url)
+        mod.socket.onopen = function(event) {
+            mod.status.value = "socket opened"
+        }
+        mod.socket.onerror = function(event) {
+            mod.status.value = "can not open socket"
+            mod.socket = null
+        }
+        mod.socket.onmessage = function(event) {
+            mod.status.value = event.data
+            if ((event.data == 'done') || (event.data == 'cancel') ||
+                (event.data.slice(0, 5) == 'error')) {
+                mod.label.nodeValue = 'waiting for file'
+                mod.labelspan.style.fontWeight = 'normal'
+            } else if (event.data[0] === '{') {
+                var printerInfo = JSON.parse(event.data)
+                var printerList = printerInfo['printerList']
+                if (printerList) {
+                    while (mod.printers.hasChildNodes()) {
+                        mod.printers.removeChild(mod.printers.lastChild);
+                    }
+
+                    for (var i = 0; i < printerList.length; i++) {
+                        var printer = printerList[i];
+                        var el = document.createElement('option')
+                        el.textContent = printer
+                        el.value = printer
+                        mod.printers.appendChild(el)
+                    }
+                    var defaultPrinter = printerInfo['default']
+                    if (defaultPrinter && defaultPrinter.length > 0) {
+                        mod.printers.value = defaultPrinter
+                    }
+                }
+            }
+        }
+    }
+
+    function socket_close() {
+        mod.socket.close()
+        mod.status.value = "socket closed"
+        mod.socket = null
+    }
+
+    function socket_send(msg) {
+        if (mod.socket != null) {
+            mod.status.value = "send"
+            mod.socket.send(msg)
+        } else {
+            mod.status.value = "can't send, not open"
+        }
+    }
+    //
+    // return values
+    //
+    return ({
+        mod: mod,
+        name: name,
+        init: init,
+        inputs: inputs,
+        outputs: outputs,
+        interface: interface
+    })
+}())

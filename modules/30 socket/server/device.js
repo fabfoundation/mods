@@ -1,0 +1,199 @@
+//
+// device server module
+//
+// Neil Gershenfeld 
+// (c) Massachusetts Institute of Technology 2016
+// modified by Francisco Sanchez 2019
+// 
+// This work may be reproduced, modified, distributed, performed, and 
+// displayed for any purpose, but must acknowledge the mods
+// project. Copyright is retained and must be preserved. The work is 
+// provided as is; no warranty is provided, and users accept all 
+// liability.
+//
+// closure
+//
+(function() {
+    //
+    // module globals
+    //
+    var mod = {}
+    //
+    // name
+    //
+    var name = 'WebSocket device'
+    //
+    // initialization
+    //
+    var init = function() {
+        mod.address.value = '127.0.0.1'
+        mod.port.value = '1236'
+        mod.device.value = '/dev/usb/lp0'
+        mod.socket = null
+        socket_open()
+    }
+    //
+    // inputs
+    //
+    var inputs = {
+        file: {
+            type: '',
+            event: function(evt) {
+                if (evt.detail.type == 'command') {
+                    mod.command = evt.detail
+                    mod.command.device = mod.device.value
+                    mod.command.type = 'print'
+                    socket_send(JSON.stringify(mod.command))
+                } else if (evt.detail.type == 'file') {
+                    mod.job = evt.detail
+                    mod.label.nodeValue = 'send file to device'
+                    mod.labelspan.style.fontWeight = 'bold'
+                }
+            }
+        }
+    }
+    //
+    // outputs
+    //
+    var outputs = {}
+    //
+    // interface
+    //
+    var interface = function(div) {
+        mod.div = div
+        //
+        // server
+        //
+        var a = document.createElement('a')
+        a.href = './js/deviceserver.js'
+        a.innerHTML = 'deviceserver.js'
+        a.target = '_blank'
+        div.appendChild(a)
+        div.appendChild(document.createElement('br'))
+        //
+        // status
+        //
+        input = document.createElement('input')
+        input.classList.add("marquee")
+        input.disabled = true
+        input.type = 'text'
+        input.size = 19
+        div.appendChild(input)
+        mod.status = input
+        div.appendChild(document.createElement('br'))
+        div.appendChild(document.createTextNode('address: '))
+        input = document.createElement('input')
+        input.type = 'text'
+        input.size = 10
+        div.appendChild(input)
+        mod.address = input
+        div.appendChild(document.createElement('br'))
+        div.appendChild(document.createTextNode('\u00a0\u00a0\u00a0port: '))
+        input = document.createElement('input')
+        input.type = 'text'
+        input.size = 10
+        div.appendChild(input)
+        mod.port = input
+        div.appendChild(document.createElement('br'))
+
+        //
+        // open/close
+        //
+        var btn = document.createElement('button')
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('open socket'))
+        btn.addEventListener('click', function() {
+            socket_open()
+        })
+        div.appendChild(btn)
+        var btn = document.createElement('button')
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('close socket'))
+        btn.addEventListener('click', function() {
+            socket_close()
+        })
+        div.appendChild(btn)
+        div.appendChild(document.createElement('hr'))
+        //
+        // device
+        //
+        div.appendChild(document.createTextNode('device:'))
+        div.appendChild(document.createElement('br'))
+        var input = document.createElement('input')
+        input.type = 'text'
+        input.size = 15
+        div.appendChild(input)
+        mod.device = input
+        div.appendChild(document.createElement('hr'))
+        var btn = document.createElement('button')
+        btn.style.padding = mods.ui.padding
+        btn.style.margin = 1
+        var span = document.createElement('span')
+        var text = document.createTextNode('waiting for file')
+        mod.label = text
+        span.appendChild(text)
+        mod.labelspan = span
+        btn.appendChild(span)
+        btn.addEventListener('click', function() {
+            if (mod.socket == null) {
+                mod.status.value = "can't send, not open"
+            } else if (mod.label.nodeValue == 'send file to device') {
+                mod.job.device = mod.device.value
+                mod.job.type = 'print'
+                socket_send(JSON.stringify(mod.job))
+                mod.label.nodeValue = 'cancel'
+            } else if (mod.label.nodeValue == 'cancel') {
+                socket_send('cancel')
+            }
+        })
+        div.appendChild(btn)
+    }
+    //
+    // local functions
+    //
+    function socket_open() {
+        var url = "ws://" + mod.address.value + ':' + mod.port.value
+        mod.socket = new WebSocket(url)
+        mod.socket.onopen = function(event) {
+            mod.status.value = "socket opened"
+        }
+        mod.socket.onerror = function(event) {
+            mod.status.value = "can not open socket"
+            mod.socket = null
+        }
+        mod.socket.onmessage = function(event) {
+            mod.status.value = event.data
+            if ((event.data == 'done') || (event.data == 'cancel') ||
+                (event.data.slice(0, 5) == 'error')) {
+                mod.label.nodeValue = 'waiting for file'
+                mod.labelspan.style.fontWeight = 'normal'
+            }
+        }
+    }
+
+    function socket_close() {
+        mod.socket.close()
+        mod.status.value = "socket closed"
+        mod.socket = null
+    }
+
+    function socket_send(msg) {
+        if (mod.socket != null) {
+            mod.status.value = "send"
+            mod.socket.send(msg)
+        } else {
+            mod.status.value = "can't send, not open"
+        }
+    }
+    //
+    // return values
+    //
+    return ({
+        mod: mod,
+        name: name,
+        init: init,
+        inputs: inputs,
+        outputs: outputs,
+        interface: interface
+    })
+}())

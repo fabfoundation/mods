@@ -1,0 +1,447 @@
+//
+// read png
+//
+// Neil Gershenfeld 
+// (c) Massachusetts Institute of Technology 2015,6
+// 
+// This work may be reproduced, modified, distributed, performed, and 
+// displayed for any purpose, but must acknowledge the fab modules 
+// project. Copyright is retained and must be preserved. The work is 
+// provided as is; no warranty is provided, and users accept all 
+// liability.
+//
+// closure
+//
+(function() {
+    //
+    // module globals
+    //
+    var mod = {}
+    //
+    // name
+    //
+    var name = 'read png'
+    //
+    // initialization
+    //
+    var init = function() {}
+    //
+    // inputs
+    //
+    var inputs = {}
+    //
+    // outputs
+    //
+    var outputs = {
+        image: {
+            type: 'RGBA',
+            event: function() {
+                var ctx = mod.img.getContext("2d")
+                var img = ctx.getImageData(0, 0, mod.img.width, mod.img.height)
+                mods.output(mod, 'image', img)
+            }
+        },
+        imageInfo: {
+            type: 'object',
+            event: function() {
+                var obj = {}
+                obj.name = mod.name.nodeValue
+                obj.dpi = parseFloat(mod.dpitext.value)
+                obj.width = mod.img.width
+                obj.height = mod.img.height
+                mods.output(mod, 'imageInfo', obj)
+            }
+        }
+    }
+    //
+    // interface
+    //
+    var interface = function(div) {
+        mod.div = div
+        //
+        // file input control
+        //
+        var file = document.createElement('input')
+        file.setAttribute('type', 'file')
+        file.setAttribute('id', div.id + 'file_input')
+        file.style.position = 'absolute'
+        file.style.left = 0
+        file.style.top = 0
+        file.style.width = 0
+        file.style.height = 0
+        file.style.opacity = 0
+        file.addEventListener('change', function() {
+            png_read_handler()
+        })
+        div.appendChild(file)
+        mod.file = file
+        //
+        // on-screen drawing canvas
+        //
+        var canvas = document.createElement('canvas')
+        canvas.width = mods.ui.canvas
+        canvas.height = mods.ui.canvas
+        canvas.style.backgroundColor = 'rgb(255,255,255)'
+        div.appendChild(canvas)
+        mod.canvas = canvas
+        div.appendChild(document.createElement('br'))
+        //
+        // off-screen image canvas
+        //
+        var canvas = document.createElement('canvas')
+        mod.img = canvas
+        //
+        // file select button
+        //
+        var btn = document.createElement('button')
+        btn.style.padding = mods.ui.padding
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('select png file'))
+        btn.addEventListener('click', function() {
+            var file = document.getElementById(div.id + 'file_input')
+            file.value = null
+            file.click()
+        })
+        div.appendChild(btn)
+        div.appendChild(document.createElement('br'))
+        //
+        // view button
+        //
+        var btn = document.createElement('button')
+        btn.style.padding = mods.ui.padding
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('view'))
+        btn.addEventListener('click', function() {
+            var win = window.open('')
+            var btn = document.createElement('button')
+            btn.appendChild(document.createTextNode('close'))
+            btn.style.padding = mods.ui.padding
+            btn.style.margin = 1
+            btn.addEventListener('click', function() {
+                win.close()
+            })
+            win.document.body.appendChild(btn)
+            win.document.body.appendChild(document.createElement('br'))
+            var canvas = document.createElement('canvas')
+            canvas.width = mod.img.width
+            canvas.height = mod.img.height
+            win.document.body.appendChild(canvas)
+            var ctx = canvas.getContext("2d")
+            ctx.drawImage(mod.img, 0, 0)
+        })
+        div.appendChild(btn)
+        div.appendChild(document.createTextNode(' '))
+        //
+        // invert button
+        //
+        var btn = document.createElement('button')
+        btn.style.padding = mods.ui.padding
+        btn.style.margin = 1
+        btn.appendChild(document.createTextNode('invert'))
+        btn.addEventListener('click', function() {
+            invert_image()
+        })
+        div.appendChild(btn)
+        div.appendChild(document.createElement('br'))
+        //
+        // flip button
+        //
+        var flip_btn = document.createElement('button')
+        flip_btn.style.padding = mods.ui.padding
+        flip_btn.style.margin = 1
+        flip_btn.appendChild(document.createTextNode('flip'))
+        flip_btn.addEventListener('click', function() {
+            flip_image()
+        })
+        div.appendChild(flip_btn)
+        div.appendChild(document.createTextNode(' '))
+        //
+        // rotate button
+        //
+        var flip_btn = document.createElement('button')
+        flip_btn.style.padding = mods.ui.padding
+        flip_btn.style.margin = 1
+        flip_btn.appendChild(document.createTextNode('rotate 90CW'))
+        flip_btn.addEventListener('click', function() {
+            flip_image()
+        })
+        div.appendChild(flip_btn)
+        div.appendChild(document.createElement('br'))
+        //
+        // info div
+        //
+        var info = document.createElement('div')
+        info.setAttribute('id', div.id + 'info')
+        info.appendChild(document.createTextNode('dpi: '))
+        var input = document.createElement('input')
+        input.type = 'text'
+        input.size = 6
+        input.addEventListener('input', function() {
+            mod.dpi = parseFloat(mod.dpitext.value)
+            mod.mmtext.nodeValue = (25.4 * mod.img.width / mod.dpi).toFixed(3) +
+                ' x ' + (25.4 * mod.img.height / mod.dpi).toFixed(3) + ' mm'
+            mod.intext.nodeValue = (mod.img.width / mod.dpi).toFixed(3) +
+                ' x ' + (mod.img.height / mod.dpi).toFixed(3) + ' in'
+            outputs.imageInfo.event()
+        })
+        info.appendChild(input)
+        mod.dpitext = input
+        info.appendChild(document.createElement('br'))
+        var text = document.createTextNode('px: ')
+        info.appendChild(text)
+        mod.pxtext = text
+        info.appendChild(document.createElement('br'))
+        var text = document.createTextNode('mm: ')
+        info.appendChild(text)
+        mod.mmtext = text
+        info.appendChild(document.createElement('br'))
+        var text = document.createTextNode('in: ')
+        info.appendChild(text)
+        mod.intext = text
+        info.appendChild(document.createElement('br'))
+        var text = document.createTextNode('')
+        info.appendChild(text)
+        mod.name = text
+        div.appendChild(info)
+    }
+    //
+    // local functions
+    //
+    // read handler
+    //
+    function png_read_handler(event) {
+        var file_reader = new FileReader()
+        file_reader.onload = png_binary_handler
+        input_file = mod.file.files[0]
+        file_name = input_file.name
+        mod.name.nodeValue = file_name
+        file_reader.readAsArrayBuffer(input_file)
+    }
+    //
+    // binary load handler
+    //
+    function png_binary_handler(event) {
+        //
+        // get DPI
+        //
+        // 8 header
+        // 4 len, 4 type, data, 4 crc
+        // pHYs 4 ppx, 4 ppy, 1 unit: 0 ?, 1 meter
+        // IEND
+        //
+        var units = ppx = ppy = 0
+        var buf = event.target.result
+        var view = new DataView(buf)
+        var ptr = 8
+        if (!((view.getUint8(1) == 80) && (view.getUint8(2) == 78) && (view.getUint8(3) == 71))) {
+            set_prompt("error: PNG header not found")
+            return
+        }
+        while (1) {
+            var length = view.getUint32(ptr)
+            ptr += 4
+            var type = String.fromCharCode(
+                view.getUint8(ptr), view.getUint8(ptr + 1),
+                view.getUint8(ptr + 2), view.getUint8(ptr + 3))
+            ptr += 4
+            if (type == "pHYs") {
+                ppx = view.getUint32(ptr)
+                ppy = view.getUint32(ptr + 4)
+                units = view.getUint8(ptr + 8)
+            }
+            if (type == "IEND")
+                break
+            ptr += length + 4
+        }
+        if (units == 0) {
+            set_prompt("no PNG units not found, assuming 72 DPI")
+            ppx = 72 * 1000 / 25.4
+        }
+        dpi = ppx * 25.4 / 1000
+        //
+        // read as URL for display
+        //
+        var file_reader = new FileReader()
+        file_reader.onload = png_URL_handler
+        file_reader.readAsDataURL(input_file)
+    }
+    //
+    // URL load handler
+    //
+    function png_URL_handler(event) {
+        var img = new Image()
+        img.setAttribute("src", event.target.result)
+        img.onload = function() {
+            if (img.width > img.height) {
+                var x0 = 0
+                var y0 = mod.canvas.height * .5 * (1 - img.height / img.width)
+                var w = mod.canvas.width
+                var h = mod.canvas.width * img.height / img.width
+            } else {
+                var x0 = mod.canvas.width * .5 * (1 - img.width / img.height)
+                var y0 = 0
+                var w = mod.canvas.height * img.width / img.height
+                var h = mod.canvas.height
+            }
+            var ctx = mod.canvas.getContext("2d")
+            ctx.clearRect(0, 0, mod.canvas.width, mod.canvas.height)
+            ctx.drawImage(img, x0, y0, w, h)
+            var ctx = mod.img.getContext("2d")
+            ctx.canvas.width = img.width
+            ctx.canvas.height = img.height
+            ctx.drawImage(img, 0, 0)
+            mod.dpitext.value = dpi.toFixed(3)
+            mod.pxtext.nodeValue = img.width + ' x ' + img.height + ' px'
+            mod.mmtext.nodeValue = (25.4 * img.width / dpi).toFixed(3) +
+                ' x ' + (25.4 * img.height / dpi).toFixed(3) + ' mm'
+            mod.intext.nodeValue = (img.width / dpi).toFixed(3) +
+                ' x ' + (img.height / dpi).toFixed(3) + ' in'
+            outputs.image.event()
+            outputs.imageInfo.event()
+        }
+    }
+    //
+    // invert image
+    //
+    function invert_image() {
+        var blob = new Blob(['(' + worker.toString() + '())'])
+        var url = window.URL.createObjectURL(blob)
+        var webworker = new Worker(url)
+        webworker.addEventListener('message', function(evt) {
+            window.URL.revokeObjectURL(url)
+            var h = mod.img.height
+            var w = mod.img.width
+            var buf = new Uint8ClampedArray(evt.data.buffer)
+            var imgdata = new ImageData(buf, w, h)
+            var ctx = mod.img.getContext("2d")
+            ctx.putImageData(imgdata, 0, 0)
+            if (w > h) {
+                var x0 = 0
+                var y0 = mod.canvas.height * .5 * (1 - h / w)
+                var wd = mod.canvas.width
+                var hd = mod.canvas.width * h / w
+            } else {
+                var x0 = mod.canvas.width * .5 * (1 - w / h)
+                var y0 = 0
+                var wd = mod.canvas.height * w / h
+                var hd = mod.canvas.height
+            }
+            var ctx = mod.canvas.getContext("2d")
+            ctx.drawImage(mod.img, x0, y0, wd, hd)
+            webworker.terminate()
+            outputs.image.event()
+        })
+        var ctx = mod.canvas.getContext("2d")
+        ctx.clearRect(0, 0, mod.canvas.width, mod.canvas.height)
+        var h = mod.img.height
+        var w = mod.img.width
+        var ctx = mod.img.getContext("2d")
+        var img = ctx.getImageData(0, 0, w, h)
+        webworker.postMessage({
+            height: img.height,
+            width: img.width,
+            buffer: img.data.buffer
+        }, [img.data.buffer])
+    }
+
+    function worker() {
+        self.addEventListener('message', function(evt) {
+            var h = evt.data.height
+            var w = evt.data.width
+            var buf = new Uint8ClampedArray(evt.data.buffer)
+            for (var row = 0; row < h; ++row) {
+                for (var col = 0; col < w; ++col) {
+                    buf[(h - 1 - row) * w * 4 + col * 4 + 0] = 255 - buf[(h - 1 - row) * w * 4 + col * 4 + 0]
+                    buf[(h - 1 - row) * w * 4 + col * 4 + 1] = 255 - buf[(h - 1 - row) * w * 4 + col * 4 + 1]
+                    buf[(h - 1 - row) * w * 4 + col * 4 + 2] = 255 - buf[(h - 1 - row) * w * 4 + col * 4 + 2]
+                    buf[(h - 1 - row) * w * 4 + col * 4 + 3] = 255
+                }
+            }
+            self.postMessage({
+                buffer: buf.buffer
+            }, [buf.buffer])
+        })
+    }
+    //
+    // flip image
+    //
+    function flip_image() {
+        var blob = new Blob(['(' + flip_worker.toString() + '())'])
+        var url = window.URL.createObjectURL(blob)
+        var webworker = new Worker(url)
+        webworker.addEventListener('message', function(evt) {
+            window.URL.revokeObjectURL(url)
+            var h = mod.img.height
+            var w = mod.img.width
+            var buf = new Uint8ClampedArray(evt.data.buffer)
+            var imgdata = new ImageData(buf, w, h)
+            var ctx = mod.img.getContext("2d")
+            ctx.putImageData(imgdata, 0, 0)
+            if (w > h) {
+                var x0 = 0
+                var y0 = mod.canvas.height * .5 * (1 - h / w)
+                var wd = mod.canvas.width
+                var hd = mod.canvas.width * h / w
+            } else {
+                var x0 = mod.canvas.width * .5 * (1 - w / h)
+                var y0 = 0
+                var wd = mod.canvas.height * w / h
+                var hd = mod.canvas.height
+            }
+            var ctx = mod.canvas.getContext("2d")
+            ctx.drawImage(mod.img, x0, y0, wd, hd)
+            webworker.terminate()
+            outputs.image.event()
+        })
+        var ctx = mod.canvas.getContext("2d")
+        ctx.clearRect(0, 0, mod.canvas.width, mod.canvas.height)
+        var h = mod.img.height
+        var w = mod.img.width
+        var ctx = mod.img.getContext("2d")
+        var img = ctx.getImageData(0, 0, w, h)
+        webworker.postMessage({
+            height: img.height,
+            width: img.width,
+            buffer: img.data.buffer
+        }, [img.data.buffer])
+    }
+
+    function flip_worker() {
+        self.addEventListener('message', function(evt) {
+            var h = evt.data.height
+            var w = evt.data.width
+            var buf = new Uint8ClampedArray(evt.data.buffer)
+            var index = 0
+            for (var row = 0; row < h; ++row) {
+                for (var col = 0; col < w / 2; ++col) {
+                    index = (h - 1 - row) * w * 4 + col * 4
+                    r_index = (h - 1 - row) * w * 4 + (w - 1 - col) * 4
+                    temp_1 = buf[index + 0]
+                    temp_2 = buf[index + 1]
+                    temp_3 = buf[index + 2]
+                    buf[index + 0] = buf[r_index + 0]
+                    buf[index + 1] = buf[r_index + 1]
+                    buf[index + 2] = buf[r_index + 2]
+                    buf[r_index + 0] = temp_1
+                    buf[r_index + 1] = temp_2
+                    buf[r_index + 2] = temp_3
+                    buf[index + 3] = 255
+                    buf[r_index + 3] = 255
+                }
+            }
+            self.postMessage({
+                buffer: buf.buffer
+            }, [buf.buffer])
+        })
+    }
+    //
+    // return values
+    //
+    return ({
+        name: name,
+        init: init,
+        inputs: inputs,
+        outputs: outputs,
+        interface: interface
+    })
+}())

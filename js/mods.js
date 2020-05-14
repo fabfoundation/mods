@@ -404,7 +404,7 @@
                     function module_label(label) {
                         var div = document.createElement('div')
                         var b = document.createElement('b')
-                        i.appendChild(document.createTextNode(label))
+                        b.appendChild(document.createTextNode(label))
                         div.appendChild(b)
                         div.appendChild(document.createElement('br'))
                         menu.appendChild(div)

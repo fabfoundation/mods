@@ -1,0 +1,412 @@
+//
+// view toolpath
+//
+// Neil Gershenfeld 
+// (c) Massachusetts Institute of Technology 2016
+// 
+// This work may be reproduced, modified, distributed, performed, and 
+// displayed for any purpose, but must acknowledge the mods
+// project. Copyright is retained and must be preserved. The work is 
+// provided as is; no warranty is provided, and users accept all 
+// liability.
+//
+// todo:
+//    erase and update new path
+//    show depth info
+//    show size
+//    calculate camera far
+//
+// closure
+//
+(function() {
+    //
+    // module globals
+    //
+    var mod = {}
+    //
+    // name
+    //
+    var name = 'view toolpath'
+    //
+    // initialization
+    //
+    var init = function() {}
+    //
+    // inputs
+    //
+    var inputs = {
+        toolpath: {
+            type: 'object',
+            event: function(evt) {
+                mod.path = evt.detail.path
+                mod.name = evt.detail.name
+                mod.dpi = evt.detail.dpi
+                mod.width = evt.detail.width
+                mod.height = evt.detail.height
+                mod.depth = evt.detail.depth
+                show_path_info()
+                show_path()
+                outputs.toolpath.event()
+            }
+        }
+    }
+    //
+    // outputs
+    //
+    var outputs = {
+        toolpath: {
+            type: 'object',
+            event: function() {
+                cmd = {}
+                cmd.path = mod.path
+                cmd.name = mod.name
+                cmd.dpi = mod.dpi
+                cmd.width = mod.width
+                cmd.height = mod.height
+                mods.output(mod, 'toolpath', cmd)
+            }
+        }
+    }
+    //
+    // interface
+    //
+    var interface = function(div) {
+        mod.div = div
+        //
+        // info
+        //
+        var text = document.createTextNode('name: ')
+        div.appendChild(text)
+        mod.nametext = text
+        div.appendChild(document.createElement('br'))
+        var text = document.createTextNode('(mm)')
+        div.appendChild(text)
+        mod.mmtext = text
+        div.appendChild(document.createElement('br'))
+        var text = document.createTextNode('(in)')
+        div.appendChild(text)
+        mod.intext = text
+        //
+        // view
+        //   
+        div.appendChild(document.createElement('br'))
+        var btn = document.createElement('button')
+        btn.style.padding = mods.ui.padding
+        btn.style.margin = 1
+        var span = document.createElement('span')
+        var text = document.createTextNode('view')
+        span.appendChild(text)
+        btn.appendChild(span)
+        btn.addEventListener('click', function() {
+            open_view_window()
+        })
+        div.appendChild(btn)
+    }
+    //
+    // local functions
+    //
+    // show_path_info
+    //
+    function show_path_info() {
+        mod.nametext.nodeValue = 'name: ' + mod.name
+        var width = (25.4 * mod.width / mod.dpi).toFixed(3)
+        var height = (25.4 * mod.height / mod.dpi).toFixed(3)
+        var depth = (25.4 * mod.depth / mod.dpi).toFixed(3)
+        if (mod.depth == undefined)
+            mod.mmtext.nodeValue = width + ' x ' + height + ' (mm)'
+        else
+            mod.mmtext.nodeValue = width + ' x ' + height + ' x ' + depth + ' (mm)'
+        var width = (mod.width / mod.dpi).toFixed(3)
+        var height = (mod.height / mod.dpi).toFixed(3)
+        var depth = (mod.depth / mod.dpi).toFixed(3)
+        if (mod.depth == undefined)
+            mod.intext.nodeValue = width + ' x ' + height + ' (in)'
+        else
+            mod.intext.nodeValue = width + ' x ' + height + ' x ' + depth + ' (in)'
+        mods.fit(mod.div)
+    }
+    //
+    // show_path
+    //
+    function show_path() {
+        var scene = mod.scene
+        var camera = mod.camera
+        var renderer = mod.renderer
+        //
+        // check if view window open
+        //
+        if (mod.win == undefined) {
+            open_view_window()
+            return
+        }
+        //
+        // check for path
+        //
+        if (mod.path == undefined)
+            return
+        //
+        // clear scene, leave camera
+        //
+        var length = scene.children.length
+        for (var c = (length - 1); c > 1; --c) {
+            scene.remove(scene.children[c])
+        }
+        //
+        // fit camera
+        //
+        mod.thetaxy = 0
+        mod.thetaz = 0
+        mod.r = mod.height / 2
+        mod.x0 = mod.width / 2
+        mod.y0 = mod.height / 2
+        camera.position.set(mod.x0, mod.y0, mod.r)
+        camera.up = new THREE.Vector3(0, 1, 0)
+        camera.lookAt(new THREE.Vector3(mod.x0, mod.y0, 0))
+        camera.updateProjectionMatrix()
+        //
+        // draw segments
+        //
+        var arrow_size = 1 + mod.width / 200
+        var path = mod.path
+        for (var segment = 0; segment < path.length; ++segment) {
+            if (segment > 0)
+                add_arrow(path[segment - 1][path[segment - 1].length - 1], path[segment][0], 0xff0000, arrow_size)
+            for (var point = 1; point < path[segment].length; ++point) {
+                add_arrow(path[segment][point - 1], path[segment][point], 0x0000ff, arrow_size)
+            }
+        }
+        //
+        // add axes
+        //
+        var length = mod.height / 10
+        add_arrow([0, 0, 0], [length, 0, 0], 0xff0000, arrow_size)
+        add_arrow([0, 0, 0], [0, length, 0], 0x00ff00, arrow_size)
+        add_arrow([0, 0, 0], [0, 0, length], 0x0000ff, arrow_size)
+        //
+        // render
+        //
+        update()
+        //
+        // add_arrow
+        //
+        function add_arrow(start, stop, color, size) {
+            var origin = new THREE.Vector3().fromArray(start)
+            if (mod.depth == undefined)
+                origin.z = 0
+            var end = new THREE.Vector3().fromArray(stop)
+            if (mod.depth == undefined)
+                end.z = 0
+            var length = new THREE.Vector3().subVectors(end, origin).length()
+            if (length <= size) {
+                add_line(origin, end, color)
+                //length = 1.1*size
+                return
+            }
+            var direction = new THREE.Vector3().subVectors(end, origin).normalize()
+            var arrow = new THREE.ArrowHelper(direction, origin, length, color, size, size)
+            scene.add(arrow)
+        }
+        //
+        // add_line
+        //
+        function add_line(start, stop, colorhex) {
+            var geometry = new THREE.Geometry()
+            geometry.vertices.push(start, stop)
+            var material = new THREE.LineBasicMaterial({
+                color: colorhex
+            })
+            var line = new THREE.Line(geometry, material)
+            scene.add(line)
+        }
+        //
+        // update
+        //
+        function update() {
+            renderer.render(scene, camera)
+        }
+    }
+    //
+    // open_view_window
+    //
+    function open_view_window() {
+        //
+        // globals
+        //
+        var container, scene, camera, renderer, win, controls
+        //
+        // open the window
+        //
+        open_window()
+        //
+        // open_window
+        //
+        function open_window() {
+            //
+            // open window
+            //
+            win = window.open('')
+            win.document.title = "toolpath viewer"
+            mod.win = win
+            //
+            // load three.js
+            //
+            var script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.onload = init_window
+            script.src = 'js/three.js/three.min.js'
+            mod.div.appendChild(script)
+        }
+        //
+        // init_window
+        //
+        function init_window() {
+            //
+            // close button
+            //
+            var btn = document.createElement('button')
+            btn.appendChild(document.createTextNode('close'))
+            btn.style.padding = mods.ui.padding
+            btn.style.margin = 1
+            btn.addEventListener('click', function() {
+                win.close()
+                mod.win = undefined
+            })
+            win.document.body.appendChild(btn)
+            //
+            // label text
+            //
+            var text = win.document.createTextNode(' left: pan, right: rotate, scroll: zoom')
+            win.document.body.appendChild(text)
+            //
+            // GL container
+            //
+            win.document.body.appendChild(document.createElement('br'))
+            container = win.document.createElement('div')
+            container.style.overflow = 'hidden'
+            win.document.body.appendChild(container)
+            //
+            // event handlers
+            //
+            container.addEventListener('contextmenu', context_menu)
+            container.addEventListener('mousedown', mouse_down)
+            container.addEventListener('mouseup', mouse_up)
+            container.addEventListener('mousemove', mouse_move)
+            container.addEventListener('wheel', mouse_wheel)
+            //
+            // add scene
+            //
+            scene = new THREE.Scene()
+            mod.scene = scene
+            var width = win.innerWidth
+            var height = win.innerHeight
+            var aspect = width / height
+            var near = 0.1
+            var far = 1000000
+            camera = new THREE.PerspectiveCamera(90, aspect, near, far)
+            mod.camera = camera
+            scene.add(camera)
+            //
+            // add renderer
+            //
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            })
+            mod.renderer = renderer
+            renderer.setClearColor(0xffffff)
+            renderer.setSize(width, height)
+            container.appendChild(renderer.domElement)
+            //
+            // show the path if available
+            //
+            show_path()
+        }
+        //
+        // context_menu
+        //
+        function context_menu(evt) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            return (false)
+        }
+        //
+        // mouse_down
+        //
+        function mouse_down(evt) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            mod.button = evt.button
+            mod.x = evt.clientX
+            mod.y = evt.clientY
+        }
+        //
+        // mouse_up
+        //
+        function mouse_up(evt) {
+            mod.button = undefined
+            mod.x = evt.clientX
+            mod.y = evt.clientY
+        }
+        //
+        // mouse_move
+        //
+        function mouse_move(evt) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            var dx = evt.clientX - mod.x
+            var dy = evt.clientY - mod.y
+            mod.x = evt.clientX
+            mod.y = evt.clientY
+            if (mod.button == 0) {
+                mod.x0 +=
+                    Math.sin(mod.thetaz) * mod.height * dy / win.innerHeight -
+                    Math.cos(mod.thetaz) * mod.width * dx / win.innerWidth
+                mod.y0 +=
+                    Math.cos(mod.thetaz) * mod.height * dy / win.innerHeight +
+                    Math.sin(mod.thetaz) * mod.width * dx / win.innerWidth
+                camera.position.x = mod.x0 + Math.sin(mod.thetaz) * mod.r * Math.sin(mod.thetaxy)
+                camera.position.y = mod.y0 + Math.cos(mod.thetaz) * mod.r * Math.sin(mod.thetaxy)
+                camera.position.z = mod.r * Math.cos(mod.thetaxy)
+                camera.position.z = mod.r * Math.cos(mod.thetaxy)
+                camera.up = new THREE.Vector3(Math.sin(mod.thetaz), Math.cos(mod.thetaz), 0)
+                camera.lookAt(new THREE.Vector3(mod.x0, mod.y0, 0))
+                camera.updateProjectionMatrix()
+                renderer.render(scene, camera)
+            } else if (mod.button == 2) {
+                mod.thetaxy += dy / win.innerHeight
+                mod.thetaz += dx / win.innerWidth
+                camera.position.x = mod.x0 + Math.sin(mod.thetaz) * mod.r * Math.sin(mod.thetaxy)
+                camera.position.y = mod.y0 + Math.cos(mod.thetaz) * mod.r * Math.sin(mod.thetaxy)
+                camera.position.z = mod.r * Math.cos(mod.thetaxy)
+                camera.up = new THREE.Vector3(Math.sin(mod.thetaz), Math.cos(mod.thetaz), 0)
+                camera.lookAt(new THREE.Vector3(mod.x0, mod.y0, 0))
+                camera.updateProjectionMatrix()
+                renderer.render(scene, camera)
+            }
+        }
+        //
+        // mouse_wheel
+        //
+        function mouse_wheel(evt) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            var dy = evt.deltaY / win.innerHeight
+            mod.r += mod.height * dy
+            camera.position.x = mod.x0 + Math.sin(mod.thetaz) * mod.r * Math.sin(mod.thetaxy)
+            camera.position.y = mod.y0 + Math.cos(mod.thetaz) * mod.r * Math.sin(mod.thetaxy)
+            camera.position.z = mod.r * Math.cos(mod.thetaxy)
+            camera.lookAt(new THREE.Vector3(mod.x0, mod.y0, 0))
+            camera.updateProjectionMatrix()
+            renderer.render(scene, camera)
+        }
+    }
+    //
+    // return values
+    //
+    return ({
+        name: name,
+        init: init,
+        inputs: inputs,
+        outputs: outputs,
+        interface: interface
+    })
+}())
