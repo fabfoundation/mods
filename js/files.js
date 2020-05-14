@@ -17,7 +17,7 @@ var fs = require('fs')
 //
 // directories to not index
 //
-var ignore = ['./js/node_modules','./js/Windows/node_modules','./.git','.js/build','.js/package-lock.json']
+var ignore = ['./js/node_modules', './js/Windows/node_modules', './.git', '.js/build', '.js/package-lock.json']
 //
 // set up page
 //
@@ -45,41 +45,38 @@ console.log(str)
 //    file tree walker
 //
 function list_files(path) {
-   var files = fs.readdirSync(path)
-   iloop: for (var i = 0; i < files.length; ++i) {
-      for (var j = 0; j < ignore.length; ++j)
-         if (path.indexOf(ignore[j]) != -1)
-            continue iloop
-      var file = files[i]
-      var stats = fs.statSync(path+'/'+file)
-      if (stats.isFile() == true) {
-         url = path+'/'+file
-         var match = url.match(/\//g)
-         if (match == null)
-            var prefix = ''
-         else {
-            var prefix = Array(1+match.length).join('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+    var files = fs.readdirSync(path)
+    iloop: for (var i = 0; i < files.length; ++i) {
+        for (var j = 0; j < ignore.length; ++j)
+            if (path.indexOf(ignore[j]) != -1)
+                continue iloop
+        var file = files[i]
+        var stats = fs.statSync(path + '/' + file)
+        if (stats.isFile() == true) {
+            url = path + '/' + file
+            var match = url.match(/\//g)
+            if (match == null)
+                var prefix = ''
+            else {
+                var prefix = Array(1 + match.length).join('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
             }
-         str += prefix
-         str += '<a href='
-         str += "'"
-         str += encodeURI(url)
-         str += "'"
-         str += '>'+file+'</a><br>\n'
-         }
-      else if (stats.isDirectory() == true) {
-         url = path+'/'+file
-         var match = url.match(/\//g)
-         if (match == null)
-            var prefix = ''
-         else {
-            var prefix = Array(1+match.length).join('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
+            str += prefix
+            str += '<a href='
+            str += "'"
+            str += encodeURI(url)
+            str += "'"
+            str += '>' + file + '</a><br>\n'
+        } else if (stats.isDirectory() == true) {
+            url = path + '/' + file
+            var match = url.match(/\//g)
+            if (match == null)
+                var prefix = ''
+            else {
+                var prefix = Array(1 + match.length).join('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
             }
-         str += '<b>'+prefix+file+'</b><br>\n'
-         list_files(path+'/'+file)
-         }
-      else
-         console.log('unknown file type')
-      }
-   }
-
+            str += '<b>' + prefix + file + '</b><br>\n'
+            list_files(path + '/' + file)
+        } else
+            console.log('unknown file type')
+    }
+}
