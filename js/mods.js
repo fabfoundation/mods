@@ -405,7 +405,7 @@
          add_menu(div, 'open module', function (evt) {
             function module_label(label) {
                var div = document.createElement('div')
-               var i = document.createElement('i')
+               var i = document.createElement('b')
                i.appendChild(document.createTextNode(label))
                div.appendChild(i)
                div.appendChild(document.createElement('br'))
@@ -416,10 +416,10 @@
                div.appendChild(
                   document.createTextNode('\u00A0\u00A0\u00A0' + label))
                div.addEventListener('mouseover', function (evt) {
-                  evt.target.style.fontWeight = 'bold'
+                  evt.target.style.backgroundColor= 'yellow'
                })
                div.addEventListener('mouseout', function (evt) {
-                  evt.target.style.fontWeight = 'normal'
+                  evt.target.style.backgroundColor = 'transparent'
                })
                div.addEventListener('mousedown', function (evt) {
                   evt.preventDefault()
@@ -501,7 +501,7 @@
          add_menu(div, 'open program', function (evt) {
             function program_label(label) {
                var div = document.createElement('div')
-               var i = document.createElement('i')
+               var i = document.createElement('b')
                i.appendChild(document.createTextNode(label))
                div.appendChild(i)
                div.appendChild(document.createElement('br'))
@@ -512,10 +512,10 @@
                div.appendChild(
                   document.createTextNode('\u00A0\u00A0\u00A0' + label))
                div.addEventListener('mouseover', function (evt) {
-                  evt.target.style.fontWeight = 'bold'
+                  evt.target.style.backgroundColor = 'yellow'
                })
                div.addEventListener('mouseout', function (evt) {
-                  evt.target.style.fontWeight = 'normal'
+                  evt.target.style.backgroundColor = 'transparent'
                })
                div.addEventListener('mousedown', function (evt) {
                   evt.preventDefault()

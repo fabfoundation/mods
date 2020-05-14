@@ -75,7 +75,7 @@ function list_files(path) {
          else {
             var prefix = Array(1+match.length).join('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;')
             }
-         str += '<i>'+prefix+file+'</i><br>\n'
+         str += '<b>'+prefix+file+'</b><br>\n'
          list_files(path+'/'+file)
          }
       else
