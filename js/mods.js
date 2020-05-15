@@ -1505,13 +1505,17 @@
                 req.responseType = 'text'
                 req.onreadystatechange = function() {
                     if (req.readyState == XMLHttpRequest.DONE) {
-                        text.value = req.response
-                        update_module(idnumber)
+                        if (req.status == 200) {
+                            text.value = req.response
+                            update_module(idnumber)
+                            win.close()
+                        } else {
+                           win.alert ("The location of this module has changed. Use load from file instead")
+                        }
                     }
                 }
                 req.open('GET', filename + '?rnd=' + Math.random())
                 req.send()
-                win.close()
             })
             win.document.body.appendChild(btn)
         }
