@@ -1495,7 +1495,7 @@
             update_module(idnumber)
             win.close()
         }
-        if (filename != "") {
+        if (filename != "undefined" && filename != "") {
             var btn = document.createElement('button')
             btn.appendChild(document.createTextNode('reload from server'))
             btn.style.padding = mods.ui.padding
