@@ -4,6 +4,7 @@
 // Neil Gershenfeld
 // (c) Massachusetts Institute of Technology 2016
 // Modified by Francisco Sanchez Arroyo 31-Jan-2020
+// Modified by Sol Bekic 21-Jul-2020
 //
 // This work may be reproduced, modified, distributed, performed, and
 // displayed for any purpose, but must acknowledge the mods
@@ -365,6 +366,18 @@
                 case 'max depth (in)':
                     mod.max_in.value = settings[s]
                     mod.max_mm.value = parseFloat(mod.max_in.value) * 25.4
+                    break
+                case 'tool diameter (mm)':
+                    mod.dia_mm.value = settings[s]
+                    mod.dia_in.value = parseFloat(mod.dia_mm.value) / 25.4
+                    break
+                case 'cut depth (mm)':
+                    mod.cut_mm.value = settings[s]
+                    mod.cut_in.value = parseFloat(mod.cut_mm.value) / 25.4
+                    break
+                case 'max depth (mm)':
+                    mod.max_mm.value = settings[s]
+                    mod.max_in.value = parseFloat(mod.max_mm.value) / 25.4
                     break
                 case 'offset number':
                     mod.number.value = settings[s]
