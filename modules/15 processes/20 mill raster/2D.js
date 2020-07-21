@@ -382,6 +382,7 @@
                 case 'offset number':
                     mod.number.value = settings[s]
                 case 'overlap':
+                case 'offset stepover':
                     mod.stepover.value = settings[s]
                     break
             }
