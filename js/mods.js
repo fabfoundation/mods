@@ -117,7 +117,7 @@
     // Toggle Dark Mode 'Ctrl+Alt+d'
     //
     window.addEventListener('keydown', function(evt) {
-        if (evt.code == 'KeyD' && evt.ctrlKey && evt.altKey) {
+        if (evt.key == 'd' && evt.ctrlKey && evt.altKey) {
             var div = document.getElementById('prompt')
             if (mods.theme == mods.lighttheme) {
                 mods.theme = mods.darktheme
@@ -1510,7 +1510,7 @@
                             update_module(idnumber)
                             win.close()
                         } else {
-                           win.alert ("The location of this module has changed. Use load from file instead")
+                            win.alert("The location of this module has changed. Use load from file instead")
                         }
                     }
                 }
@@ -1868,6 +1868,7 @@
                 type: 'outputs'
             }))
         divout.style.left = div.dataset.divNameSize / 2 + div.clientWidth / 2
+	//draw_links(div.dataset.id, mods.ui.link_color) //***** test bugfix
     }
     mods.output = function(mod, varname, val) {
         //
