@@ -58,9 +58,8 @@ then
         exit 1
     fi
 else
-    echo "WARNING!! Cannot detect your Linux distribution. Install all packages manually. Exiting script..."
-    # exit script...
-    exit
+    >&2 echo "WARNING!! Cannot detect your Linux distribution. Install all packages manually. Exiting script..."
+    exit 1
 fi
 
 # Install for all distributions
