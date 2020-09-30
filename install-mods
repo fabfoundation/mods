@@ -35,10 +35,18 @@ then
         sudo dnf install nodejs
         sudo usermod -a -G lp $USER
         sudo usermod -a -G dialout $USER
-    elif [[ $ID_LIKE = suse ]]; then
+    elif [[ $ID =~ ^opensuse || $ID_LIKE =~ ^suse ]]; then
         echo "Running Suse-like distribution"
-        echo "Install nodejs, python3 and pip packages manually"
-        read -p "Press [Enter] to continue..."
+        sudo zypper refresh
+        sudo zypper -n install curl
+        sudo zypper -n install wget
+        sudo zypper -n install python3 python3-pip
+        sudo zypper -n install nodejs
+        sudo zypper -n install cups-devel
+        sudo zypper -n install libcups2
+        sudo ln -s /usr/bin/python3 /usr/bin/python
+        sudo usermod -a -G lp $USER
+        sudo usermod -a -G dialout $USER
     fi
 else
     echo "WARNING!! Cannot detect your Linux distribution. Install all packages manually. Exiting script..."
