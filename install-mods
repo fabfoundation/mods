@@ -76,4 +76,4 @@ npm install node-gyp
 npm install printer --build-from-source
 # Ending script
 cd ..
-echo "Reboot for the group permissions to take effect."
+echo "Log out/in or reboot for the group permissions to take effect."
