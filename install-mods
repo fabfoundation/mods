@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Install all the packages required by mods for debian/arch/fedora based distributions
 # by Francisco Sanchez Arroyo 01-Mar-2020 
