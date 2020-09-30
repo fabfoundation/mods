@@ -15,41 +15,47 @@
 # Detecting linux distribution
 if [ -f /etc/os-release ]
 then
-    . /etc/os-release
-    if [[ $ID_LIKE = debian || $ID = debian ]]; then
-        echo "Running Debian-like distribution"
-        sudo apt update
-        sudo apt install curl
-        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-        sudo apt install nodejs python3 python3-pip libcups2-dev
-        sudo ln -s /usr/bin/python3 /usr/bin/python
-        sudo adduser $USER lp
-        sudo adduser $USER dialout
-    elif [[ $ID_LIKE = arch || $ID = arch ]]; then
-        echo "Running Arch-like distribution"
-        sudo pacman -Syu
-        sudo pacman -S --needed curl wget nodejs python python-pip libcups
-        sudo usermod -a -G lp $USER
-        sudo usermod -a -G uucp $USER
-    elif [[ $ID = fedora || $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
-        echo "Running Fedora-like distribution"
-        sudo dnf install -y curl gcc-c++ make
-        curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
-        sudo dnf install nodejs
-        sudo usermod -a -G lp $USER
-        sudo usermod -a -G dialout $USER
-    elif [[ $ID =~ ^opensuse || $ID_LIKE =~ ^suse ]]; then
-        echo "Running Suse-like distribution"
-        sudo zypper refresh
-        sudo zypper -n install curl
-        sudo zypper -n install wget
-        sudo zypper -n install python3 python3-pip
-        sudo zypper -n install nodejs
-        sudo zypper -n install cups-devel
-        sudo zypper -n install libcups2
-        sudo ln -s /usr/bin/python3 /usr/bin/python
-        sudo usermod -a -G lp $USER
-        sudo usermod -a -G dialout $USER
+    #Has the current user sudo rights?
+    if groups ${USER} | grep -q '\bsudo\b' || [ ${USER} = "root" ]; then
+        . /etc/os-release
+        if [[ $ID_LIKE = debian || $ID = debian ]]; then
+            echo "Running Debian-like distribution"
+            sudo apt update
+            sudo apt install curl
+            curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+            sudo apt install nodejs python3 python3-pip libcups2-dev
+            sudo ln -s /usr/bin/python3 /usr/bin/python
+            sudo adduser $USER lp
+            sudo adduser $USER dialout
+        elif [[ $ID_LIKE = arch || $ID = arch ]]; then
+            echo "Running Arch-like distribution"
+            sudo pacman -Syu
+            sudo pacman -S --needed curl wget nodejs python python-pip libcups
+            sudo usermod -a -G lp $USER
+            sudo usermod -a -G uucp $USER
+        elif [[ $ID = fedora || $ID_LIKE = fedora || $ID_LIKE = 'rhel fedora' ]]; then
+            echo "Running Fedora-like distribution"
+            sudo dnf install -y curl gcc-c++ make
+            curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
+            sudo dnf install nodejs
+            sudo usermod -a -G lp $USER
+            sudo usermod -a -G dialout $USER
+        elif [[ $ID =~ ^opensuse || $ID_LIKE =~ ^suse ]]; then
+            echo "Running Suse-like distribution"
+            sudo zypper refresh
+            sudo zypper -n install curl
+            sudo zypper -n install wget
+            sudo zypper -n install python3 python3-pip
+            sudo zypper -n install nodejs
+            sudo zypper -n install cups-devel
+            sudo zypper -n install libcups2
+            sudo ln -s /usr/bin/python3 /usr/bin/python
+            sudo usermod -a -G lp $USER
+            sudo usermod -a -G dialout $USER
+        fi    
+    else
+        >&2 echo "Current user (${USER}) has no superuser privileges. Run the script as root or ask your system administrator."
+        exit 1
     fi
 else
     echo "WARNING!! Cannot detect your Linux distribution. Install all packages manually. Exiting script..."
