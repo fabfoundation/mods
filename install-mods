@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
-#
-# Install all the packages required by mods for debian/arch/fedora based distributions
-# by Francisco Sanchez Arroyo 01-Mar-2020
-#
-# This work may be reproduced, modified, distributed, performed, and
-# displayed for any purpose, but must acknowledge the fab modules
-# project. Copyright is retained and must be preserved. The work is
-# provided as is; no warranty is provided, and users accept all
-# liability.
 
-# detect linux distribution
+# Date        : 01-Mar-2020
+# Author      : Francisco Sanchez Arroyo
+# Description : This script installs all the packages required by mods
+#               for debian/arch/fedora/(open)suse based distributions.
+# Usage       : ./install-mods
+
+# Copyright   : This work may be reproduced, modified, distributed, performed, and
+#               displayed for any purpose, but must acknowledge the fab modules project.
+#               Copyright is retained and must be preserved.
+#               The work is provided as is; no warranty is provided,
+#               and users accept all liability.
+
+# Detecting linux distribution
 if [ -f /etc/os-release ]
 then
     . /etc/os-release
