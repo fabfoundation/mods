@@ -228,7 +228,7 @@
             //
             x = scale * mod.path[seg][0][0]
             y = scale * mod.path[seg][0][1]
-            str += "Z" + jog_height.toFixed(4) + "\n"
+            str += "G00Z" + jog_height.toFixed(4) + "\n"
             str += "G00X" + x.toFixed(4) + "Y" + y.toFixed(4) + "Z" + jog_height.toFixed(4) + "\n"
             //
             // move down
