@@ -12,11 +12,17 @@
 #               The work is provided as is; no warranty is provided,
 #               and users accept all liability.
 
+# Do not run as root
+if ((`id -u`  == 0));
+  then echo "Please DO NOT run this script as root"
+  exit 1
+fi
+
 # Detecting linux distribution
 if [ -f /etc/os-release ]
 then
     #Has the current user sudo rights?
-    if groups ${USER} | grep -q '\bsudo\b' || [ ${USER} = "root" ]; then
+    if  groups ${USER} | grep -q '\bsudo\b' || groups ${USER} | grep -q '\bwheel\b'; then
         . /etc/os-release
         if [[ $ID_LIKE = debian || $ID = debian ]]; then
             echo "Running Debian-like distribution"
@@ -54,7 +60,7 @@ then
             sudo usermod -a -G dialout $USER
         fi    
     else
-        >&2 echo "Current user (${USER}) has no superuser privileges. Run the script as root or ask your system administrator."
+	    >&2 echo "This script requires superuser privileges for a portion of the installation. Current user (${USER}) appears to lack superuser privileges. Make sure the current user (${USER}) belong to group 'sudo' (ubuntu et al.) or 'wheel' (arch et al.)"
         exit 1
     fi
 else
@@ -74,6 +80,7 @@ npm install ws
 npm install serialport
 npm install node-gyp
 npm install printer --build-from-source
+npm install obs-websocket-js
 # Ending script
 cd ..
 echo "Log out/in or reboot for the group permissions to take effect."
