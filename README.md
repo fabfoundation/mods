@@ -1,3 +1,8 @@
+> **PROJECT MOVED:** From Jan 2nd, 2021 this project has permanently moved to fabcloud  
+> Please update your bookmarks  
+> https://gitlab.fabcloud.org/pub/project/mods
+
+
 # `mods` Community Edition
 
 Just like `mods`, but cooler :sunglasses:
